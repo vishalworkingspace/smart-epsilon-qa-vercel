@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master QA Portal — Smart Epsilon Website Audit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <link rel="alternate icon" href="./favicon.svg">
+    <style>
+        :root {
+            --bg-dark: #070a13;
+            --bg-card: #0f172a;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-purple: #8b5cf6;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 40px 24px;
+            background-image: 
+                radial-gradient(circle at 20% 15%, rgba(59, 130, 246, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 80% 60%, rgba(139, 92, 246, 0.12) 0%, transparent 40%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        /* INITIAL LOADER SCREEN */
+        #loader-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #070a13;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .spinner-ring {
+            width: 70px; height: 70px;
+            border: 4px solid rgba(59, 130, 246, 0.15);
+            border-top: 4px solid var(--accent-blue);
+            border-right: 4px solid var(--accent-purple);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 24px;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loader-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .loader-sub {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* PASSWORD AUTH GATE OVERLAY */
+        #auth-gate {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(7, 10, 19, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .auth-card {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 28px;
+            padding: 44px 36px;
+            width: 100%;
+            max-width: 440px;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(59, 130, 246, 0.15);
+            position: relative;
+            overflow: hidden;
+            animation: cardAppear 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes cardAppear {
+            from { opacity: 0; transform: scale(0.92) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #10b981);
+        }
+
+        .lock-icon-box {
+            width: 64px; height: 64px;
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
+        }
+
+        .auth-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .auth-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 28px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .pass-input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            color: #fff;
+            font-size: 1.05rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s ease;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .pass-input:focus {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.08);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-unlock {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border: none;
+            border-radius: 14px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-unlock:hover {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
+            transform: translateY(-1px);
+        }
+
+        .error-msg {
+            color: #ef4444;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 12px;
+            display: none;
+            animation: shake 0.3s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
+        /* MAIN CONTENT CONTAINER */
+        .container {
+            max-width: 1350px;
+            margin: 0 auto;
+        }
+
+        /* HEADER HERO */
+        header.portal-header {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header.portal-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #10b981);
+        }
+
+        .badge-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .badge-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .pill-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .pill-purple {
+            background: rgba(139, 92, 246, 0.18);
+            color: #c084fc;
+            border: 1px solid rgba(139, 92, 246, 0.4);
+        }
+
+        .pill-green {
+            background: rgba(16, 185, 129, 0.18);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-lock-session {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-lock-session:hover {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #93c5fd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 950px;
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .metric-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .metric-box label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .metric-box .value {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .metric-box .value.green { 
+            color: #34d399; 
+            font-size: 1.08rem; 
+            white-space: nowrap; 
+        }
+        .metric-box .value.blue { color: #60a5fa; }
+
+        /* SECTION TITLE */
+        .section-header {
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .section-header h2 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        /* CARDS GRID */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(59, 130, 246, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .page-tag {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #60a5fa;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .status-badge-approved {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .status-badge-queued {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .card-body {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-primary-glow {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35);
+        }
+
+        .btn-primary-glow:hover {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        }
+
+        .btn-outline-glass {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-outline-glass:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-disabled {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. ANIMATED LOADER SCREEN -->
+    <div id="loader-screen">
+        <div class="spinner-ring"></div>
+        <div class="loader-title">SMART EPSILON QA PORTAL</div>
+        <div class="loader-sub">Initializing Security Gateway...</div>
+    </div>
+
+    <!-- 2. PASSWORD AUTHENTICATION GATE -->
+    <div id="auth-gate" style="display: none; opacity: 0;">
+        <div class="auth-card">
+            <div class="lock-icon-box">🔒</div>
+            <div class="auth-title">Executive Access</div>
+            <div class="auth-desc">Please enter the security passkey to access the Master QA Portal.</div>
+            <form id="auth-form" onsubmit="event.preventDefault(); verifyPassword();">
+                <div class="input-group">
+                    <input type="password" id="passkey-input" class="pass-input" placeholder="Enter Passkey" autofocus autocomplete="current-password" />
+                </div>
+                <button type="submit" class="btn-unlock">Unlock Portal ➔</button>
+                <div id="error-msg" class="error-msg">❌ Incorrect Passkey. Please try again.</div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 3. MAIN DASHBOARD CONTAINER -->
+    <div class="container" id="main-portal" style="display: none; opacity: 0; transition: opacity 0.5s ease;">
+        
+        <!-- EXECUTIVE HERO HEADER -->
+        <header class="portal-header">
+            <div class="badge-row">
+                <div class="badge-left">
+                    <span class="pill-badge pill-purple">👑 Master Executive Hub</span>
+                    <span class="pill-badge pill-green">🎉 ALL 9 PAGES 100% AUDITED & APPROVED</span>
+                </div>
+                <button class="btn-lock-session" onclick="lockSession()">🔒 Lock Session</button>
+            </div>
+            <h1>Smart Epsilon — Master QA Portal</h1>
+            <p class="subtitle">Central Executive QA Portal for Smart Epsilon Audits. Track progress across all 9 project pages, inspect 100% verified section scores, side-by-side visual comparisons, and mobile responsiveness previews.</p>
+            
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <label>Master SharePoint Document</label>
+                    <div class="value"><a href="https://commercepundit-my.sharepoint.com/:w:/p/vishal_malaviya/IQAF8cxrop3SQrqIe_7Xicl-ASfD3qbDxMIzCZLGwCWLRd4?rtime=hMK9x43z3kg" target="_blank" style="color:#60a5fa; text-decoration:none; font-size:1.1rem;">SharePoint Doc ↗</a></div>
+                </div>
+                <div class="metric-box">
+                    <label>Google Project Sheet</label>
+                    <div class="value"><a href="https://docs.google.com/spreadsheets/d/1qkRS5Gc4vyWj6_cHC1wBknJ_Ib2Yrok94hJZCYjegc4/edit?usp=sharing" target="_blank" style="color:#60a5fa; text-decoration:none; font-size:1.1rem;">Project Sheet ↗</a></div>
+                </div>
+                <div class="metric-box">
+                    <label>Total Project Pages</label>
+                    <div class="value blue">9 Pages Total</div>
+                </div>
+                <div class="metric-box">
+                    <label>Audit Progress Score</label>
+                    <div class="value green">🎉 9 / 9 Audited (100% Complete)</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- SECTION TITLE -->
+        <div class="section-header">
+            <h2>📁 Website Page Status & Audit Dashboards</h2>
+        </div>
+
+        <!-- CARDS GRID -->
+        <div class="cards-grid">
+            
+            <!-- PAGE 01: HOME PAGE -->
+            <div class="card">
+                <div>
+                    <div class="card-header">
+                        <span class="page-tag">PAGE 01</span>
+                        <span class="status-badge-approved">✅ 100% APPROVED</span>
+                    </div>
+                    <div class="card-title">Home Page</div>
+                    <div class="card-body">Complete 13 natural section audit verifying Hero, Brand Ticker, Problem Space, Philosophy, Solutions, Benefits, Verticals, Case Studies, Testimonials, Insights, and Footer against Master Doc.</div>
+                </div>
+                <div class="btn-group">
+                    <a href="./qa_report_home.html" class="btn btn-primary-glow">Open Dashboard ➔</a>
+                </div>
+            </div>
+
+            <!-- PAGE 02: TRACK & TRACE -->
+            <div class="card">
+                <div>
+                    <div class="card-header">
+                        <span class="page-tag">PAGE 02</span>
+                        <span class="status-badge-approved">✅ 100% APPROVED</span>
+                    </div>
+                    <div class="card-title">Track & Trace Solution</div>
+                    <div class="card-body">Complete 11 natural section audit verifying Solution 01 copy, 5-stage product journey path, tech stack, and 6-step rollout against Master Doc.</div>
+                </div>
+                <div class="btn-group">
+                    <a href="./qa_report_track_trace.html" class="btn btn-primary-glow">Open Dashboard ➔</a>
+                </div>
+            </div>
+
+            <!-- PAGE 03: ANTI-COUNTERFEITING -->
+            <div class="card">
+                <div>
+                    <div class="card-header">
+                        <span class="page-tag">PAGE 03</span>
+                        <span class="status-badge-approved">✅ 100% APPROVED</span>
+                    </div>
+                    <div class="card-title">Anti-Counterfeiting Solution</div>
+                    <div class="card-body">Complete 10 natural section audit verifying Solution 02 copy, QR code verification, brand defense, and 3-step scan workflow against Master Doc.</div>
+                </div>
+                <div class="btn-group">
+                    <a href="./qa_report_anti_counterfeiting.html" class="btn btn-primary-glow">Open Dashboard ➔</a>
+                </div>
+            </div>
+
+            <!-- PAGE 04: PAYMENT LINKED INCENTIVES -->
+            <div class="card">
+                <div>
+                    <div class="card-header">
+                        <span class="page-tag">PAGE 04</span>
+                        <span class="status-badge-approved">✅ 100% APPROVED</span>
+                    </div>
+                    <div class="card-title">Payment Linked Incentives</div>
+                    <div class="card-body">Complete 10 natural section audit verifying Solution 03 copy, trade rewards, UPI instant payouts, and retailer cashbacks against Master Doc.</div>
+                </div>
+                <div class="btn-group">
+                    <a href="./qa_report_payment_linked_incentives.html" class="btn btn-primary-glow">Open Dashboard ➔</a>
+                </div>
+            </div>
+
+            <!-- PAGE 05: AI VIDEO INTELLIGENCE -->
+            <div class="card">
+                <div>
+                    <div class="card-header">
+                        <span class="page-tag">PAGE 05</span>
+                        <span class="status-badge-approved">✅ 100% APPROVED</span>
+                    </div>
+                    <div class="card-title">AI Video Intelligence</div>
+                    <div class="card-body">Complete 11 natural section audit verifying Solution 04 copy, CCTV computer vision, PPE safety alerts, and ANPR license scanning against Master Doc.</div>
+                </div>
+                <div class="btn-group">
+                    <a href="./qa_report_ai_video_intelligence.html" class="btn btn-primary-glow">Open Dashboard ➔</a>
+                </div>
+            </div>
+
+            <!-- PAGE 06: AGROCHEMICALS & SEEDS -->
+            <div class="card">
+                <div>
+                    <div class="card-header">
+                        <span class="page-tag">PAGE 06</span>
+                        <span class="status-badge-approved">✅ 100% APPROVED</span>
+                    </div>
+                    <div class="card-title">Agrochemicals & Seeds</div>
+                    <div class="card-body">Complete 10 natural section audit verifying Industry 01 copy, crop protection serialization, seed authentication, and dealer track & trace against Master Doc.</div>
+                </div>
+                <div class="btn-group">
+                    <a href="./qa_report_agrochemicals_seeds.html" class="btn btn-primary-glow">Open Dashboard ➔</a>
+                </div>
+            </div>
+
+            <!-- PAGE 07: ELECTRICALS & APPLIANCES -->
+            <div class="card">
+                <div>
+                    <div class="card-header">
+                        <span class="page-tag">PAGE 07</span>
+                        <span class="status-badge-approved">✅ 100% APPROVED</span>
+                    </div>
+                    <div class="card-title">Electricals & Appliances</div>
+                    <div class="card-body">Complete 10 natural section audit verifying Industry 02 copy, circuit breaker serialization, electrician trade cashbacks, and warranty registration against Master Doc.</div>
+                </div>
+                <div class="btn-group">
+                    <a href="./qa_report_electricals_appliances.html" class="btn btn-primary-glow">Open Dashboard ➔</a>
+                </div>
+            </div>
+
+            <!-- PAGE 08: OIL AND GAS -->
+            <div class="card">
+                <div>
+                    <div class="card-header">
+                        <span class="page-tag">PAGE 08</span>
+                        <span class="status-badge-approved">✅ 100% APPROVED</span>
+                    </div>
+                    <div class="card-title">Oil and Gas Industry</div>
+                    <div class="card-body">Complete 9 natural section audit verifying Industry 03 copy, fuel tanker custody, anti-adulteration e-locks, and ATEX/IECEx compliance against Master Doc.</div>
+                </div>
+                <div class="btn-group">
+                    <a href="./qa_report_oil_and_gas.html" class="btn btn-primary-glow">Open Dashboard ➔</a>
+                </div>
+            </div>
+
+            <!-- PAGE 09: CONTACT US PAGE -->
+            <div class="card">
+                <div>
+                    <div class="card-header">
+                        <span class="page-tag">PAGE 09</span>
+                        <span class="status-badge-approved">✅ 100% APPROVED</span>
+                    </div>
+                    <div class="card-title">Contact Us Page</div>
+                    <div class="card-body">Complete 5 natural section audit verifying consultation form, corporate headquarters (Ahmedabad), response time, and fast-track support.</div>
+                </div>
+                <div class="btn-group">
+                    <a href="./qa_report_contact_us.html" class="btn btn-primary-glow">Open Dashboard ➔</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        const CORRECT_PASS = "daddyshome";
+
+        window.addEventListener("DOMContentLoaded", () => {
+            const loader = document.getElementById("loader-screen");
+            const authGate = document.getElementById("auth-gate");
+            const mainPortal = document.getElementById("main-portal");
+
+            setTimeout(() => {
+                loader.style.opacity = "0";
+                setTimeout(() => {
+                    loader.style.display = "none";
+                    if (sessionStorage.getItem("se_qa_auth") === "true") {
+                        showMainPortal();
+                    } else {
+                        showAuthGate();
+                    }
+                }, 500);
+            }, 1200);
+        });
+
+        function showAuthGate() {
+            const authGate = document.getElementById("auth-gate");
+            authGate.style.display = "flex";
+            setTimeout(() => {
+                authGate.style.opacity = "1";
+                document.getElementById("passkey-input").focus();
+            }, 50);
+        }
+
+        function showMainPortal() {
+            const authGate = document.getElementById("auth-gate");
+            const mainPortal = document.getElementById("main-portal");
+            
+            authGate.style.opacity = "0";
+            setTimeout(() => {
+                authGate.style.display = "none";
+                mainPortal.style.display = "block";
+                setTimeout(() => {
+                    mainPortal.style.opacity = "1";
+                }, 50);
+            }, 400);
+        }
+
+        function verifyPassword() {
+            const inputVal = document.getElementById("passkey-input").value;
+            const errorMsg = document.getElementById("error-msg");
+
+            if (inputVal === CORRECT_PASS) {
+                errorMsg.style.display = "none";
+                sessionStorage.setItem("se_qa_auth", "true");
+                showMainPortal();
+            } else {
+                errorMsg.style.display = "block";
+                const inputEl = document.getElementById("passkey-input");
+                inputEl.style.borderColor = "#ef4444";
+                inputEl.style.boxShadow = "0 0 20px rgba(239, 68, 68, 0.4)";
+                setTimeout(() => {
+                    inputEl.style.borderColor = "rgba(255, 255, 255, 0.15)";
+                    inputEl.style.boxShadow = "none";
+                }, 1500);
+            }
+        }
+
+        function lockSession() {
+            sessionStorage.removeItem("se_qa_auth");
+            location.reload();
+        }
+    </script>
+</body>
+</html>

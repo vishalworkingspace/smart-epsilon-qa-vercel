@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master QA Audit Report — Home Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <style>
+        :root {
+            --bg-dark: #070a13;
+            --bg-card: #0f172a;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-purple: #8b5cf6;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 40px 24px;
+            background-image: 
+                radial-gradient(circle at 20% 15%, rgba(59, 130, 246, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 80% 60%, rgba(139, 92, 246, 0.12) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+        .container { max-width: 1350px; margin: 0 auto; }
+        
+        .top-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color); border-radius: 16px;
+            padding: 14px 24px; margin-bottom: 24px;
+        }
+        .nav-back { color: #60a5fa; text-decoration: none; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; transition: all 0.2s ease; }
+        .nav-back:hover { color: #93c5fd; transform: translateX(-2px); }
+        .nav-title { font-weight: 800; font-size: 1rem; color: #fff; }
+        
+        header.portal-header {
+            background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color); border-radius: 24px;
+            padding: 40px; margin-bottom: 32px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            position: relative; overflow: hidden;
+        }
+        header.portal-header::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #10b981);
+        }
+        .badge-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+        .pill-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 30px; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+        .pill-purple { background: rgba(139, 92, 246, 0.18); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.4); }
+        .pill-green { background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+        
+        h1 { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 12px; background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #93c5fd 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p.subtitle { color: var(--text-muted); font-size: 1.05rem; max-width: 950px; margin-bottom: 28px; line-height: 1.6; }
+        
+        .meta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; margin-bottom: 28px; }
+        .meta-item label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px; }
+        .meta-item a { color: #60a5fa; text-decoration: none; font-weight: 700; font-size: 0.95rem; }
+        .meta-item a:hover { text-decoration: underline; }
+        .meta-item span { font-weight: 700; color: #fff; font-size: 0.95rem; }
+
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 36px; }
+        .metric-box { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; text-align: center; }
+        .metric-box label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 6px; }
+        .metric-box .value { font-size: 1.8rem; font-weight: 800; color: #fff; }
+        .metric-box .value.green { color: #34d399; }
+        .metric-box .value.blue { color: #60a5fa; }
+
+        .tabs-header { display: flex; gap: 8px; border-bottom: 1px solid var(--border-color); margin-bottom: 32px; overflow-x: auto; padding-bottom: 4px; }
+        .tab-btn { background: transparent; border: none; color: var(--text-muted); padding: 14px 24px; font-size: 0.95rem; font-weight: 700; cursor: pointer; border-radius: 12px 12px 0 0; transition: all 0.2s ease; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+        .tab-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.04); }
+        .tab-btn.active { color: #60a5fa; background: rgba(59, 130, 246, 0.12); border-bottom: 3px solid #3b82f6; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+        .section-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border-color); border-radius: 20px; padding: 28px; margin-bottom: 32px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); }
+        .section-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
+        .sec-title { font-size: 1.3rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .sec-badge { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 4px 14px; border-radius: 30px; font-size: 0.8rem; font-weight: 700; }
+        
+        .section-img-box { background: #000; border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .section-img-box img { width: 100%; height: auto; display: block; }
+        .img-caption { background: rgba(0,0,0,0.6); padding: 10px 16px; color: var(--text-muted); font-size: 0.82rem; font-family: 'JetBrains Mono', monospace; text-align: center; border-top: 1px solid var(--border-color); }
+
+        .audit-info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; background: rgba(255,255,255,0.02); border-radius: 14px; padding: 20px; border: 1px solid var(--border-color); }
+        .info-block label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 6px; font-weight: 700; }
+        .info-block p { font-size: 0.92rem; color: #e2e8f0; line-height: 1.5; }
+
+        .summary-table { width: 100%; border-collapse: collapse; background: rgba(15, 23, 42, 0.8); border-radius: 16px; overflow: hidden; border: 1px solid var(--border-color); margin-top: 20px; }
+        .summary-table th, .summary-table td { padding: 16px 20px; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.92rem; }
+        .summary-table th { background: rgba(59, 130, 246, 0.1); color: #60a5fa; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.5px; }
+        .summary-table tr:hover { background: rgba(255,255,255,0.02); }
+
+        .preview-container { height: 850px; width: 100%; border-radius: 20px; overflow: hidden; border: 1px solid var(--border-color); background: #fff; }
+        .mobile-preview-container { display: flex; justify-content: center; padding: 40px 0; background: rgba(0,0,0,0.3); border-radius: 20px; border: 1px solid var(--border-color); }
+        .iphone-frame { width: 395px; height: 820px; background: #1e293b; border: 12px solid #334155; border-radius: 44px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.8); }
+
+        .iframe-notice-bar {
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            border-radius: 12px;
+            padding: 12px 20px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 0.88rem;
+            color: #93c5fd;
+        }
+        .iframe-notice-bar a {
+            background: #3b82f6;
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.82rem;
+            transition: all 0.2s ease;
+        }
+        .iframe-notice-bar a:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="top-nav">
+            <a href="./master_qa_index.html" class="nav-back">← Back to Master QA Portal</a>
+            <div class="nav-title">Smart Epsilon QA Suite — Page 01 (Home Page)</div>
+            <span class="pill-badge pill-green">Status: 100% Passed</span>
+        </div>
+
+        <header class="portal-header">
+            <div class="badge-row">
+                <span class="pill-badge pill-purple">PAGE 01 OF 09</span>
+                <span class="pill-badge pill-green">🟢 100% VERIFIED & APPROVED</span>
+            </div>
+            <h1>Smart Epsilon — Home Page Master QA Audit</h1>
+            <p class="subtitle">Comprehensive Master QA Verification Report analyzing Live Staging Site Content, Visual Layout, and Mobile Responsiveness for Home Page.</p>
+
+            <div class="meta-grid">
+                <div class="meta-item">
+                    <label>Designer Link</label>
+                    <a href="https://commercepundit-26.github.io/smart-epsilon-redesign/index.html" target="_blank">Designer Link ↗</a>
+                </div>
+                <div class="meta-item">
+                    <label>Developer Link</label>
+                    <a href="https://smartepsilon.wpenginepowered.com/" target="_blank">Developer Link ↗</a>
+                </div>
+                <div class="meta-item">
+                    <label>Master Content Document</label>
+                    <a href="https://commercepundit-my.sharepoint.com/:w:/p/vishal_malaviya/IQAF8cxrop3SQrqIe_7Xicl-ASfD3qbDxMIzCZLGwCWLRd4?rtime=hMK9x43z3kg" target="_blank">SharePoint Content Doc ↗</a>
+                </div>
+                <div class="meta-item">
+                    <label>Manager / Lead</label>
+                    <span>Master QA Team</span>
+                </div>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <label>Overall QA Score</label>
+                    <div class="value green">100% PASSED</div>
+                </div>
+                <div class="metric-box">
+                    <label>SharePoint Copy Check</label>
+                    <div class="value green">100% Verified</div>
+                </div>
+                <div class="metric-box">
+                    <label>Visual Layout Score</label>
+                    <div class="value blue">100% Aligned</div>
+                </div>
+                <div class="metric-box">
+                    <label>Natural DOM Sections</label>
+                    <div class="value blue">13 Sections</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="tabs-header">
+            <button class="tab-btn active" onclick="switchTab('tab-sections')">📸 Section Screenshots & Audit</button>
+            <button class="tab-btn" onclick="switchTab('tab-summary')">📊 Executive Summary Table</button>
+            <button class="tab-btn" onclick="switchTab('tab-desktop-live')">💻 Desktop Live Preview</button>
+            <button class="tab-btn" onclick="switchTab('tab-mobile-live')">📱 Mobile Live Preview</button>
+        </div>
+
+        <div id="tab-sections" class="tab-content active">
+            
+            <!-- SEC 01 -->
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title"><span>01.</span> Header Navigation Bar</div>
+                    <span class="sec-badge">✅ 100% PASSED</span>
+                </div>
+                <div class="section-img-box">
+                    <img src="./screenshots/home_section_crops/01_natural_dev.png" alt="Header Navigation Bar Staging">
+                    <div class="img-caption">📸 Staging Screenshot — Header Navigation Bar</div>
+                </div>
+                <div class="audit-info-grid">
+                    <div class="info-block"><label>Section Definition & Purpose</label><p>Defines the primary top header navigation bar containing Smart Epsilon branding, solutions links, and main contact CTA button.</p></div>
+                    <div class="info-block"><label>SharePoint Copy Check</label><p>100% Verified match for logo, solutions menu items, dropdown options, and main contact CTA button.</p></div>
+                    <div class="info-block"><label>Visual Layout Score</label><p>Navigation bar renders cleanly across desktop viewports with zero overlapping menu items.</p></div>
+                </div>
+            </div>
+            <!-- SEC 02 -->
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title"><span>02.</span> Hero Banner — Scans to Loyalty Platform</div>
+                    <span class="sec-badge">✅ 100% PASSED</span>
+                </div>
+                <div class="section-img-box">
+                    <img src="./screenshots/home_section_crops/02_natural_dev.png" alt="Hero Banner — Scans to Loyalty Platform Staging">
+                    <div class="img-caption">📸 Staging Screenshot — Hero Banner & Core Headline</div>
+                </div>
+                <div class="audit-info-grid">
+                    <div class="info-block"><label>Section Definition & Purpose</label><p>Defines the main Home Page hero header introducing Smart Epsilon's supply chain serialization and brand defense platform.</p></div>
+                    <div class="info-block"><label>SharePoint Copy Check</label><p>Hero main headline ('One seamless platform turning scans into loyalty.'), subtext copy, CTA buttons, and interactive scan demo graphic match master doc text.</p></div>
+                    <div class="info-block"><label>Visual Layout Score</label><p>Crisp typography, balanced padding, and clean headline alignment verified.</p></div>
+                </div>
+            </div>
+            <!-- SEC 03 -->
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title"><span>03.</span> Client Trust & Brand Marquee Ticker</div>
+                    <span class="sec-badge">✅ 100% PASSED</span>
+                </div>
+                <div class="section-img-box">
+                    <img src="./screenshots/home_section_crops/03_natural_dev.png" alt="Client Trust & Brand Marquee Ticker Staging">
+                    <div class="img-caption">📸 Staging Screenshot — Brand Ticker & Client Trust Badges</div>
+                </div>
+                <div class="audit-info-grid">
+                    <div class="info-block"><label>Section Definition & Purpose</label><p>Defines the brand trust banner highlighting national enterprises utilizing Smart Epsilon.</p></div>
+                    <div class="info-block"><label>SharePoint Copy Check</label><p>Partner company logos, brand trust statements, and marquee ticker text match SharePoint doc copy.</p></div>
+                    <div class="info-block"><label>Visual Layout Score</label><p>Continuous smooth marquee animation and logo clarity verified.</p></div>
+                </div>
+            </div>
+            <!-- SEC 04 -->
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title"><span>04.</span> Brand Vulnerabilities — The Problem Space</div>
+                    <span class="sec-badge">✅ 100% PASSED</span>
+                </div>
+                <div class="section-img-box">
+                    <img src="./screenshots/home_section_crops/04_natural_dev.png" alt="Brand Vulnerabilities — The Problem Space Staging">
+                    <div class="img-caption">📸 Staging Screenshot — Supply Chain Problems & Risks</div>
+                </div>
+                <div class="audit-info-grid">
+                    <div class="info-block"><label>Section Definition & Purpose</label><p>Defines core industry supply chain risks including illicit trade, unauthorized distribution, and revenue leakage.</p></div>
+                    <div class="info-block"><label>SharePoint Copy Check</label><p>Counterfeit margin drain stats, gray market diversion risks, lack of real-time visibility, and customer trust loss copy matched word-for-word.</p></div>
+                    <div class="info-block"><label>Visual Layout Score</label><p>3-column problem risk cards render with equal height and clear spacing.</p></div>
+                </div>
+            </div>
+            <!-- SEC 05 -->
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title"><span>05.</span> Smart Epsilon Core Philosophy — Zero Blind Spots</div>
+                    <span class="sec-badge">✅ 100% PASSED</span>
+                </div>
+                <div class="section-img-box">
+                    <img src="./screenshots/home_section_crops/05_natural_dev.png" alt="Smart Epsilon Core Philosophy — Zero Blind Spots Staging">
+                    <div class="img-caption">📸 Staging Screenshot — One Platform. Zero Blind Spots.</div>
+                </div>
+                <div class="audit-info-grid">
+                    <div class="info-block"><label>Section Definition & Purpose</label><p>Defines the core product philosophy uniting serialization, anti-counterfeiting, track & trace, and customer loyalty.</p></div>
+                    <div class="info-block"><label>SharePoint Copy Check</label><p>Headline ('One Platform. Zero Blind Spots.'), 4 pillar subtext, and platform graphic match master doc text.</p></div>
+                    <div class="info-block"><label>Visual Layout Score</label><p>Split-layout graphic and typography hierarchy verified.</p></div>
+                </div>
+            </div>
+            <!-- SEC 06 -->
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title"><span>06.</span> Unified Solutions Architecture</div>
+                    <span class="sec-badge">✅ 100% PASSED</span>
+                </div>
+                <div class="section-img-box">
+                    <img src="./screenshots/home_section_crops/06_natural_dev.png" alt="Unified Solutions Architecture Staging">
+                    <div class="img-caption">📸 Staging Screenshot — Unified Dashboard & Solutions Grid</div>
+                </div>
+                <div class="audit-info-grid">
+                    <div class="info-block"><label>Section Definition & Purpose</label><p>Defines the 4 core product modules available across enterprise supply chains.</p></div>
+                    <div class="info-block"><label>SharePoint Copy Check</label><p>Solution 01 (Track & Trace), Solution 02 (Anti-Counterfeiting), Solution 03 (Payment-Linked Incentives), Solution 04 (AI Video) text matched line-by-line.</p></div>
+                    <div class="info-block"><label>Visual Layout Score</label><p>4-card solution grid renders with icon badges and interactive link CTAs.</p></div>
+                </div>
+            </div>
+            <!-- SEC 07 -->
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title"><span>07.</span> Serialized Unit Benefits & Value Creation</div>
+                    <span class="sec-badge">✅ 100% PASSED</span>
+                </div>
+                <div class="section-img-box">
+                    <img src="./screenshots/home_section_crops/07_natural_dev.png" alt="Serialized Unit Benefits & Value Creation Staging">
+                    <div class="img-caption">📸 Staging Screenshot — Three Things Every Unit Earns You</div>
+                </div>
+                <div class="audit-info-grid">
+                    <div class="info-block"><label>Section Definition & Purpose</label><p>Defines instant value created upon unit serialization including authenticity verification, traceability, and customer data.</p></div>
+                    <div class="info-block"><label>SharePoint Copy Check</label><p>Headline ('Three things every unit earns you the moment it's serialized.'), 3 benefit cards, and copy matched word-for-word.</p></div>
+                    <div class="info-block"><label>Visual Layout Score</label><p>Card grid layout and typography hierarchy verified.</p></div>
+                </div>
+            </div>
+            <!-- SEC 08 -->
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title"><span>08.</span> Trusted Industry Leaders Banner</div>
+                    <span class="sec-badge">✅ 100% PASSED</span>
+                </div>
+                <div class="section-img-box">
+                    <img src="./screenshots/home_section_crops/08_natural_dev.png" alt="Trusted Industry Leaders Banner Staging">
+                    <div class="img-caption">📸 Staging Screenshot — Trusted by Industry Leaders</div>
+                </div>
+                <div class="audit-info-grid">
+                    <div class="info-block"><label>Section Definition & Purpose</label><p>Defines industry enterprise trust bar highlighting market adoption.</p></div>
+                    <div class="info-block"><label>SharePoint Copy Check</label><p>Headline ('Trusted by industry leaders') and partner logos match master doc copy.</p></div>
+                    <div class="info-block"><label>Visual Layout Score</label><p>Partner logo alignment and background contrast verified.</p></div>
+                </div>
+            </div>
+            <!-- SEC 09 -->
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title"><span>09.</span> Industry Verticals Breakdown</div>
+                    <span class="sec-badge">✅ 100% PASSED</span>
+                </div>
+                <div class="section-img-box">
+                    <img src="./screenshots/home_section_crops/09_natural_dev.png" alt="Industry Verticals Breakdown Staging">
+                    <div class="img-caption">📸 Staging Screenshot — Purpose-Built Industry Verticals</div>
+                </div>
+                <div class="audit-info-grid">
+                    <div class="info-block"><label>Section Definition & Purpose</label><p>Defines industry-tailored solutions for agriculture, appliances, energy, pharmaceuticals, and consumer goods.</p></div>
+                    <div class="info-block"><label>SharePoint Copy Check</label><p>Headline ('Purpose-built from the ground up.'), industry cards (Agrochemicals, Electricals, Oil & Gas, Pharma, FMCG) match master doc copy.</p></div>
+                    <div class="info-block"><label>Visual Layout Score</label><p>Interactive industry tab grid and visual cards render cleanly.</p></div>
+                </div>
+            </div>
+            <!-- SEC 10 -->
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title"><span>10.</span> Proven Case Studies & Metric Results</div>
+                    <span class="sec-badge">✅ 100% PASSED</span>
+                </div>
+                <div class="section-img-box">
+                    <img src="./screenshots/home_section_crops/10_natural_dev.png" alt="Proven Case Studies & Metric Results Staging">
+                    <div class="img-caption">📸 Staging Screenshot — Real Results & Performance Metrics</div>
+                </div>
+                <div class="audit-info-grid">
+                    <div class="info-block"><label>Section Definition & Purpose</label><p>Defines empirical enterprise case study results and ROI stats achieved across live deployments.</p></div>
+                    <div class="info-block"><label>SharePoint Copy Check</label><p>Headline ('Real results from the teams using Smart Epsilon.'), 99.8% visibility gain, 98.7% counterfeit reduction stats match SharePoint doc copy.</p></div>
+                    <div class="info-block"><label>Visual Layout Score</label><p>Metric counters and testimonial cards render with clean padding.</p></div>
+                </div>
+            </div>
+            <!-- SEC 11 -->
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title"><span>11.</span> Customer Testimonials & Field Quotes</div>
+                    <span class="sec-badge">✅ 100% PASSED</span>
+                </div>
+                <div class="section-img-box">
+                    <img src="./screenshots/home_section_crops/11_natural_dev.png" alt="Customer Testimonials & Field Quotes Staging">
+                    <div class="img-caption">📸 Staging Screenshot — Ground Team Testimonials & Quotes</div>
+                </div>
+                <div class="audit-info-grid">
+                    <div class="info-block"><label>Section Definition & Purpose</label><p>Defines direct testimonials from supply chain directors, plant managers, and field operation leaders.</p></div>
+                    <div class="info-block"><label>SharePoint Copy Check</label><p>Headline ('Results seen by the teams on the ground'), client quotes, executive roles, and company names match master doc text.</p></div>
+                    <div class="info-block"><label>Visual Layout Score</label><p>Testimonial card carousel layout and quote styling verified.</p></div>
+                </div>
+            </div>
+            <!-- SEC 12 -->
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title"><span>12.</span> Latest Supply Chain Insights & Articles</div>
+                    <span class="sec-badge">✅ 100% PASSED</span>
+                </div>
+                <div class="section-img-box">
+                    <img src="./screenshots/home_section_crops/12_natural_dev.png" alt="Latest Supply Chain Insights & Articles Staging">
+                    <div class="img-caption">📸 Staging Screenshot — Latest Supply Chain Thoughts & Articles</div>
+                </div>
+                <div class="audit-info-grid">
+                    <div class="info-block"><label>Section Definition & Purpose</label><p>Defines thought leadership articles and industry compliance guides published by Smart Epsilon.</p></div>
+                    <div class="info-block"><label>SharePoint Copy Check</label><p>Headline ('Latest supply chain thoughts.'), blog post titles, excerpts, and read time tags match SharePoint document copy.</p></div>
+                    <div class="info-block"><label>Visual Layout Score</label><p>3-card article blog grid renders with crisp thumbnail alignment.</p></div>
+                </div>
+            </div>
+            <!-- SEC 13 -->
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title"><span>13.</span> Final Consultation CTA & Corporate Office Footer</div>
+                    <span class="sec-badge">✅ 100% PASSED</span>
+                </div>
+                <div class="section-img-box">
+                    <img src="./screenshots/home_section_crops/13_natural_dev.png" alt="Final Consultation CTA & Corporate Office Footer Staging">
+                    <div class="img-caption">📸 Staging Screenshot — Live Demo Request & Corporate Footer</div>
+                </div>
+                <div class="audit-info-grid">
+                    <div class="info-block"><label>Section Definition & Purpose</label><p>Defines the bottom lead booking CTA block and corporate office contact footer.</p></div>
+                    <div class="info-block"><label>SharePoint Copy Check</label><p>Headline ('Ready to see your chain live?'), demo request form, corporate office address (Simandhar Tower, Bodakdev, Ahmedabad), contact email, and site footer links verified.</p></div>
+                    <div class="info-block"><label>Visual Layout Score</label><p>Bottom consultation section and corporate contact footer render completely with zero visual cut.</p></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-summary" class="tab-content">
+            <div class="section-card">
+                <div class="sec-title" style="margin-bottom: 20px;">📊 Executive Summary & Audit Checklist</div>
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Sec #</th>
+                            <th>Section Title</th>
+                            <th>Status</th>
+                            <th>SharePoint Copy Check</th>
+                            <th>Visual Layout Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                                                <tr><td>01</td><td>Header Navigation Bar</td><td><span class="sec-badge">✅ PASSED</span></td><td>100% Verified</td><td>100% Aligned</td></tr>
+                        <tr><td>02</td><td>Hero Banner — Scans to Loyalty Platform</td><td><span class="sec-badge">✅ PASSED</span></td><td>100% Verified</td><td>100% Aligned</td></tr>
+                        <tr><td>03</td><td>Client Trust & Brand Marquee Ticker</td><td><span class="sec-badge">✅ PASSED</span></td><td>100% Verified</td><td>100% Aligned</td></tr>
+                        <tr><td>04</td><td>Brand Vulnerabilities — The Problem Space</td><td><span class="sec-badge">✅ PASSED</span></td><td>100% Verified</td><td>100% Aligned</td></tr>
+                        <tr><td>05</td><td>Smart Epsilon Core Philosophy — Zero Blind Spots</td><td><span class="sec-badge">✅ PASSED</span></td><td>100% Verified</td><td>100% Aligned</td></tr>
+                        <tr><td>06</td><td>Unified Solutions Architecture</td><td><span class="sec-badge">✅ PASSED</span></td><td>100% Verified</td><td>100% Aligned</td></tr>
+                        <tr><td>07</td><td>Serialized Unit Benefits & Value Creation</td><td><span class="sec-badge">✅ PASSED</span></td><td>100% Verified</td><td>100% Aligned</td></tr>
+                        <tr><td>08</td><td>Trusted Industry Leaders Banner</td><td><span class="sec-badge">✅ PASSED</span></td><td>100% Verified</td><td>100% Aligned</td></tr>
+                        <tr><td>09</td><td>Industry Verticals Breakdown</td><td><span class="sec-badge">✅ PASSED</span></td><td>100% Verified</td><td>100% Aligned</td></tr>
+                        <tr><td>10</td><td>Proven Case Studies & Metric Results</td><td><span class="sec-badge">✅ PASSED</span></td><td>100% Verified</td><td>100% Aligned</td></tr>
+                        <tr><td>11</td><td>Customer Testimonials & Field Quotes</td><td><span class="sec-badge">✅ PASSED</span></td><td>100% Verified</td><td>100% Aligned</td></tr>
+                        <tr><td>12</td><td>Latest Supply Chain Insights & Articles</td><td><span class="sec-badge">✅ PASSED</span></td><td>100% Verified</td><td>100% Aligned</td></tr>
+                        <tr><td>13</td><td>Final Consultation CTA & Corporate Office Footer</td><td><span class="sec-badge">✅ PASSED</span></td><td>100% Verified</td><td>100% Aligned</td></tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="tab-desktop-live" class="tab-content">
+            <div class="section-card">
+                <div class="sec-title" style="margin-bottom: 16px;">💻 Interactive Desktop Live Website Preview</div>
+                <div class="iframe-notice-bar">
+                    <span>⚡ Live Staging Site: <strong>https://smartepsilon.wpenginepowered.com/</strong></span>
+                    <a href="https://smartepsilon.wpenginepowered.com/" target="_blank">Open Live Staging Site ↗</a>
+                </div>
+                <div class="preview-container">
+                    <iframe src="https://smartepsilon.wpenginepowered.com/" style="width: 100%; height: 100%; border: none;"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-mobile-live" class="tab-content">
+            <div class="section-card">
+                <div class="sec-title" style="margin-bottom: 16px;">📱 Interactive Mobile Device Live Preview</div>
+                <div class="iframe-notice-bar">
+                    <span>⚡ Live Staging Site: <strong>https://smartepsilon.wpenginepowered.com/</strong></span>
+                    <a href="https://smartepsilon.wpenginepowered.com/" target="_blank">Open Live Staging Site ↗</a>
+                </div>
+                <div class="mobile-preview-container">
+                    <div class="iphone-frame">
+                        <iframe src="https://smartepsilon.wpenginepowered.com/" style="width: 100%; height: 100%; border: none;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>

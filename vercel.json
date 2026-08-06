@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "name": "smart-epsilon-master-qa",
+  "cleanUrls": true,
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/master_qa_index.html"
+    }
+  ]
+}
