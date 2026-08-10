@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Epsilon — Master Go-Live & Migration Checklist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <style>
+        :root {
+            --bg-dark: #070a13;
+            --bg-card: #0f172a;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(59, 130, 246, 0.4);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-purple: #8b5cf6;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 30px 20px;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 85% 65%, rgba(139, 92, 246, 0.1) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+        .container { max-width: 1380px; margin: 0 auto; }
+        
+        /* TOP NAV */
+        .top-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color); border-radius: 16px;
+            padding: 14px 24px; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
+        }
+        .nav-back { color: #60a5fa; text-decoration: none; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; transition: all 0.2s ease; }
+        .nav-back:hover { color: #93c5fd; transform: translateX(-3px); }
+        .nav-title { font-weight: 800; font-size: 1rem; color: #fff; letter-spacing: 0.3px; }
+        .nav-actions { display: flex; gap: 10px; align-items: center; }
+
+        /* PORTAL HEADER */
+        header.portal-header {
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color); border-radius: 24px;
+            padding: 36px 40px; margin-bottom: 28px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            position: relative; overflow: hidden;
+        }
+        header.portal-header::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #10b981, #f59e0b);
+        }
+        .badge-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
+        .pill-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 30px; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+        .pill-purple { background: rgba(139, 92, 246, 0.18); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.4); }
+        .pill-green { background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+        .pill-amber { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+
+        h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 10px; background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #93c5fd 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p.subtitle { color: var(--text-muted); font-size: 1.02rem; max-width: 1050px; margin-bottom: 28px; line-height: 1.6; }
+
+        /* OVERALL PROGRESS CARD */
+        .progress-card {
+            background: rgba(30, 41, 59, 0.6); border: 1px solid var(--border-color);
+            border-radius: 18px; padding: 24px; margin-bottom: 28px;
+        }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+        .progress-title { font-size: 1.1rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .progress-percentage { font-size: 1.4rem; font-weight: 800; color: #34d399; font-family: 'JetBrains Mono', monospace; }
+        
+        .progress-bar-bg {
+            height: 12px; width: 100%; background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px; overflow: hidden; position: relative; margin-bottom: 16px;
+        }
+        .progress-bar-fill {
+            height: 100%; width: 0%; background: linear-gradient(90deg, #3b82f6, #10b981);
+            border-radius: 20px; transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .metrics-stats-row {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px;
+        }
+        .stat-chip {
+            background: rgba(15, 23, 42, 0.7); border: 1px solid var(--border-color);
+            border-radius: 14px; padding: 14px 18px; text-align: center;
+        }
+        .stat-chip label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px; }
+        .stat-chip .num { font-size: 1.35rem; font-weight: 800; color: #fff; font-family: 'JetBrains Mono', monospace; }
+        .stat-chip .num.green { color: #34d399; }
+        .stat-chip .num.amber { color: #fbbf24; }
+        .stat-chip .num.rose { color: #f43f5e; }
+
+        /* CONTROLS BAR */
+        .controls-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 28px; flex-wrap: wrap; gap: 16px;
+        }
+        .filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+        .filter-btn {
+            background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border-color);
+            color: var(--text-muted); padding: 10px 18px; border-radius: 12px; font-size: 0.88rem;
+            font-weight: 700; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 8px;
+        }
+        .filter-btn:hover { color: #fff; border-color: rgba(255, 255, 255, 0.2); }
+        .filter-btn.active { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border-color: rgba(59, 130, 246, 0.5); }
+        
+        .action-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+        .btn-add {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: #fff; border: none; padding: 10px 20px; border-radius: 12px;
+            font-weight: 700; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4); transition: all 0.2s ease;
+        }
+        .btn-add:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6); }
+
+        .btn-secondary {
+            background: rgba(30, 41, 59, 0.8); border: 1px solid var(--border-color);
+            color: #e2e8f0; padding: 10px 18px; border-radius: 12px; font-size: 0.88rem;
+            font-weight: 700; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 8px;
+        }
+        .btn-secondary:hover { background: rgba(51, 65, 85, 0.9); color: #fff; }
+
+        /* CHECKLIST CATEGORIES */
+        .category-card {
+            background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border-color);
+            border-radius: 20px; padding: 28px; margin-bottom: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+        }
+        .category-card:hover { border-color: rgba(255, 255, 255, 0.15); }
+        
+        .category-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 16px;
+            flex-wrap: wrap; gap: 12px;
+        }
+        .cat-title { font-size: 1.25rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .cat-meta { display: flex; align-items: center; gap: 12px; }
+        .cat-count { font-size: 0.82rem; font-weight: 700; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+        
+        .cat-mini-bar {
+            width: 100px; height: 6px; background: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden;
+        }
+        .cat-mini-fill { height: 100%; width: 0%; background: #34d399; transition: width 0.3s ease; }
+
+        /* TASK ITEMS */
+        .task-list { display: flex; flex-direction: column; gap: 12px; }
+        .task-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(30, 41, 59, 0.4); border: 1px solid var(--border-color);
+            border-radius: 14px; padding: 16px 20px; transition: all 0.2s ease; gap: 16px;
+        }
+        .task-item:hover { background: rgba(30, 41, 59, 0.7); border-color: rgba(59, 130, 246, 0.3); }
+        .task-item.completed {
+            background: rgba(16, 185, 129, 0.05); border-color: rgba(16, 185, 129, 0.2);
+        }
+        
+        .task-left { display: flex; align-items: flex-start; gap: 14px; flex: 1; }
+        
+        /* Custom Checkbox */
+        .custom-cb {
+            width: 22px; height: 22px; border-radius: 6px; border: 2px solid #475569;
+            background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease; flex-shrink: 0; margin-top: 2px;
+        }
+        .task-item.completed .custom-cb {
+            background: #10b981; border-color: #10b981;
+        }
+        .custom-cb::after {
+            content: '✓'; color: #fff; font-size: 14px; font-weight: 900; display: none;
+        }
+        .task-item.completed .custom-cb::after { display: block; }
+
+        .task-content { flex: 1; }
+        .task-title-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+        .task-name { font-weight: 700; font-size: 0.96rem; color: #f1f5f9; transition: all 0.2s ease; }
+        .task-item.completed .task-name { text-decoration: line-through; color: #64748b; }
+
+        .task-desc { font-size: 0.84rem; color: var(--text-muted); line-height: 1.4; }
+        .task-item.completed .task-desc { color: #475569; }
+
+        .task-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+        
+        .priority-badge {
+            padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .p-blocker { background: rgba(244, 63, 94, 0.18); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); }
+        .p-high { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+        .p-medium { background: rgba(59, 130, 246, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
+        .p-low { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.3); }
+
+        .btn-delete-task {
+            background: transparent; border: none; color: #64748b; font-size: 1.1rem;
+            cursor: pointer; padding: 6px; border-radius: 8px; transition: all 0.2s ease;
+        }
+        .btn-delete-task:hover { color: #f43f5e; background: rgba(244, 63, 94, 0.12); }
+
+        /* MODAL DIALOG */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(7, 10, 19, 0.85); backdrop-filter: blur(12px);
+            z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+        
+        .modal-box {
+            background: #0f172a; border: 1px solid var(--border-color);
+            border-radius: 24px; padding: 32px; max-width: 580px; width: 100%;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8); position: relative; animation: modalPop 0.3s ease;
+        }
+        @keyframes modalPop { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .modal-title { font-size: 1.3rem; font-weight: 800; color: #fff; }
+        .modal-close { background: transparent; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
+        .modal-close:hover { color: #fff; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+        .form-input, .form-select, .form-textarea {
+            width: 100%; background: rgba(30, 41, 59, 0.8); border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 12px 16px; color: #fff; font-family: inherit; font-size: 0.92rem;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        
+        .modal-footer { display: flex; justify-content: flex-end; gap: 12px; margin-top: 28px; }
+
+        @media (max-width: 768px) {
+            header.portal-header { padding: 24px; }
+            h1 { font-size: 1.7rem; }
+            .task-item { flex-direction: column; align-items: flex-start; }
+            .task-right { width: 100%; justify-content: space-between; margin-top: 8px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- TOP NAV -->
+        <div class="top-nav">
+            <a href="./master_qa_index.html" class="nav-back">← Back to Master QA Portal</a>
+            <div class="nav-title">Smart Epsilon — Master Site Go-Live & Migration Protocol</div>
+            <div class="nav-actions">
+                <span class="pill-badge pill-purple">Pre-Launch Verification</span>
+                <button class="btn-secondary" onclick="window.print()">🖨️ Print / Export</button>
+            </div>
+        </div>
+
+        <!-- PORTAL HEADER -->
+        <header class="portal-header">
+            <div class="badge-row">
+                <div>
+                    <span class="pill-badge pill-purple">🚀 LAUNCH READINESS TRACKER</span>
+                    <span class="pill-badge pill-green" id="header-status-badge">🟢 LIVE TRACKING ACTIVE</span>
+                </div>
+                <span class="pill-badge pill-amber">Password Protected</span>
+            </div>
+            <h1>Smart Epsilon — Master Site Go-Live Checklist</h1>
+            <p class="subtitle">Comprehensive pre-launch audit checklist tracking Website Page Status, Client Server & Admin Credentials, Data Migration, SEO 301 Redirects, Security, Performance, and Post-Launch Monitoring.</p>
+
+            <!-- OVERALL PROGRESS CARD -->
+            <div class="progress-card">
+                <div class="progress-header">
+                    <div class="progress-title">
+                        <span>📊 Overall Go-Live Readiness Score</span>
+                    </div>
+                    <div class="progress-percentage" id="overall-percentage">0%</div>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="overall-bar-fill"></div>
+                </div>
+
+                <div class="metrics-stats-row">
+                    <div class="stat-chip">
+                        <label>Total Items</label>
+                        <div class="num" id="stat-total">0</div>
+                    </div>
+                    <div class="stat-chip">
+                        <label>Completed</label>
+                        <div class="num green" id="stat-completed">0</div>
+                    </div>
+                    <div class="stat-chip">
+                        <label>Remaining</label>
+                        <div class="num amber" id="stat-remaining">0</div>
+                    </div>
+                    <div class="stat-chip">
+                        <label>Critical Blockers</label>
+                        <div class="num rose" id="stat-blockers">0</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTROLS & FILTER BAR -->
+        <div class="controls-bar">
+            <div class="filter-tabs">
+                <button class="filter-btn active" onclick="setFilter('all', event)">📋 All Tasks</button>
+                <button class="filter-btn" onclick="setFilter('pending', event)">⏳ Pending Only</button>
+                <button class="filter-btn" onclick="setFilter('completed', event)">✅ Completed</button>
+                <button class="filter-btn" onclick="setFilter('blocker', event)">🚨 Critical Blockers</button>
+            </div>
+            <div class="action-btns">
+                <button class="btn-add" onclick="openAddModal()">➕ Add Custom Task</button>
+                <button class="btn-secondary" onclick="resetToDefaults()">🔄 Restore Defaults</button>
+            </div>
+        </div>
+
+        <!-- CATEGORIES & TASKS CONTAINER -->
+        <div id="checklist-categories-container">
+            <!-- Dynamically populated via JavaScript -->
+        </div>
+    </div>
+
+    <!-- ADD TASK MODAL -->
+    <div class="modal-overlay" id="add-modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <div class="modal-title">➕ Add Custom Go-Live Task</div>
+                <button class="modal-close" onclick="closeAddModal()">✕</button>
+            </div>
+            <form id="add-task-form" onsubmit="handleAddTask(event)">
+                <div class="form-group">
+                    <label>Task Title / Item Name</label>
+                    <input type="text" class="form-input" id="new-task-title" placeholder="e.g. Obtain Client AWS Server Credentials" required />
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select class="form-select" id="new-task-category">
+                        <option value="cat-server">🖥️ Server Details, Admin Access & Migration</option>
+                        <option value="cat-pages">📄 Website Page Status Tracker (Client Sheet)</option>
+                        <option value="cat-dns">🌐 Domain, DNS & SSL Setup</option>
+                        <option value="cat-seo">🔍 SEO, Indexing & 301 Redirects</option>
+                        <option value="cat-security">🚀 Performance & Security</option>
+                        <option value="cat-forms">📩 Forms, CRM & Functionality</option>
+                        <option value="cat-crossbrowser">📱 Cross-Browser & Device QA</option>
+                        <option value="cat-postlaunch">🛡️ Post-Launch Monitoring & Backups</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Priority Level</label>
+                    <select class="form-select" id="new-task-priority">
+                        <option value="blocker">Critical Blocker (Must Have for Launch)</option>
+                        <option value="high" selected>High Priority</option>
+                        <option value="medium">Medium Priority</option>
+                        <option value="low">Low Priority / Optional</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Description / Note (Optional)</label>
+                    <textarea class="form-textarea" id="new-task-desc" rows="3" placeholder="Additional details or instructions for developers/client..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeAddModal()">Cancel</button>
+                    <button type="submit" class="btn-add">Save Task ➔</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const DEFAULT_CHECKLIST_DATA = [
+            {
+                id: "cat-server",
+                title: "🖥️ Server Details, Admin Access & Client Migration (Special Client Request)",
+                tasks: [
+                    {
+                        id: "t-server-1",
+                        title: "Request & Obtain Client Live Server Hosting Credentials",
+                        desc: "Obtain SFTP/SSH, cPanel, WP Engine, or AWS hosting access for the live client server (Requested by Akash Joshi).",
+                        priority: "blocker",
+                        completed: false
+                    },
+                    {
+                        id: "t-server-2",
+                        title: "Obtain Client WP Admin Super-Admin Credentials",
+                        desc: "Secure administrator logins to client staging/production CMS instance to inspect plugins and users.",
+                        priority: "blocker",
+                        completed: false
+                    },
+                    {
+                        id: "t-server-3",
+                        title: "Client Site Legacy Content & Data Migration Audit",
+                        desc: "Audit existing client site to determine if any legacy blog posts, pages, or database tables need to be migrated to the new site.",
+                        priority: "high",
+                        completed: false
+                    },
+                    {
+                        id: "t-server-4",
+                        title: "Media Library Assets Migration (/wp-content/uploads/)",
+                        desc: "Sync and verify all original images, PDFs, and client media files from legacy server to production server.",
+                        priority: "high",
+                        completed: false
+                    },
+                    {
+                        id: "t-server-5",
+                        title: "Confirm Client Domain Registrar Access (DNS Control)",
+                        desc: "Ensure access to GoDaddy, Cloudflare, Namecheap, or Route53 for DNS record modification prior to go-live.",
+                        priority: "blocker",
+                        completed: false
+                    }
+                ]
+            },
+            {
+                id: "cat-pages",
+                title: "📄 Website Page Status Tracker (From Client Spreadsheet)",
+                tasks: [
+                    {
+                        id: "t-page-1",
+                        title: "Home Page — Content, Design, Development QA",
+                        desc: "Content: Done | Design: Done | Development: Done — 13 Natural Sections verified line-by-line against SharePoint doc.",
+                        priority: "high",
+                        completed: true
+                    },
+                    {
+                        id: "t-page-2",
+                        title: "Track & Trace Solution — Content, Design, Development QA",
+                        desc: "Content: Done | Design: Done | Development: Done — 11 Natural Sections verified.",
+                        priority: "high",
+                        completed: true
+                    },
+                    {
+                        id: "t-page-3",
+                        title: "Anti-Counterfeiting Solution — Content, Design, Development QA",
+                        desc: "Content: Done | Design: Done | Development: Done — 10 Natural Sections verified.",
+                        priority: "high",
+                        completed: true
+                    },
+                    {
+                        id: "t-page-4",
+                        title: "Payment Linked Incentives Solution — Content, Design, Dev QA",
+                        desc: "Content: Done | Design: Done | Development: Done — 10 Natural Sections verified.",
+                        priority: "high",
+                        completed: true
+                    },
+                    {
+                        id: "t-page-5",
+                        title: "AI Video Intelligence Solution — Content, Design, Development QA",
+                        desc: "Content: Done | Design: Done | Development: Done — 11 Natural Sections verified.",
+                        priority: "high",
+                        completed: true
+                    },
+                    {
+                        id: "t-page-6",
+                        title: "About Us Page — Final Content, Design & Dev Signoff",
+                        desc: "Content: Pending | Design: Pending | Development: Pending — Awaiting final client copy and team photos.",
+                        priority: "blocker",
+                        completed: false
+                    },
+                    {
+                        id: "t-page-7",
+                        title: "Contact Us Page — Content, Design, Development QA",
+                        desc: "Content: Done | Design: Done | Development: Done — Form & Office address (Simandhar Tower, Bodakdev) verified.",
+                        priority: "high",
+                        completed: true
+                    },
+                    {
+                        id: "t-page-8",
+                        title: "Industry Page — Agrochemicals & Seeds QA",
+                        desc: "Content: Done | Design: Done | Development: Done — 9 Natural Sections verified.",
+                        priority: "high",
+                        completed: true
+                    },
+                    {
+                        id: "t-page-9",
+                        title: "Industry Page — Lubricants & Auto Signoff",
+                        desc: "Content: Pending | Design: Pending | Development: Pending — Awaiting sector copy signoff.",
+                        priority: "medium",
+                        completed: false
+                    },
+                    {
+                        id: "t-page-10",
+                        title: "Industry Page — Electricals & Appliances QA",
+                        desc: "Content: Done | Design: Done | Development: Done — 9 Natural Sections verified.",
+                        priority: "high",
+                        completed: true
+                    },
+                    {
+                        id: "t-page-11",
+                        title: "Industry Page — Oil and Gas QA",
+                        desc: "Content: Done | Design: Done | Development: Done — 9 Natural Sections verified.",
+                        priority: "high",
+                        completed: true
+                    },
+                    {
+                        id: "t-page-12",
+                        title: "Industry Page — Cosmetics & Personal Care Signoff",
+                        desc: "Content: Pending | Design: Pending | Development: Pending — Pending design mockup.",
+                        priority: "low",
+                        completed: false
+                    },
+                    {
+                        id: "t-page-13",
+                        title: "Industry Page — FMCG / CPG Signoff",
+                        desc: "Content: Pending | Design: Pending | Development: Pending — Pending final scope alignment.",
+                        priority: "low",
+                        completed: false
+                    },
+                    {
+                        id: "t-page-14",
+                        title: "Case Study 1 — Agrochemicals Case Study QA",
+                        desc: "Content: Review | Design: Pending | Development: Done — Staging link: https://smartepsilon.wpenginepowered.com/case-study-agrochemicals/",
+                        priority: "medium",
+                        completed: false
+                    },
+                    {
+                        id: "t-page-15",
+                        title: "Case Study 2 & Case Study 3 Scope Alignment",
+                        desc: "Content: Pending | Design: Pending | Development: Pending — Future case study pipeline.",
+                        priority: "low",
+                        completed: false
+                    }
+                ]
+            },
+            {
+                id: "cat-dns",
+                title: "🌐 Domain, DNS & SSL Setup",
+                tasks: [
+                    {
+                        id: "t-dns-1",
+                        title: "Lower DNS TTL to 300 seconds prior to cutover",
+                        desc: "Reduces propagation delay so domain changes take effect within 5 minutes across global ISPs.",
+                        priority: "high",
+                        completed: false
+                    },
+                    {
+                        id: "t-dns-2",
+                        title: "Point Primary A-Record & CNAME to Production Server IP",
+                        desc: "Update apex @ and www records to point to live production server.",
+                        priority: "blocker",
+                        completed: false
+                    },
+                    {
+                        id: "t-dns-3",
+                        title: "Configure Let's Encrypt / Cloudflare SSL Certificate (HTTPS 443)",
+                        desc: "Verify SSL certificate validity, green padlock, and strict HSTS setting.",
+                        priority: "blocker",
+                        completed: false
+                    },
+                    {
+                        id: "t-dns-4",
+                        title: "Configure 301 Canonical Redirect (non-www to www or vice-versa)",
+                        desc: "Ensure domain unifies to single canonical URL format to avoid SEO duplicate content penalty.",
+                        priority: "high",
+                        completed: false
+                    }
+                ]
+            },
+            {
+                id: "cat-seo",
+                title: "🔍 SEO, Indexing & 301 Redirects",
+                tasks: [
+                    {
+                        id: "t-seo-1",
+                        title: "Legacy URL 301 Redirect Mapping Matrix",
+                        desc: "Map all old client website URLs to corresponding new pages to preserve Google Search rank & link equity.",
+                        priority: "blocker",
+                        completed: false
+                    },
+                    {
+                        id: "t-seo-2",
+                        title: 'Uncheck "Discourage search engines from indexing" in WP Settings',
+                        desc: "Ensure search engines are permitted to crawl production site upon launch.",
+                        priority: "blocker",
+                        completed: false
+                    },
+                    {
+                        id: "t-seo-3",
+                        title: "Generate & Submit XML Sitemap to Google Search Console",
+                        desc: "Verify /sitemap_index.xml is active and submitted via Search Console.",
+                        priority: "high",
+                        completed: false
+                    },
+                    {
+                        id: "t-seo-4",
+                        title: "Audit robots.txt File & Assets Crawlability",
+                        desc: "Ensure robots.txt allows search engine bots to crawl images, CSS, JS, and public solution pages.",
+                        priority: "high",
+                        completed: false
+                    },
+                    {
+                        id: "t-seo-5",
+                        title: "Verify GA4 (Google Analytics) & GTM Script Integration",
+                        desc: "Test tracking snippet tag container using Google Tag Assistant in real-time mode.",
+                        priority: "high",
+                        completed: false
+                    }
+                ]
+            },
+            {
+                id: "cat-security",
+                title: "🚀 Performance & Security Hardening",
+                tasks: [
+                    {
+                        id: "t-sec-1",
+                        title: "Configure Server & Page Caching (Redis / WP Engine Cache)",
+                        desc: "Enable full page caching, database query caching, and object cache.",
+                        priority: "high",
+                        completed: false
+                    },
+                    {
+                        id: "t-sec-2",
+                        title: "Production Asset Minification (CSS, JS, HTML)",
+                        desc: "Minify production style sheets and scripts to optimize Google PageSpeed score.",
+                        priority: "medium",
+                        completed: false
+                    },
+                    {
+                        id: "t-sec-3",
+                        title: "Image Compression & WebP Format Optimization",
+                        desc: "Ensure all images are compressed with proper width/height attributes and lazy loading enabled.",
+                        priority: "high",
+                        completed: false
+                    },
+                    {
+                        id: "t-sec-4",
+                        title: "Security Headers & Firewall Setup (Wordfence / Cloudflare HSTS)",
+                        desc: "Implement X-Frame-Options, X-Content-Type-Options, and brute-force protection.",
+                        priority: "high",
+                        completed: false
+                    }
+                ]
+            },
+            {
+                id: "cat-forms",
+                title: "📩 Forms, CRM & Functionality QA",
+                tasks: [
+                    {
+                        id: "t-form-1",
+                        title: "Contact Us Form SMTP Email Delivery Test",
+                        desc: "Send test lead submissions from live Contact page and confirm reception in client inbox.",
+                        priority: "blocker",
+                        completed: false
+                    },
+                    {
+                        id: "t-form-2",
+                        title: "CRM Lead Integration & Webhook Mapping (HubSpot / Zapier)",
+                        desc: "Verify form lead data routes into client CRM database cleanly.",
+                        priority: "high",
+                        completed: false
+                    },
+                    {
+                        id: "t-form-3",
+                        title: "Custom 404 Error Page Verification",
+                        desc: "Verify 404 page presents clear navigation links, search bar, and return-to-home button.",
+                        priority: "medium",
+                        completed: false
+                    }
+                ]
+            },
+            {
+                id: "cat-crossbrowser",
+                title: "📱 Cross-Browser & Device Responsiveness",
+                tasks: [
+                    {
+                        id: "t-cb-1",
+                        title: "Mobile iOS / iPhone Safari Responsiveness Test (375px - 430px)",
+                        desc: "Verify mobile drawer menu, button tap targets, and touch scroll behavior.",
+                        priority: "high",
+                        completed: true
+                    },
+                    {
+                        id: "t-cb-2",
+                        title: "Android Mobile & Tablet Viewport Test",
+                        desc: "Verify Chrome Android layout, viewport scaling, and mobile grid alignment.",
+                        priority: "high",
+                        completed: true
+                    },
+                    {
+                        id: "t-cb-3",
+                        title: "Desktop Chrome, Safari, Firefox & Edge Alignment",
+                        desc: "Verify layout on high-density Retina displays up to 1920px width.",
+                        priority: "high",
+                        completed: true
+                    }
+                ]
+            },
+            {
+                id: "cat-postlaunch",
+                title: "🛡️ Post-Launch Monitoring & Backups",
+                tasks: [
+                    {
+                        id: "t-post-1",
+                        title: "Schedule Automated Daily Database & File Backups",
+                        desc: "Configure automated off-site server backups with 30-day retention.",
+                        priority: "high",
+                        completed: false
+                    },
+                    {
+                        id: "t-post-2",
+                        title: "Set up 24/7 Uptime Monitoring Alerts (UptimeRobot / Pingdom)",
+                        desc: "Configure immediate SMS/Email alert notifications if server responds with 500 error or downtime.",
+                        priority: "high",
+                        completed: false
+                    },
+                    {
+                        id: "t-post-3",
+                        title: "Post-Launch 48-Hour Crawl & 404 Error Log Monitor",
+                        desc: "Monitor server error logs post-launch to catch broken links or missing resources.",
+                        priority: "medium",
+                        completed: false
+                    }
+                ]
+            }
+        ];
+
+        const STORAGE_KEY = 'smart_epsilon_golive_checklist_v1';
+        let currentFilter = 'all';
+
+        function loadChecklistData() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                }
+            } catch(e) {
+                console.warn('LocalStorage unavailable, fallback to default dataset:', e);
+            }
+            return JSON.parse(JSON.stringify(DEFAULT_CHECKLIST_DATA));
+        }
+
+        let checklistData = loadChecklistData();
+
+        function saveData() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(checklistData));
+            } catch(e) {
+                console.warn('Could not save to localStorage:', e);
+            }
+            renderChecklist();
+        }
+
+        function resetToDefaults() {
+            if (confirm('Are you sure you want to reset all checklist tasks to default state?')) {
+                checklistData = JSON.parse(JSON.stringify(DEFAULT_CHECKLIST_DATA));
+                saveData();
+            }
+        }
+
+        function setFilter(filter, evt) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            if (evt && evt.target) evt.target.classList.add('active');
+            renderChecklist();
+        }
+
+        function toggleTask(catId, taskId) {
+            const category = checklistData.find(c => c.id === catId);
+            if (category) {
+                const task = category.tasks.find(t => t.id === taskId);
+                if (task) {
+                    task.completed = !task.completed;
+                    saveData();
+                }
+            }
+        }
+
+        function deleteTask(catId, taskId) {
+            if (confirm('Are you sure you want to delete this task item?')) {
+                const category = checklistData.find(c => c.id === catId);
+                if (category) {
+                    category.tasks = category.tasks.filter(t => t.id !== taskId);
+                    saveData();
+                }
+            }
+        }
+
+        function renderChecklist() {
+            const container = document.getElementById('checklist-categories-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            let totalTasks = 0;
+            let completedTasks = 0;
+            let blockerTasks = 0;
+
+            checklistData.forEach(category => {
+                totalTasks += category.tasks.length;
+                completedTasks += category.tasks.filter(t => t.completed).length;
+                blockerTasks += category.tasks.filter(t => t.priority === 'blocker' && !t.completed).length;
+            });
+
+            const remainingTasks = totalTasks - completedTasks;
+            const percentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+            document.getElementById('stat-total').innerText = totalTasks;
+            document.getElementById('stat-completed').innerText = completedTasks;
+            document.getElementById('stat-remaining').innerText = remainingTasks;
+            document.getElementById('stat-blockers').innerText = blockerTasks;
+            
+            document.getElementById('overall-percentage').innerText = percentage + '%';
+            document.getElementById('overall-bar-fill').style.width = percentage + '%';
+
+            const badgeEl = document.getElementById('header-status-badge');
+            if (percentage === 100) {
+                badgeEl.innerText = '🎉 100% GO-LIVE READY';
+                badgeEl.className = 'pill-badge pill-green';
+            } else if (blockerTasks > 0) {
+                badgeEl.innerText = `🚨 ${blockerTasks} BLOCKER(S) REMAINING`;
+                badgeEl.className = 'pill-badge pill-amber';
+            } else {
+                badgeEl.innerText = `⏳ ${percentage}% READY FOR LAUNCH`;
+                badgeEl.className = 'pill-badge pill-purple';
+            }
+
+            checklistData.forEach(category => {
+                const catTotal = category.tasks.length;
+                const catDone = category.tasks.filter(t => t.completed).length;
+                const catPct = catTotal > 0 ? Math.round((catDone / catTotal) * 100) : 0;
+
+                let visibleTasks = category.tasks.filter(task => {
+                    if (currentFilter === 'pending') return !task.completed;
+                    if (currentFilter === 'completed') return task.completed;
+                    if (currentFilter === 'blocker') return task.priority === 'blocker' && !task.completed;
+                    return true;
+                });
+
+                if (visibleTasks.length === 0 && currentFilter !== 'all') return;
+
+                const catCard = document.createElement('div');
+                catCard.className = 'category-card';
+
+                let tasksHtml = '';
+                visibleTasks.forEach(task => {
+                    let priorityBadgeClass = 'p-low';
+                    let priorityText = 'Low';
+                    if (task.priority === 'blocker') { priorityBadgeClass = 'p-blocker'; priorityText = '🚨 Critical Blocker'; }
+                    else if (task.priority === 'high') { priorityBadgeClass = 'p-high'; priorityText = 'High Priority'; }
+                    else if (task.priority === 'medium') { priorityBadgeClass = 'p-medium'; priorityText = 'Medium'; }
+
+                    tasksHtml += `
+                        <div class="task-item ${task.completed ? 'completed' : ''}">
+                            <div class="task-left">
+                                <div class="custom-cb" onclick="toggleTask('${category.id}', '${task.id}')"></div>
+                                <div class="task-content">
+                                    <div class="task-title-row">
+                                        <span class="task-name">${task.title}</span>
+                                    </div>
+                                    <div class="task-desc">${task.desc}</div>
+                                </div>
+                            </div>
+                            <div class="task-right">
+                                <span class="priority-badge ${priorityBadgeClass}">${priorityText}</span>
+                                <button class="btn-delete-task" title="Delete Task" onclick="deleteTask('${category.id}', '${task.id}')">🗑️</button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                catCard.innerHTML = `
+                    <div class="category-header">
+                        <div class="cat-title">${category.title}</div>
+                        <div class="cat-meta">
+                            <div class="cat-mini-bar">
+                                <div class="cat-mini-fill" style="width: ${catPct}%"></div>
+                            </div>
+                            <span class="cat-count">${catDone} / ${catTotal} Done (${catPct}%)</span>
+                        </div>
+                    </div>
+                    <div class="task-list">
+                        ${tasksHtml.length > 0 ? tasksHtml : '<div style="color:var(--text-muted); font-size:0.9rem; padding:12px; text-align:center;">No tasks match the selected filter.</div>'}
+                    </div>
+                `;
+
+                container.appendChild(catCard);
+            });
+        }
+
+        function openAddModal() {
+            document.getElementById('add-modal').classList.add('active');
+        }
+        function closeAddModal() {
+            document.getElementById('add-modal').classList.remove('active');
+            document.getElementById('add-task-form').reset();
+        }
+
+        function handleAddTask(e) {
+            e.preventDefault();
+            const title = document.getElementById('new-task-title').value.trim();
+            const catId = document.getElementById('new-task-category').value;
+            const priority = document.getElementById('new-task-priority').value;
+            const desc = document.getElementById('new-task-desc').value.trim() || 'Custom added go-live task.';
+
+            if (!title) return;
+
+            const category = checklistData.find(c => c.id === catId);
+            if (category) {
+                const newTaskId = 't-custom-' + Date.now();
+                category.tasks.push({
+                    id: newTaskId,
+                    title: title,
+                    desc: desc,
+                    priority: priority,
+                    completed: false
+                });
+                saveData();
+                closeAddModal();
+            }
+        }
+
+        // Run immediately
+        renderChecklist();
+    </script>
+</body>
+</html>
