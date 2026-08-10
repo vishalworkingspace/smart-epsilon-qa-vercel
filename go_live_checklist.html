@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Epsilon — Easy Website Go-Live Checklist</title>
+    <title>Smart Epsilon — Simple Website Go-Live Checklist</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -331,11 +331,12 @@
             <form id="add-task-form" onsubmit="handleAddTask(event)">
                 <div class="form-group">
                     <label>Task Title / Name</label>
-                    <input type="text" class="form-input" id="new-task-title" placeholder="e.g. Get Client AWS Server Password" required />
+                    <input type="text" class="form-input" id="new-task-title" placeholder="e.g. Verify LinkedIn Page Link in Footer" required />
                 </div>
                 <div class="form-group">
                     <label>Category</label>
                     <select class="form-select" id="new-task-category">
+                        <option value="cat-social">📱 Social Media Accounts & Sharing Setup</option>
                         <option value="cat-server">🖥️ Client Server & Admin Logins</option>
                         <option value="cat-pages">📄 Website Pages Status Tracker</option>
                         <option value="cat-dns">🌐 Domain Name & Security (SSL)</option>
@@ -370,6 +371,40 @@
     <!-- JAVASCRIPT LOGIC -->
     <script>
         const DEFAULT_CHECKLIST_DATA = [
+            {
+                id: "cat-social",
+                title: "📱 Social Media Accounts & Social Sharing Setup (Pending Setup)",
+                tasks: [
+                    {
+                        id: "t-social-1",
+                        title: "Verify Header & Footer Social Media Profile Links",
+                        desc: "Check that all LinkedIn, Twitter/X, Facebook, Instagram, and YouTube icons in footer open the correct live company pages.",
+                        priority: "high",
+                        completed: false
+                    },
+                    {
+                        id: "t-social-2",
+                        title: "Set Up Open Graph (OG) Link Preview Image & Title",
+                        desc: "Ensure featured image (og:image), title, and description show up nicely when sharing website links on WhatsApp, LinkedIn, or Twitter.",
+                        priority: "blocker",
+                        completed: false
+                    },
+                    {
+                        id: "t-social-3",
+                        title: "Client Social Media Handles & Branding Audit",
+                        desc: "Verify that client social handles (LinkedIn/Twitter) match updated Smart Epsilon branding and profile banners.",
+                        priority: "medium",
+                        completed: false
+                    },
+                    {
+                        id: "t-social-4",
+                        title: "Test Social Share Buttons & Click Tracking",
+                        desc: "Verify social share buttons on Solution & Case Study pages work properly and track shares.",
+                        priority: "medium",
+                        completed: false
+                    }
+                ]
+            },
             {
                 id: "cat-server",
                 title: "🖥️ Client Server & Admin Logins (Special Request)",
@@ -714,7 +749,7 @@
             }
         ];
 
-        const STORAGE_KEY = 'smart_epsilon_golive_checklist_v2';
+        const STORAGE_KEY = 'smart_epsilon_golive_checklist_v3';
         let currentFilter = 'all';
 
         function loadChecklistData() {
