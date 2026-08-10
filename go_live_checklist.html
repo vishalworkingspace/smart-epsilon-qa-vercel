@@ -178,6 +178,8 @@
         .task-desc { font-size: 0.84rem; color: var(--text-muted); line-height: 1.4; }
         .task-item.completed .task-desc { color: #475569; }
 
+        .red-note { color: #fb7185; font-weight: 600; }
+
         .task-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
         
         .priority-badge {
@@ -359,7 +361,7 @@
                     {
                         id: "t-page-6",
                         title: "About Us Page Signoff",
-                        desc: "Content: Pending from Client Side | Design: Pending | Dev: Pending — Niha confirmed content is pending from client side. Need to check with Akash bhai for client update.",
+                        desc: "Content: Pending <span class="red-note">(Niha confirmed content is pending from client side. Need to check with Akash bhai for client update.)</span>",
                         priority: "blocker",
                         completed: false
                     },
@@ -380,7 +382,7 @@
                     {
                         id: "t-page-9",
                         title: "Industry Page — Lubricants & Auto",
-                        desc: "Content: Pending from Client Side | Design: Pending | Dev: Pending — Niha confirmed content is pending from client side. Need to check with Akash bhai for client update.",
+                        desc: "Content: Pending <span class="red-note">(Niha confirmed content is pending from client side. Need to check with Akash bhai for client update.)</span>",
                         priority: "medium",
                         completed: false
                     },
@@ -401,14 +403,14 @@
                     {
                         id: "t-page-12",
                         title: "Industry Page — Cosmetics & Personal Care",
-                        desc: "Content: Pending from Client Side | Design: Pending | Dev: Pending — Niha confirmed content is pending from client side. Need to check with Akash bhai for client update.",
+                        desc: "Content: Pending <span class="red-note">(Niha confirmed content is pending from client side. Need to check with Akash bhai for client update.)</span>",
                         priority: "low",
                         completed: false
                     },
                     {
                         id: "t-page-13",
                         title: "Industry Page — FMCG / CPG",
-                        desc: "Content: Pending from Client Side | Design: Pending | Dev: Pending — Niha confirmed content is pending from client side. Need to check with Akash bhai for client update.",
+                        desc: "Content: Pending <span class="red-note">(Niha confirmed content is pending from client side. Need to check with Akash bhai for client update.)</span>",
                         priority: "low",
                         completed: false
                     },
@@ -422,7 +424,7 @@
                     {
                         id: "t-page-15",
                         title: "Case Study 2 & Case Study 3",
-                        desc: "Content: Pending from Client Side | Design: Pending | Dev: Pending — Niha confirmed content is pending from client side. Need to check with Akash bhai for client update.",
+                        desc: "Content: Pending <span class="red-note">(Niha confirmed content is pending from client side. Need to check with Akash bhai for client update.)</span>",
                         priority: "low",
                         completed: false
                     }
@@ -627,7 +629,7 @@
             }
         ];
 
-        const STORAGE_KEY = 'smart_epsilon_golive_checklist_v6';
+        const STORAGE_KEY = 'smart_epsilon_golive_checklist_v7';
         let currentFilter = 'all';
 
         function loadChecklistData() {
