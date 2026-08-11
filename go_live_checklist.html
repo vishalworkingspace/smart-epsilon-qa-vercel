@@ -461,9 +461,9 @@
                     {
                         id: "t-dns-3",
                         title: "Enable Free SSL Certificate (HTTPS 🔒)",
-                        desc: "Make sure website shows the secure padlock icon 🔒 in browser address bar (Staging SSL active).",
+                        desc: "Make sure website shows the secure padlock icon 🔒 in browser address bar.",
                         priority: "blocker",
-                        completed: true
+                        completed: false
                     },
                     {
                         id: "t-dns-4",
@@ -639,7 +639,7 @@
             }
         ];
 
-        const STORAGE_KEY = 'smart_epsilon_golive_checklist_v19';
+        const STORAGE_KEY = 'smart_epsilon_golive_checklist_v20';
         let currentFilter = 'all';
 
         function loadChecklistData() {
