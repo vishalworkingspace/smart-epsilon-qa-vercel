@@ -179,6 +179,7 @@
         .task-item.completed .task-desc { color: #475569; }
 
         .red-note { color: #fb7185; font-weight: 600; }
+        .phase2-badge { background: rgba(139, 92, 246, 0.2); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.4); padding: 2px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
 
         .task-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
         
@@ -189,6 +190,7 @@
         .p-high { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
         .p-medium { background: rgba(59, 130, 246, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
         .p-low { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.3); }
+        .p-phase2 { background: rgba(139, 92, 246, 0.18); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.4); }
 
         @media (max-width: 768px) {
             header.portal-header { padding: 24px; }
@@ -381,9 +383,9 @@
                     },
                     {
                         id: "t-page-9",
-                        title: "Industry Page — Lubricants & Auto",
-                        desc: "Content: Pending <span class='red-note'>(Niha confirmed content is pending from client side. Need to check with Akash bhai for client update.)</span>",
-                        priority: "blocker",
+                        title: "Industry Page — Lubricants & Auto (Phase 2)",
+                        desc: "Status: Phase 2 Scope — Content: Pending <span class='red-note'>(Niha confirmed content is pending from client side. Moved to Phase 2 release.)</span>",
+                        priority: "phase2",
                         completed: false
                     },
                     {
@@ -402,16 +404,16 @@
                     },
                     {
                         id: "t-page-12",
-                        title: "Industry Page — Cosmetics & Personal Care",
-                        desc: "Content: Pending <span class='red-note'>(Niha confirmed content is pending from client side. Need to check with Akash bhai for client update.)</span>",
-                        priority: "blocker",
+                        title: "Industry Page — Cosmetics & Personal Care (Phase 2)",
+                        desc: "Status: Phase 2 Scope — Content: Pending <span class='red-note'>(Niha confirmed content is pending from client side. Moved to Phase 2 release.)</span>",
+                        priority: "phase2",
                         completed: false
                     },
                     {
                         id: "t-page-13",
-                        title: "Industry Page — FMCG / CPG",
-                        desc: "Content: Pending <span class='red-note'>(Niha confirmed content is pending from client side. Need to check with Akash bhai for client update.)</span>",
-                        priority: "blocker",
+                        title: "Industry Page — FMCG / CPG (Phase 2)",
+                        desc: "Status: Phase 2 Scope — Content: Pending <span class='red-note'>(Niha confirmed content is pending from client side. Moved to Phase 2 release.)</span>",
+                        priority: "phase2",
                         completed: false
                     },
                     {
@@ -423,9 +425,9 @@
                     },
                     {
                         id: "t-page-15",
-                        title: "Case Study 2 & Case Study 3",
-                        desc: "Content: Pending <span class='red-note'>(Niha confirmed content is pending from client side. Need to check with Akash bhai for client update.)</span>",
-                        priority: "blocker",
+                        title: "Case Study 2 & Case Study 3 (Phase 2)",
+                        desc: "Status: Phase 2 Scope — Content: Pending <span class='red-note'>(Niha confirmed content is pending from client side. Moved to Phase 2 release.)</span>",
+                        priority: "phase2",
                         completed: false
                     }
                 ]
@@ -629,7 +631,7 @@
             }
         ];
 
-        const STORAGE_KEY = 'smart_epsilon_golive_checklist_v13';
+        const STORAGE_KEY = 'smart_epsilon_golive_checklist_v14';
         let currentFilter = 'all';
 
         function loadChecklistData() {
@@ -743,6 +745,7 @@
                     if (task.priority === 'blocker') { priorityBadgeClass = 'p-blocker'; priorityText = '🚨 Important Blocker'; }
                     else if (task.priority === 'high') { priorityBadgeClass = 'p-high'; priorityText = 'High Priority'; }
                     else if (task.priority === 'medium') { priorityBadgeClass = 'p-medium'; priorityText = 'Medium'; }
+                    else if (task.priority === 'phase2') { priorityBadgeClass = 'p-phase2'; priorityText = '📌 Phase 2 Scope'; }
 
                     tasksHtml += `
                         <div class="task-item ${task.completed ? 'completed' : ''}">
