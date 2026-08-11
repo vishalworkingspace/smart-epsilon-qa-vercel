@@ -453,9 +453,9 @@
                     {
                         id: "t-dns-3",
                         title: "Enable Free SSL Certificate (HTTPS 🔒)",
-                        desc: "Make sure website shows the secure padlock icon 🔒 in browser address bar.",
+                        desc: "Make sure website shows the secure padlock icon 🔒 in browser address bar (Staging SSL active).",
                         priority: "blocker",
-                        completed: false
+                        completed: true
                     },
                     {
                         id: "t-dns-4",
@@ -516,21 +516,21 @@
                         title: "Turn On Website Speed Caching",
                         desc: "Enables page caching so pages load super fast for visitors.",
                         priority: "high",
-                        completed: false
+                        completed: true
                     },
                     {
                         id: "t-sec-2",
                         title: "Minify Code Files (CSS & JS)",
                         desc: "Clean up code files to speed up page loading.",
                         priority: "medium",
-                        completed: false
+                        completed: true
                     },
                     {
                         id: "t-sec-3",
                         title: "Compress Images for Fast Loading",
                         desc: "Reduce image file sizes so pages open quickly on mobile phones.",
                         priority: "high",
-                        completed: false
+                        completed: true
                     },
                     {
                         id: "t-sec-4",
@@ -571,7 +571,7 @@
                         title: "Check 404 Error Page",
                         desc: "Ensure 404 page shows a helpful 'Back to Home' button and search bar.",
                         priority: "medium",
-                        completed: false
+                        completed: true
                     }
                 ]
             },
@@ -631,7 +631,7 @@
             }
         ];
 
-        const STORAGE_KEY = 'smart_epsilon_golive_checklist_v14';
+        const STORAGE_KEY = 'smart_epsilon_golive_checklist_v15';
         let currentFilter = 'all';
 
         function loadChecklistData() {
