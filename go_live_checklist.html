@@ -361,8 +361,9 @@
                     {
                         id: "t-page-6",
                         title: "About Us Page Signoff",
-                        desc: "Content: Pending <span class='red-note'>(Niha confirmed content is pending from client side. Need to check with Akash bhai for client update.)</span>",
-                        priority: "blocker",
+                        link: "../about-us.html",
+                        desc: "Content: Provided & Implemented | Status: In Process <span class='green-note'>(Page layout built, graphics generated, stat banner & staging footer updated. Awaiting final client review.)</span>",
+                        priority: "in-process",
                         completed: false
                     },
                     {
@@ -629,7 +630,7 @@
             }
         ];
 
-        const STORAGE_KEY = 'smart_epsilon_golive_checklist_v12';
+        const STORAGE_KEY = 'smart_epsilon_golive_checklist_v13';
         let currentFilter = 'all';
 
         function loadChecklistData() {
@@ -741,8 +742,13 @@
                     let priorityBadgeClass = 'p-low';
                     let priorityText = 'Low';
                     if (task.priority === 'blocker') { priorityBadgeClass = 'p-blocker'; priorityText = '🚨 Important Blocker'; }
+                    else if (task.priority === 'in-process') { priorityBadgeClass = 'p-medium'; priorityText = '⚡ In Process'; }
                     else if (task.priority === 'high') { priorityBadgeClass = 'p-high'; priorityText = 'High Priority'; }
                     else if (task.priority === 'medium') { priorityBadgeClass = 'p-medium'; priorityText = 'Medium'; }
+
+                    const titleHtml = task.link 
+                        ? `<a href="${task.link}" target="_blank" style="color:inherit; text-decoration:underline; text-underline-offset:3px;">${task.title}</a> <span style="font-size:0.75rem; font-weight:600; color:#a78bfa; background:rgba(167, 139, 250, 0.15); padding:2px 8px; border-radius:10px; margin-left:6px;">🔗 View Page</span>`
+                        : task.title;
 
                     tasksHtml += `
                         <div class="task-item ${task.completed ? 'completed' : ''}">
@@ -750,7 +756,7 @@
                                 <div class="custom-cb" onclick="toggleTask('${category.id}', '${task.id}')"></div>
                                 <div class="task-content">
                                     <div class="task-title-row">
-                                        <span class="task-name">${task.title}</span>
+                                        <span class="task-name">${titleHtml}</span>
                                     </div>
                                     <div class="task-desc">${task.desc}</div>
                                 </div>
