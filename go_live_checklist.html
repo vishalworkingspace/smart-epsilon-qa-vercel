@@ -98,6 +98,7 @@
         .stat-chip .num.green { color: #34d399; }
         .stat-chip .num.amber { color: #fbbf24; }
         .stat-chip .num.rose { color: #f43f5e; }
+        .stat-chip .num.purple { color: #c084fc; }
 
         /* CONTROLS BAR */
         .controls-bar {
@@ -112,6 +113,7 @@
         }
         .filter-btn:hover { color: #fff; border-color: rgba(255, 255, 255, 0.2); }
         .filter-btn.active { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border-color: rgba(59, 130, 246, 0.5); }
+        .filter-btn.btn-phase2.active { background: rgba(139, 92, 246, 0.2); color: #c084fc; border-color: rgba(139, 92, 246, 0.6); }
 
         .btn-secondary {
             background: rgba(30, 41, 59, 0.8); border: 1px solid var(--border-color);
@@ -229,7 +231,7 @@
             <div class="progress-card">
                 <div class="progress-header">
                     <div class="progress-title">
-                        <span>📊 Overall Launch Progress</span>
+                        <span>📊 Phase 1 Launch Progress</span>
                     </div>
                     <div class="progress-percentage" id="overall-percentage">0%</div>
                 </div>
@@ -239,7 +241,7 @@
 
                 <div class="metrics-stats-row">
                     <div class="stat-chip">
-                        <label>Total Tasks</label>
+                        <label>Phase 1 Tasks</label>
                         <div class="num" id="stat-total">0</div>
                     </div>
                     <div class="stat-chip">
@@ -254,6 +256,10 @@
                         <label>Important Blockers</label>
                         <div class="num rose" id="stat-blockers">0</div>
                     </div>
+                    <div class="stat-chip">
+                        <label>Phase 2 Scope</label>
+                        <div class="num purple" id="stat-phase2">4</div>
+                    </div>
                 </div>
             </div>
         </header>
@@ -261,10 +267,11 @@
         <!-- CONTROLS & FILTER BAR -->
         <div class="controls-bar">
             <div class="filter-tabs">
-                <button class="filter-btn active" onclick="setFilter('all', event)">📋 All Tasks</button>
+                <button class="filter-btn active" onclick="setFilter('all', event)">📋 Phase 1 Tasks</button>
                 <button class="filter-btn" onclick="setFilter('pending', event)">⏳ Pending Only</button>
                 <button class="filter-btn" onclick="setFilter('completed', event)">✅ Completed</button>
                 <button class="filter-btn" onclick="setFilter('blocker', event)">🚨 Blockers</button>
+                <button class="filter-btn btn-phase2" onclick="setFilter('phase2', event)">📌 Phase 2 Scope (4)</button>
             </div>
             <div>
                 <button class="btn-secondary" onclick="resetToDefaults()">🔄 Reset All</button>
@@ -363,7 +370,7 @@
                     {
                         id: "t-page-6",
                         title: "About Us Page Signoff",
-                        desc: "Content: Pending <span class='red-note'>(Niha confirmed content is pending from client side. Need to check with Akash bhai for client update.)</span>",
+                        desc: "Content: Pending <span class='red-note'>(Content pending from client side. Need to check with Akash bhai for client update.)</span>",
                         priority: "blocker",
                         completed: false
                     },
@@ -384,7 +391,7 @@
                     {
                         id: "t-page-9",
                         title: "Industry Page — Lubricants & Auto (Phase 2)",
-                        desc: "Status: Phase 2 Scope — Content: Pending <span class='red-note'>(Niha confirmed content is pending from client side. Moved to Phase 2 release.)</span>",
+                        desc: "Status: Phase 2 Scope — Content Pending",
                         priority: "phase2",
                         completed: false
                     },
@@ -405,14 +412,14 @@
                     {
                         id: "t-page-12",
                         title: "Industry Page — Cosmetics & Personal Care (Phase 2)",
-                        desc: "Status: Phase 2 Scope — Content: Pending <span class='red-note'>(Niha confirmed content is pending from client side. Moved to Phase 2 release.)</span>",
+                        desc: "Status: Phase 2 Scope — Content Pending",
                         priority: "phase2",
                         completed: false
                     },
                     {
                         id: "t-page-13",
                         title: "Industry Page — FMCG / CPG (Phase 2)",
-                        desc: "Status: Phase 2 Scope — Content: Pending <span class='red-note'>(Niha confirmed content is pending from client side. Moved to Phase 2 release.)</span>",
+                        desc: "Status: Phase 2 Scope — Content Pending",
                         priority: "phase2",
                         completed: false
                     },
@@ -426,7 +433,7 @@
                     {
                         id: "t-page-15",
                         title: "Case Study 2 & Case Study 3 (Phase 2)",
-                        desc: "Status: Phase 2 Scope — Content: Pending <span class='red-note'>(Niha confirmed content is pending from client side. Moved to Phase 2 release.)</span>",
+                        desc: "Status: Phase 2 Scope — Content Pending",
                         priority: "phase2",
                         completed: false
                     }
@@ -631,7 +638,7 @@
             }
         ];
 
-        const STORAGE_KEY = 'smart_epsilon_golive_checklist_v15';
+        const STORAGE_KEY = 'smart_epsilon_golive_checklist_v17';
         let currentFilter = 'all';
 
         function loadChecklistData() {
@@ -688,52 +695,62 @@
             if (!container) return;
             container.innerHTML = '';
 
-            let totalTasks = 0;
-            let completedTasks = 0;
+            let totalPhase1Tasks = 0;
+            let completedPhase1Tasks = 0;
             let blockerTasks = 0;
+            let phase2TasksCount = 0;
 
             checklistData.forEach(category => {
-                totalTasks += category.tasks.length;
-                completedTasks += category.tasks.filter(t => t.completed).length;
-                blockerTasks += category.tasks.filter(t => t.priority === 'blocker' && !t.completed).length;
+                category.tasks.forEach(task => {
+                    if (task.priority === 'phase2') {
+                        phase2TasksCount++;
+                    } else {
+                        totalPhase1Tasks++;
+                        if (task.completed) completedPhase1Tasks++;
+                        if (task.priority === 'blocker' && !task.completed) blockerTasks++;
+                    }
+                });
             });
 
-            const remainingTasks = totalTasks - completedTasks;
-            const percentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            const remainingPhase1 = totalPhase1Tasks - completedPhase1Tasks;
+            const percentage = totalPhase1Tasks > 0 ? Math.round((completedPhase1Tasks / totalPhase1Tasks) * 100) : 0;
 
-            document.getElementById('stat-total').innerText = totalTasks;
-            document.getElementById('stat-completed').innerText = completedTasks;
-            document.getElementById('stat-remaining').innerText = remainingTasks;
+            document.getElementById('stat-total').innerText = totalPhase1Tasks;
+            document.getElementById('stat-completed').innerText = completedPhase1Tasks;
+            document.getElementById('stat-remaining').innerText = remainingPhase1;
             document.getElementById('stat-blockers').innerText = blockerTasks;
+            document.getElementById('stat-phase2').innerText = phase2TasksCount;
             
             document.getElementById('overall-percentage').innerText = percentage + '%';
             document.getElementById('overall-bar-fill').style.width = percentage + '%';
 
             const badgeEl = document.getElementById('header-status-badge');
             if (percentage === 100) {
-                badgeEl.innerText = '🎉 100% READY TO LAUNCH';
+                badgeEl.innerText = '🎉 PHASE 1 100% READY TO LAUNCH';
                 badgeEl.className = 'pill-badge pill-green';
             } else if (blockerTasks > 0) {
-                badgeEl.innerText = `🚨 ${blockerTasks} BLOCKER(S) REMAINING`;
+                badgeEl.innerText = `🚨 ${blockerTasks} PHASE 1 BLOCKER(S) REMAINING`;
                 badgeEl.className = 'pill-badge pill-amber';
             } else {
-                badgeEl.innerText = `⏳ ${percentage}% LAUNCH PROGRESS`;
+                badgeEl.innerText = `⏳ ${percentage}% PHASE 1 LAUNCH PROGRESS`;
                 badgeEl.className = 'pill-badge pill-purple';
             }
 
             checklistData.forEach(category => {
-                const catTotal = category.tasks.length;
-                const catDone = category.tasks.filter(t => t.completed).length;
-                const catPct = catTotal > 0 ? Math.round((catDone / catTotal) * 100) : 0;
-
                 let visibleTasks = category.tasks.filter(task => {
-                    if (currentFilter === 'pending') return !task.completed;
+                    if (currentFilter === 'all') return task.priority !== 'phase2';
+                    if (currentFilter === 'pending') return !task.completed && task.priority !== 'phase2';
                     if (currentFilter === 'completed') return task.completed;
                     if (currentFilter === 'blocker') return task.priority === 'blocker' && !task.completed;
+                    if (currentFilter === 'phase2') return task.priority === 'phase2';
                     return true;
                 });
 
-                if (visibleTasks.length === 0 && currentFilter !== 'all') return;
+                if (visibleTasks.length === 0) return;
+
+                const catTotal = visibleTasks.length;
+                const catDone = visibleTasks.filter(t => t.completed).length;
+                const catPct = catTotal > 0 ? Math.round((catDone / catTotal) * 100) : 0;
 
                 const catCard = document.createElement('div');
                 catCard.className = 'category-card';
@@ -767,7 +784,7 @@
 
                 catCard.innerHTML = `
                     <div class="category-header">
-                        <div class="cat-title">${category.title}</div>
+                        <div class="cat-title">${category.title} ${currentFilter === 'phase2' ? '<span class="phase2-badge">📌 Phase 2 View</span>' : ''}</div>
                         <div class="cat-meta">
                             <div class="cat-mini-bar">
                                 <div class="cat-mini-fill" style="width: ${catPct}%"></div>
@@ -776,7 +793,7 @@
                         </div>
                     </div>
                     <div class="task-list">
-                        ${tasksHtml.length > 0 ? tasksHtml : '<div style="color:var(--text-muted); font-size:0.9rem; padding:12px; text-align:center;">No tasks match the selected filter.</div>'}
+                        ${tasksHtml}
                     </div>
                 `;
 
