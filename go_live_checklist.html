@@ -193,6 +193,7 @@
         .p-medium { background: rgba(59, 130, 246, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
         .p-low { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.3); }
         .p-phase2 { background: rgba(139, 92, 246, 0.18); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.4); }
+        .p-done { background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
 
         @media (max-width: 768px) {
             header.portal-header { padding: 24px; }
@@ -426,9 +427,9 @@
                     {
                         id: "t-page-14",
                         title: "Case Study 1 — Agrochemicals",
-                        desc: "Content: Review | Design: Pending | Dev: Done — Staging page ready for review.",
-                        priority: "medium",
-                        completed: false
+                        desc: "Content: Done | Design: Done | Dev: Done — Staging page checked and approved.",
+                        priority: "high",
+                        completed: true
                     },
                     {
                         id: "t-page-15",
@@ -638,7 +639,7 @@
             }
         ];
 
-        const STORAGE_KEY = 'smart_epsilon_golive_checklist_v17';
+        const STORAGE_KEY = 'smart_epsilon_golive_checklist_v19';
         let currentFilter = 'all';
 
         function loadChecklistData() {
@@ -759,10 +760,22 @@
                 visibleTasks.forEach(task => {
                     let priorityBadgeClass = 'p-low';
                     let priorityText = 'Low';
-                    if (task.priority === 'blocker') { priorityBadgeClass = 'p-blocker'; priorityText = '🚨 Important Blocker'; }
-                    else if (task.priority === 'high') { priorityBadgeClass = 'p-high'; priorityText = 'High Priority'; }
-                    else if (task.priority === 'medium') { priorityBadgeClass = 'p-medium'; priorityText = 'Medium'; }
-                    else if (task.priority === 'phase2') { priorityBadgeClass = 'p-phase2'; priorityText = '📌 Phase 2 Scope'; }
+                    if (task.completed) {
+                        priorityBadgeClass = 'p-done';
+                        priorityText = '✓ DONE';
+                    } else if (task.priority === 'blocker') {
+                        priorityBadgeClass = 'p-blocker';
+                        priorityText = '🚨 Important Blocker';
+                    } else if (task.priority === 'high') {
+                        priorityBadgeClass = 'p-high';
+                        priorityText = 'High Priority';
+                    } else if (task.priority === 'medium') {
+                        priorityBadgeClass = 'p-medium';
+                        priorityText = 'Medium';
+                    } else if (task.priority === 'phase2') {
+                        priorityBadgeClass = 'p-phase2';
+                        priorityText = '📌 Phase 2 Scope';
+                    }
 
                     tasksHtml += `
                         <div class="task-item ${task.completed ? 'completed' : ''}">
