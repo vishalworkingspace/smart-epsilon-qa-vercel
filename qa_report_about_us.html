@@ -189,92 +189,16 @@
             </div>
         </header>
 
-        <!-- TAB NAVIGATION -->
+        <!-- TAB NAVIGATION (TAB 1 = SCREENSHOTS & AUDIT, TAB 2 = EXECUTIVE SUMMARY) -->
         <div class="tabs-header">
-            <button class="tab-btn active" onclick="switchTab('tab-summary', this)">📋 Executive Audit Summary</button>
-            <button class="tab-btn" onclick="switchTab('tab-sections', this)">🖼️ Section-by-Section Inspection (7)</button>
+            <button class="tab-btn active" onclick="switchTab('tab-sections', this)">📸 Section Screenshots & Audit (7)</button>
+            <button class="tab-btn" onclick="switchTab('tab-summary', this)">📋 Executive Audit Summary</button>
             <button class="tab-btn" onclick="switchTab('tab-desktop', this)">💻 Live Desktop Staging View</button>
             <button class="tab-btn" onclick="switchTab('tab-mobile', this)">📱 Live Mobile Staging View</button>
         </div>
 
-        <!-- TAB 1: EXECUTIVE AUDIT SUMMARY -->
-        <div id="tab-summary" class="tab-content active">
-            <div class="section-card">
-                <div class="section-header-row">
-                    <div class="sec-title">📊 Executive Audit Summary</div>
-                    <span class="sec-badge">100% Approved</span>
-                </div>
-                <p style="color: var(--text-muted); font-size: 0.96rem; line-height: 1.6; margin-bottom: 24px;">
-                    A comprehensive audit was performed for the <strong>About Us Page</strong>. All 7 natural DOM sections were cross-verified line-by-line against the official Master SharePoint Document, corporate guidelines, responsive grid layout, and live code implementation.
-                </p>
-
-                <table class="summary-table">
-                    <thead>
-                        <tr>
-                            <th>Sec #</th>
-                            <th>Natural Section Title & Purpose</th>
-                            <th>SharePoint Copy Status</th>
-                            <th>Visual Layout Score</th>
-                            <th>QA Verdict</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>01</strong></td>
-                            <td>Header Navigation Bar & Mega Menu</td>
-                            <td><span style="color:#34d399; font-weight:700;">✓ 100% Verified</span></td>
-                            <td>100% Aligned</td>
-                            <td><span class="sec-badge">PASSED</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>02</strong></td>
-                            <td>Hero Banner — Securing Global Supply Chains</td>
-                            <td><span style="color:#34d399; font-weight:700;">✓ 100% Verified</span></td>
-                            <td>100% Aligned</td>
-                            <td><span class="sec-badge">PASSED</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>03</strong></td>
-                            <td>Who We Are? — Mission & Protection Space</td>
-                            <td><span style="color:#34d399; font-weight:700;">✓ 100% Verified</span></td>
-                            <td>100% Aligned</td>
-                            <td><span class="sec-badge">PASSED</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>04</strong></td>
-                            <td>Ultra-Classy Stat Banner (4 Metrics)</td>
-                            <td><span style="color:#34d399; font-weight:700;">✓ 100% Verified</span></td>
-                            <td>100% Aligned</td>
-                            <td><span class="sec-badge">PASSED</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>05</strong></td>
-                            <td>Our Story & Evolutionary Callout Banner</td>
-                            <td><span style="color:#34d399; font-weight:700;">✓ 100% Verified</span></td>
-                            <td>100% Aligned</td>
-                            <td><span class="sec-badge">PASSED</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>06</strong></td>
-                            <td>Built for Complexity — 4 Core Architecture Pillars</td>
-                            <td><span style="color:#34d399; font-weight:700;">✓ 100% Verified</span></td>
-                            <td>100% Aligned</td>
-                            <td><span class="sec-badge">PASSED</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>07</strong></td>
-                            <td>Corporate Footer & Ahmedabad Headquarters</td>
-                            <td><span style="color:#34d399; font-weight:700;">✓ 100% Verified</span></td>
-                            <td>100% Aligned</td>
-                            <td><span class="sec-badge">PASSED</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- TAB 2: SECTION-BY-SECTION INSPECTION -->
-        <div id="tab-sections" class="tab-content">
+        <!-- TAB 1 (ACTIVE BY DEFAULT): SECTION SCREENSHOTS & AUDIT (7) -->
+        <div id="tab-sections" class="tab-content active">
             
             <!-- SEC 01 -->
             <div class="section-card">
@@ -395,6 +319,82 @@
                 </div>
             </div>
 
+        </div>
+
+        <!-- TAB 2: EXECUTIVE AUDIT SUMMARY -->
+        <div id="tab-summary" class="tab-content">
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title">📊 Executive Audit Summary Table</div>
+                    <span class="sec-badge">100% Approved</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.96rem; line-height: 1.6; margin-bottom: 24px;">
+                    A comprehensive audit was performed for the <strong>About Us Page</strong>. All 7 natural DOM sections were cross-verified line-by-line against the official Master SharePoint Document, corporate guidelines, responsive grid layout, and live code implementation.
+                </p>
+
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Sec #</th>
+                            <th>Natural Section Title & Purpose</th>
+                            <th>SharePoint Copy Status</th>
+                            <th>Visual Layout Score</th>
+                            <th>QA Verdict</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>01</strong></td>
+                            <td>Header Navigation Bar & Mega Menu</td>
+                            <td><span style="color:#34d399; font-weight:700;">✓ 100% Verified</span></td>
+                            <td>100% Aligned</td>
+                            <td><span class="sec-badge">PASSED</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>02</strong></td>
+                            <td>Hero Banner — Securing Global Supply Chains</td>
+                            <td><span style="color:#34d399; font-weight:700;">✓ 100% Verified</span></td>
+                            <td>100% Aligned</td>
+                            <td><span class="sec-badge">PASSED</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>03</strong></td>
+                            <td>Who We Are? — Mission & Protection Space</td>
+                            <td><span style="color:#34d399; font-weight:700;">✓ 100% Verified</span></td>
+                            <td>100% Aligned</td>
+                            <td><span class="sec-badge">PASSED</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>04</strong></td>
+                            <td>Ultra-Classy Stat Banner (4 Metrics)</td>
+                            <td><span style="color:#34d399; font-weight:700;">✓ 100% Verified</span></td>
+                            <td>100% Aligned</td>
+                            <td><span class="sec-badge">PASSED</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>05</strong></td>
+                            <td>Our Story & Evolutionary Callout Banner</td>
+                            <td><span style="color:#34d399; font-weight:700;">✓ 100% Verified</span></td>
+                            <td>100% Aligned</td>
+                            <td><span class="sec-badge">PASSED</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>06</strong></td>
+                            <td>Built for Complexity — 4 Core Architecture Pillars</td>
+                            <td><span style="color:#34d399; font-weight:700;">✓ 100% Verified</span></td>
+                            <td>100% Aligned</td>
+                            <td><span class="sec-badge">PASSED</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>07</strong></td>
+                            <td>Corporate Footer & Ahmedabad Headquarters</td>
+                            <td><span style="color:#34d399; font-weight:700;">✓ 100% Verified</span></td>
+                            <td>100% Aligned</td>
+                            <td><span class="sec-badge">PASSED</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- TAB 3: LIVE DESKTOP STAGING VIEW -->
