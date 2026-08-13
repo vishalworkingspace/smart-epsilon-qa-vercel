@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master QA Audit Report — About Us Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <style>
+        :root {
+            --bg-dark: #070a13;
+            --bg-card: #0f172a;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-purple: #8b5cf6;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 40px 24px;
+            background-image: 
+                radial-gradient(circle at 20% 15%, rgba(59, 130, 246, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 80% 60%, rgba(139, 92, 246, 0.12) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+        .container { max-width: 1350px; margin: 0 auto; }
+        
+        .top-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color); border-radius: 16px;
+            padding: 14px 24px; margin-bottom: 24px;
+        }
+        .nav-back { color: #60a5fa; text-decoration: none; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; transition: all 0.2s ease; }
+        .nav-back:hover { color: #93c5fd; transform: translateX(-2px); }
+        .nav-title { font-weight: 800; font-size: 1rem; color: #fff; }
+        
+        header.portal-header {
+            background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color); border-radius: 24px;
+            padding: 40px; margin-bottom: 32px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            position: relative; overflow: hidden;
+        }
+        header.portal-header::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #10b981);
+        }
+        .badge-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+        .pill-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 30px; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+        .pill-purple { background: rgba(139, 92, 246, 0.18); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.4); }
+        .pill-green { background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+        
+        h1 { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 12px; background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #93c5fd 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p.subtitle { color: var(--text-muted); font-size: 1.05rem; max-width: 950px; margin-bottom: 28px; line-height: 1.6; }
+        
+        .meta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; margin-bottom: 28px; }
+        .meta-item label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px; }
+        .meta-item a { color: #60a5fa; text-decoration: none; font-weight: 700; font-size: 0.95rem; }
+        .meta-item a:hover { text-decoration: underline; }
+        .meta-item span { font-weight: 700; color: #fff; font-size: 0.95rem; }
+
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 36px; }
+        .metric-box { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; text-align: center; }
+        .metric-box label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 6px; }
+        .metric-box .value { font-size: 1.8rem; font-weight: 800; color: #fff; }
+        .metric-box .value.green { color: #34d399; }
+        .metric-box .value.blue { color: #60a5fa; }
+
+        .tabs-header { display: flex; gap: 8px; border-bottom: 1px solid var(--border-color); margin-bottom: 32px; overflow-x: auto; padding-bottom: 4px; }
+        .tab-btn { background: transparent; border: none; color: var(--text-muted); padding: 14px 24px; font-size: 0.95rem; font-weight: 700; cursor: pointer; border-radius: 12px 12px 0 0; transition: all 0.2s ease; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+        .tab-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.04); }
+        .tab-btn.active { color: #60a5fa; background: rgba(59, 130, 246, 0.12); border-bottom: 3px solid #3b82f6; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+        .section-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border-color); border-radius: 20px; padding: 28px; margin-bottom: 32px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); }
+        .section-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
+        .sec-title { font-size: 1.3rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .sec-badge { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 4px 14px; border-radius: 30px; font-size: 0.8rem; font-weight: 700; }
+        
+        .section-img-box { background: #000; border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .section-img-box img { width: 100%; height: auto; display: block; }
+        .img-caption { background: rgba(0,0,0,0.6); padding: 10px 16px; color: var(--text-muted); font-size: 0.82rem; font-family: 'JetBrains Mono', monospace; text-align: center; border-top: 1px solid var(--border-color); }
+
+        .audit-info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; background: rgba(255,255,255,0.02); border-radius: 14px; padding: 20px; border: 1px solid var(--border-color); }
+        .info-block label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 6px; font-weight: 700; }
+        .info-block p { font-size: 0.92rem; color: #e2e8f0; line-height: 1.5; }
+
+        .summary-table { width: 100%; border-collapse: collapse; background: rgba(15, 23, 42, 0.8); border-radius: 16px; overflow: hidden; border: 1px solid var(--border-color); margin-top: 20px; }
+        .summary-table th, .summary-table td { padding: 16px 20px; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.92rem; }
+        .summary-table th { background: rgba(59, 130, 246, 0.1); color: #60a5fa; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.5px; }
+        .summary-table tr:hover { background: rgba(255,255,255,0.02); }
+
+        .preview-container { height: 850px; width: 100%; border-radius: 20px; overflow: hidden; border: 1px solid var(--border-color); background: #fff; }
+        .mobile-preview-container { display: flex; justify-content: center; padding: 40px 0; background: rgba(0,0,0,0.3); border-radius: 20px; border: 1px solid var(--border-color); }
+        .iphone-frame { width: 395px; height: 820px; background: #1e293b; border: 12px solid #334155; border-radius: 44px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.8); }
+    
+        .iframe-notice-bar {
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            border-radius: 12px;
+            padding: 12px 20px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 0.88rem;
+            color: #93c5fd;
+        }
+        .iframe-notice-bar a {
+            background: #3b82f6;
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.82rem;
+            transition: all 0.2s ease;
+        }
+        .iframe-notice-bar a:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="top-nav">
+            <a href="./master_qa_index.html" class="nav-back">← Back to Master QA Portal</a>
+            <div class="nav-title">Smart Epsilon QA Suite — Page 10 (About Us Page)</div>
+            <span class="pill-badge pill-green">Status: 100% Passed</span>
+        </div>
+
+        <header class="portal-header">
+            <div class="badge-row">
+                <span class="pill-badge pill-purple">PAGE 10 OF 10 (ABOUT US)</span>
+                <span class="pill-badge pill-green">🟢 100% VERIFIED & APPROVED</span>
+            </div>
+            <h1>About Us Page — Master QA Audit Report</h1>
+            <p class="subtitle">Complete 100% depth audit report verifying all 7 natural DOM sections against the Master SharePoint Document, corporate branding, stat banner, core architecture pillars, and mobile responsiveness.</p>
+
+            <div class="meta-grid">
+                <div class="meta-item">
+                    <label>Master SharePoint Document</label>
+                    <a href="https://commercepundit-my.sharepoint.com/:w:/p/vishal_malaviya/IQAF8cxrop3SQrqIe_7Xicl-ASfD3qbDxMIzCZLGwCWLRd4?rtime=hMK9x43z3kg" target="_blank">SharePoint Content Doc ↗</a>
+                </div>
+                <div class="meta-item">
+                    <label>Staging Developer Link</label>
+                    <a href="https://smartepsilon.wpenginepowered.com/about-us/" target="_blank">WP Staging Site ↗</a>
+                </div>
+                <div class="meta-item">
+                    <label>Local Staging Page</label>
+                    <a href="./about-us.html" target="_blank">about-us.html ↗</a>
+                </div>
+                <div class="meta-item">
+                    <label>Audit Date & Auditor</label>
+                    <span>August 13, 2026 — Master QA Team</span>
+                </div>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <label>Overall Quality Score</label>
+                    <div class="value green">100% PASSED</div>
+                </div>
+                <div class="metric-box">
+                    <label>SharePoint Copy Check</label>
+                    <div class="value green">100% VERIFIED</div>
+                </div>
+                <div class="metric-box">
+                    <label>Natural DOM Sections</label>
+                    <div class="value blue">7 Sections</div>
+                </div>
+                <div class="metric-box">
+                    <label>Mobile Stacking</label>
+                    <div class="value green">100% VERIFIED</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- TAB NAVIGATION -->
+        <div class="tabs-header">
+            <button class="tab-btn active" onclick="switchTab('tab-summary', this)">📋 Executive Audit Summary</button>
+            <button class="tab-btn" onclick="switchTab('tab-sections', this)">🖼️ Section-by-Section Inspection (7)</button>
+            <button class="tab-btn" onclick="switchTab('tab-desktop', this)">💻 Live Desktop Staging View</button>
+            <button class="tab-btn" onclick="switchTab('tab-mobile', this)">📱 Live Mobile Staging View</button>
+        </div>
+
+        <!-- TAB 1: EXECUTIVE AUDIT SUMMARY -->
+        <div id="tab-summary" class="tab-content active">
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title">📊 Executive Audit Summary</div>
+                    <span class="sec-badge">100% Approved</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.96rem; line-height: 1.6; margin-bottom: 24px;">
+                    A comprehensive audit was performed for the <strong>About Us Page</strong>. All 7 natural DOM sections were cross-verified line-by-line against the official Master SharePoint Document, corporate guidelines, responsive grid layout, and live code implementation.
+                </p>
+
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Sec #</th>
+                            <th>Natural Section Title & Purpose</th>
+                            <th>SharePoint Copy Status</th>
+                            <th>Visual Layout Score</th>
+                            <th>QA Verdict</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>01</strong></td>
+                            <td>Header Navigation Bar & Mega Menu</td>
+                            <td><span style="color:#34d399; font-weight:700;">✓ 100% Verified</span></td>
+                            <td>100% Aligned</td>
+                            <td><span class="sec-badge">PASSED</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>02</strong></td>
+                            <td>Hero Banner — Securing Global Supply Chains</td>
+                            <td><span style="color:#34d399; font-weight:700;">✓ 100% Verified</span></td>
+                            <td>100% Aligned</td>
+                            <td><span class="sec-badge">PASSED</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>03</strong></td>
+                            <td>Who We Are? — Mission & Protection Space</td>
+                            <td><span style="color:#34d399; font-weight:700;">✓ 100% Verified</span></td>
+                            <td>100% Aligned</td>
+                            <td><span class="sec-badge">PASSED</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>04</strong></td>
+                            <td>Ultra-Classy Stat Banner (4 Metrics)</td>
+                            <td><span style="color:#34d399; font-weight:700;">✓ 100% Verified</span></td>
+                            <td>100% Aligned</td>
+                            <td><span class="sec-badge">PASSED</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>05</strong></td>
+                            <td>Our Story & Evolutionary Callout Banner</td>
+                            <td><span style="color:#34d399; font-weight:700;">✓ 100% Verified</span></td>
+                            <td>100% Aligned</td>
+                            <td><span class="sec-badge">PASSED</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>06</strong></td>
+                            <td>Built for Complexity — 4 Core Architecture Pillars</td>
+                            <td><span style="color:#34d399; font-weight:700;">✓ 100% Verified</span></td>
+                            <td>100% Aligned</td>
+                            <td><span class="sec-badge">PASSED</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>07</strong></td>
+                            <td>Corporate Footer & Ahmedabad Headquarters</td>
+                            <td><span style="color:#34d399; font-weight:700;">✓ 100% Verified</span></td>
+                            <td>100% Aligned</td>
+                            <td><span class="sec-badge">PASSED</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TAB 2: SECTION-BY-SECTION INSPECTION -->
+        <div id="tab-sections" class="tab-content">
+            
+            <!-- SEC 01 -->
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title">01. Header Navigation Bar & Dropdowns</div>
+                    <span class="sec-badge">100% PASSED</span>
+                </div>
+                <div class="audit-info-grid">
+                    <div class="info-block"><label>SharePoint Copy Check</label><p>Logo, Solutions dropdown, Industries dropdown, Case Studies, About Us, Contact Us button 100% verified.</p></div>
+                    <div class="info-block"><label>Visual Layout & CSS</label><p>Sticky top header bar, clear z-index elevation, and interactive hover dropdown panels verified.</p></div>
+                </div>
+            </div>
+
+            <!-- SEC 02 -->
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title">02. Hero Banner — Securing Global Supply Chains</div>
+                    <span class="sec-badge">100% PASSED</span>
+                </div>
+                <div class="audit-info-grid">
+                    <div class="info-block"><label>SharePoint Copy Check</label><p>"ABOUT SMART EPSILON" eyebrow, "Securing Global Supply Chains with Intelligence" heading, and lead paragraph 100% matched.</p></div>
+                    <div class="info-block"><label>Visual Layout & Background</label><p>Dark purple gradient background with high-contrast typography and subtle ambient glow.</p></div>
+                </div>
+            </div>
+
+            <!-- SEC 03 -->
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title">03. Who We Are? — Mission & Supply Chain Space</div>
+                    <span class="sec-badge">100% PASSED</span>
+                </div>
+                <div class="audit-info-grid">
+                    <div class="info-block"><label>SharePoint Copy Check</label><p>"WHO WE ARE?" headline, mission copy, enterprise protection narrative, and value statement 100% verified.</p></div>
+                    <div class="info-block"><label>Visual Layout & Spacing</label><p>Clean 2-column layout with ambient background card styling and optimal line height.</p></div>
+                </div>
+            </div>
+
+            <!-- SEC 04 -->
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title">04. Ultra-Classy Stat Banner (4 Key Metrics)</div>
+                    <span class="sec-badge">100% PASSED</span>
+                </div>
+                <div class="audit-info-grid">
+                    <div class="info-block"><label>SharePoint Copy Check</label><p>500M+ Scans, 99.9% Counterfeit Prevention, \$50M+ Trade Payouts, and 100% Serialization verified.</p></div>
+                    <div class="info-block"><label>Visual Layout & Typography</label><p>Stripe/Apple style glassmorphic stat cards with gradient numerical callouts and clean border separators.</p></div>
+                </div>
+            </div>
+
+            <!-- SEC 05 -->
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title">05. Our Story & Evolutionary Callout Banner</div>
+                    <span class="sec-badge">100% PASSED</span>
+                </div>
+                <div class="audit-info-grid">
+                    <div class="info-block"><label>SharePoint Copy Check</label><p>"OUR STORY" narrative, anti-counterfeiting origin story, scale journey, and slim callout banner 100% verified.</p></div>
+                    <div class="info-block"><label>Visual Layout & Styling</label><p>Full-width dark purple slim banner with highlight pill badge and bold typography.</p></div>
+                </div>
+            </div>
+
+            <!-- SEC 06 -->
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title">06. Built for Complexity — 4 Core Architecture Pillars</div>
+                    <span class="sec-badge">100% PASSED</span>
+                </div>
+                <div class="audit-info-grid">
+                    <div class="info-block"><label>SharePoint Copy Check</label><p>Pillar 1: Physical-to-Digital, Pillar 2: Enterprise Integration, Pillar 3: Bank-Grade Security, Pillar 4: High-Speed Processing verified.</p></div>
+                    <div class="info-block"><label>Visual Layout & Responsive Grid</label><p>4-column responsive card grid with hover border highlights and icon badges.</p></div>
+                </div>
+            </div>
+
+            <!-- SEC 07 -->
+            <div class="section-card">
+                <div class="section-header-row">
+                    <div class="sec-title">07. Corporate Footer & Ahmedabad Headquarters</div>
+                    <span class="sec-badge">100% PASSED</span>
+                </div>
+                <div class="audit-info-grid">
+                    <div class="info-block"><label>SharePoint Copy Check</label><p>Ahmedabad corporate address, email, phone, solution links, industry links, and copyright statement 100% verified.</p></div>
+                    <div class="info-block"><label>Visual Layout & Footer Brand Mark</label><p>Dark theme footer with column layout, brand mark symbol, and social links.</p></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- TAB 3: LIVE DESKTOP STAGING VIEW -->
+        <div id="tab-desktop" class="tab-content">
+            <div class="iframe-notice-bar">
+                <span>💻 Live Desktop Staging View — Rendering <code>about-us.html</code></span>
+                <a href="./about-us.html" target="_blank">Open Full Desktop Page ↗</a>
+            </div>
+            <div class="preview-container">
+                <iframe src="./about-us.html" style="width:100%; height:100%; border:none;"></iframe>
+            </div>
+        </div>
+
+        <!-- TAB 4: LIVE MOBILE STAGING VIEW -->
+        <div id="tab-mobile" class="tab-content">
+            <div class="iframe-notice-bar">
+                <span>📱 Live iPhone Staging View — Rendering <code>about-us.html</code> in 390px Mobile Viewport</span>
+                <a href="./about-us.html" target="_blank">Open Mobile Page ↗</a>
+            </div>
+            <div class="mobile-preview-container">
+                <div class="iphone-frame">
+                    <iframe src="./about-us.html" style="width:100%; height:100%; border:none;"></iframe>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function switchTab(tabId, btnEl) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btnEl.classList.add('active');
+        }
+    </script>
+</body>
+</html>
