@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page-by-Page Image Audit — Smart Epsilon QA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <style>
+        :root {
+            --bg-dark: #070a13;
+            --bg-card: rgba(15, 23, 42, 0.9);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 32px 24px 60px;
+            background-image: radial-gradient(circle at 50% 10%, rgba(59, 130, 246, 0.12) 0%, transparent 50%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* HEADER TOP NAV */
+        .top-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .btn-back {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-back:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .header-title-box {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 28px 32px;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-title-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #10b981);
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* SIMPLE PAGE FILTER TABS */
+        .page-tabs-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 12px;
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .page-tab-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .page-tab-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .page-tab-btn.active {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+        }
+
+        /* PAGE SECTION BLOCK */
+        .page-section-block {
+            margin-bottom: 48px;
+        }
+
+        .page-block-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 24px;
+        }
+
+        .page-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .image-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+
+        .card-img-box {
+            position: relative;
+            width: 100%;
+            height: 210px;
+            background: #000;
+            overflow: hidden;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-img-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .card-img-box:hover img {
+            transform: scale(1.05);
+        }
+
+        .zoom-badge {
+            position: absolute;
+            bottom: 10px; right: 10px;
+            background: rgba(7, 10, 19, 0.85);
+            color: #fff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card-content {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sec-tag {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .img-name {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.3;
+        }
+
+        .img-source-code {
+            font-size: 0.76rem;
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 8px 10px;
+            border-radius: 8px;
+            color: #94a3b8;
+            word-break: break-all;
+            margin-top: 4px;
+        }
+
+        /* HIGHLIGHTED 1-LINER CLIENT NOTE BANNER */
+        .client-note-box {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.18), rgba(139, 92, 246, 0.18));
+            border: 1px solid rgba(96, 165, 250, 0.5);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+            border-radius: 14px;
+            padding: 14px 22px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(8px);
+        }
+
+        .note-tag {
+            background: #3b82f6;
+            color: #fff;
+            font-size: 0.72rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .note-text {
+            color: #f1f5f9;
+            font-size: 0.92rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .note-text code {
+            background: rgba(255, 255, 255, 0.15);
+            color: #60a5fa;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.84rem;
+            font-weight: 700;
+        }
+
+        /* ZOOM PREVIEW MODAL */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(7, 10, 19, 0.9);
+            backdrop-filter: blur(12px);
+            z-index: 99999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 900px;
+            padding: 24px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px; right: 16px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #fff;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        .modal-img-wrap {
+            width: 100%;
+            max-height: 550px;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-img-wrap img {
+            max-width: 100%;
+            max-height: 550px;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- NAV HEADER -->
+        <div class="top-nav">
+            <a href="./index.html" class="btn-back">&larr; Back to QA Dashboard</a>
+            <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700;">Smart Epsilon Website Audit</span>
+        </div>
+
+        <!-- TITLE BOX -->
+        <div class="header-title-box">
+            <h1>📷 Section Image Audit (72 Unique Content Assets)</h1>
+            <p class="subtitle">100% clean list of unique non-banner section content images extracted directly from source code (zero logos, zero hero banners, zero duplicates).</p>
+        </div>
+
+        <!-- HIGHLIGHTED 1-LINER CLIENT NOTE BANNER -->
+        <div class="client-note-box">
+            <span class="note-tag">📌 CLIENT NOTE</span>
+            <div class="note-text">
+                Here is the page-by-page list of all stock &amp; AI images. Click <code>🔗 Visit Page ↗</code> on any header to inspect the live section and review images for real photo replacement.
+            </div>
+        </div>
+
+        <!-- PAGE FILTER TABS -->
+        <div class="page-tabs-bar">
+            <button class="page-tab-btn active" onclick="filterPage('all', this)">All Pages (9)</button>
+            <button class="page-tab-btn" onclick="filterPage('home', this)">01: Home</button>
+            <button class="page-tab-btn" onclick="filterPage('tt', this)">02: Track &amp; Trace</button>
+            <button class="page-tab-btn" onclick="filterPage('ac', this)">03: Anti-Counterfeit</button>
+            <button class="page-tab-btn" onclick="filterPage('pli', this)">04: Incentives</button>
+            <button class="page-tab-btn" onclick="filterPage('ai_video', this)">05: AI Video</button>
+            <button class="page-tab-btn" onclick="filterPage('agro', this)">06: Agrochemicals</button>
+            <button class="page-tab-btn" onclick="filterPage('oil_gas', this)">07: Oil &amp; Gas</button>
+            <button class="page-tab-btn" onclick="filterPage('elec', this)">08: Electricals</button>
+            <button class="page-tab-btn" onclick="filterPage('about_us', this)">09: About Us</button>
+        </div>
+
+        <!-- PAGE GROUPS CONTAINER -->
+        <div id="pages-container">
+            <!-- Dynamically Rendered -->
+        </div>
+
+    </div>
+
+    <!-- ZOOM MODAL -->
+    <div class="modal-overlay" id="zoom-modal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h3 id="modal-title" style="font-size: 1.2rem; color: #fff; margin-bottom: 12px;">Image Asset Preview</h3>
+            <div class="modal-img-wrap">
+                <img id="modal-img" src="" alt="Full View" />
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // PAGE DIRECT STAGING LINKS
+        const PAGE_LINKS = {
+            "home": "https://smartepsilon.wpenginepowered.com/",
+            "tt": "https://smartepsilon.wpenginepowered.com/solution-track-trace/",
+            "ac": "https://smartepsilon.wpenginepowered.com/solution-anti-counterfeiting/",
+            "pli": "https://smartepsilon.wpenginepowered.com/payment-linked-incentives-solution-smart-epsilon/",
+            "ai_video": "https://smartepsilon.wpenginepowered.com/ai-video-intelligence-smart-epsilon/",
+            "agro": "https://smartepsilon.wpenginepowered.com/agrochemicals-smart-epsilon/",
+            "oil_gas": "https://smartepsilon.wpenginepowered.com/oil-and-gas-smart-epsilon/",
+            "elec": "https://smartepsilon.wpenginepowered.com/electrical-appliances-parts-smart-epsilon/",
+            "about_us": "./about-us.html"
+        };
+
+        // CLEAN SECTION CONTENT IMAGES (ZERO LOGOS, ZERO BANNERS, ZERO DUPLICATES)
+        const ACTUAL_IMAGES_DATA = [
+            {
+                        "pageId": "home",
+                        "pageTitle": "Page 01: Home Page",
+                        "sec": "Section \u00b7 Traknode Serialization Architecture Diagram",
+                        "title": "Traknode Ui",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/traknode-ui.webp"
+            },
+            {
+                        "pageId": "home",
+                        "pageTitle": "Page 01: Home Page",
+                        "sec": "Section \u00b7 Tamper-Evident Holographic Cap Seal",
+                        "title": "Sol Counterfeit",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/sol_counterfeit-765x1024.jpg"
+            },
+            {
+                        "pageId": "home",
+                        "pageTitle": "Page 01: Home Page",
+                        "sec": "Section \u00b7 Premium Goods & Dispatch Serialization",
+                        "title": "Premium Goods",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/premium_goods-1024x765.jpg"
+            },
+            {
+                        "pageId": "home",
+                        "pageTitle": "Page 01: Home Page",
+                        "sec": "Section \u00b7 Video Intelligence Feature Card",
+                        "title": "Sol Video",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/sol_video.jpg"
+            },
+            {
+                        "pageId": "home",
+                        "pageTitle": "Page 01: Home Page",
+                        "sec": "Section \u00b7 Core Platform Architecture",
+                        "title": "Kavach",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/kavach-1024x873.webp"
+            },
+            {
+                        "pageId": "home",
+                        "pageTitle": "Page 01: Home Page",
+                        "sec": "Section \u00b7 AI Video Computer Vision Scanning",
+                        "title": "Ai Video Bb5Xcgff",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/ai-video-BB5xCGFF-1024x683.webp"
+            },
+            {
+                        "pageId": "home",
+                        "pageTitle": "Page 01: Home Page",
+                        "sec": "Section \u00b7 Agrochemical & Crop Protection Vertical",
+                        "title": "Case Agro",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/case-agro-1024x683.webp"
+            },
+            {
+                        "pageId": "home",
+                        "pageTitle": "Page 01: Home Page",
+                        "sec": "Section \u00b7 Warehouse AR & Handheld Barcode Scanning",
+                        "title": "Warehouse Ar",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/warehouse-ar.webp"
+            },
+            {
+                        "pageId": "home",
+                        "pageTitle": "Page 01: Home Page",
+                        "sec": "Section \u00b7 Overt & Covert QR Code Authentication",
+                        "title": "Crypto Qr",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/crypto-qr.webp"
+            },
+            {
+                        "pageId": "home",
+                        "pageTitle": "Page 01: Home Page",
+                        "sec": "Section \u00b7 Counterfeit Risk & Geolocation Heatmap",
+                        "title": "Counterfeit Risk",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/counterfeit-risk.webp"
+            },
+            {
+                        "pageId": "tt",
+                        "pageTitle": "Page 02: Track & Trace Solution",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Track Plant",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/track_plant.jpg"
+            },
+            {
+                        "pageId": "tt",
+                        "pageTitle": "Page 02: Track & Trace Solution",
+                        "sec": "Section \u00b7 Warehouse Dispatch & Pallet Serialization",
+                        "title": "Track Warehouse",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/track_warehouse.jpg"
+            },
+            {
+                        "pageId": "tt",
+                        "pageTitle": "Page 02: Track & Trace Solution",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Track Distributor",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/track_distributor.jpg"
+            },
+            {
+                        "pageId": "tt",
+                        "pageTitle": "Page 02: Track & Trace Solution",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Track Retailer",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/track_retailer.jpg"
+            },
+            {
+                        "pageId": "tt",
+                        "pageTitle": "Page 02: Track & Trace Solution",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Track Consumer",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/track_consumer.jpg"
+            },
+            {
+                        "pageId": "tt",
+                        "pageTitle": "Page 02: Track & Trace Solution",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Sec4 Reports 1024X572",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/sec4_reports-1024x572.jpg"
+            },
+            {
+                        "pageId": "tt",
+                        "pageTitle": "Page 02: Track & Trace Solution",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Sec4 Production 1024X572",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/sec4_production-1024x572.jpg"
+            },
+            {
+                        "pageId": "tt",
+                        "pageTitle": "Page 02: Track & Trace Solution",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Sec4 Audit 1024X572",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/sec4_audit-1024x572.jpg"
+            },
+            {
+                        "pageId": "tt",
+                        "pageTitle": "Page 02: Track & Trace Solution",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Sec6 Erp",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/sec6_erp.jpg"
+            },
+            {
+                        "pageId": "tt",
+                        "pageTitle": "Page 02: Track & Trace Solution",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Sec6 Warehouse",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/sec6_warehouse.jpg"
+            },
+            {
+                        "pageId": "tt",
+                        "pageTitle": "Page 02: Track & Trace Solution",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Sec6 Print",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/sec6_print.jpg"
+            },
+            {
+                        "pageId": "ac",
+                        "pageTitle": "Page 03: Anti-Counterfeiting Solution",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Overt Tab",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/overt_tab.jpg"
+            },
+            {
+                        "pageId": "ac",
+                        "pageTitle": "Page 03: Anti-Counterfeiting Solution",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Covert Tab",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/covert_tab.jpg"
+            },
+            {
+                        "pageId": "ac",
+                        "pageTitle": "Page 03: Anti-Counterfeiting Solution",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Forensic Tab",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/forensic_tab.jpg"
+            },
+            {
+                        "pageId": "ac",
+                        "pageTitle": "Page 03: Anti-Counterfeiting Solution",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Ac Qa 1 New 1785748096843",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/ac_qa_1_new_1785748096843.jpg"
+            },
+            {
+                        "pageId": "ac",
+                        "pageTitle": "Page 03: Anti-Counterfeiting Solution",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Ac Qa 2 New 1785748107616",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/ac_qa_2_new_1785748107616.jpg"
+            },
+            {
+                        "pageId": "ac",
+                        "pageTitle": "Page 03: Anti-Counterfeiting Solution",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Ac Qa 3 New 1785748117134",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/ac_qa_3_new_1785748117134.jpg"
+            },
+            {
+                        "pageId": "pli",
+                        "pageTitle": "Page 04: Payment Linked Incentives",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Pli Qa 1 New 1785748128898",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/pli_qa_1_new_1785748128898.jpg"
+            },
+            {
+                        "pageId": "pli",
+                        "pageTitle": "Page 04: Payment Linked Incentives",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Pli Qa 2 New 1785748138442",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/pli_qa_2_new_1785748138442.jpg"
+            },
+            {
+                        "pageId": "pli",
+                        "pageTitle": "Page 04: Payment Linked Incentives",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Pli Qa 3 New 1785748149719",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/pli_qa_3_new_1785748149719.jpg"
+            },
+            {
+                        "pageId": "pli",
+                        "pageTitle": "Page 04: Payment Linked Incentives",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Pli Qa 4 V2 1785748493842",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/pli_qa_4_v2_1785748493842.jpg"
+            },
+            {
+                        "pageId": "ai_video",
+                        "pageTitle": "Page 05: AI Video Intelligence",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Qa Card 1",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/qa_card_1.jpg"
+            },
+            {
+                        "pageId": "ai_video",
+                        "pageTitle": "Page 05: AI Video Intelligence",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Qa Card 2",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/qa_card_2.jpg"
+            },
+            {
+                        "pageId": "ai_video",
+                        "pageTitle": "Page 05: AI Video Intelligence",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Qa Card 3",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/qa_card_3.jpg"
+            },
+            {
+                        "pageId": "ai_video",
+                        "pageTitle": "Page 05: AI Video Intelligence",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Int 1",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/int_1.jpg"
+            },
+            {
+                        "pageId": "ai_video",
+                        "pageTitle": "Page 05: AI Video Intelligence",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Int 2",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/int_2.jpg"
+            },
+            {
+                        "pageId": "ai_video",
+                        "pageTitle": "Page 05: AI Video Intelligence",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Int 3",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/int_3.jpg"
+            },
+            {
+                        "pageId": "agro",
+                        "pageTitle": "Page 06: Agrochemicals & Seeds Industry",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Agro Auth",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/agro_auth.jpg"
+            },
+            {
+                        "pageId": "agro",
+                        "pageTitle": "Page 06: Agrochemicals & Seeds Industry",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Agro Incentives",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/agro_incentives.jpg"
+            },
+            {
+                        "pageId": "agro",
+                        "pageTitle": "Page 06: Agrochemicals & Seeds Industry",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Agro Demand",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/agro_demand.jpg"
+            },
+            {
+                        "pageId": "agro",
+                        "pageTitle": "Page 06: Agrochemicals & Seeds Industry",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Agro Temp",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/agro_temp.jpg"
+            },
+            {
+                        "pageId": "agro",
+                        "pageTitle": "Page 06: Agrochemicals & Seeds Industry",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Agro Diverted",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/agro_diverted.jpg"
+            },
+            {
+                        "pageId": "agro",
+                        "pageTitle": "Page 06: Agrochemicals & Seeds Industry",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Agro Loading",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/agro_loading.jpg"
+            },
+            {
+                        "pageId": "agro",
+                        "pageTitle": "Page 06: Agrochemicals & Seeds Industry",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Agro Audit",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/agro_audit.jpg"
+            },
+            {
+                        "pageId": "agro",
+                        "pageTitle": "Page 06: Agrochemicals & Seeds Industry",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Agro Safety",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/agro_safety.jpg"
+            },
+            {
+                        "pageId": "agro",
+                        "pageTitle": "Page 06: Agrochemicals & Seeds Industry",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Client Factory",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/client_factory.jpg"
+            },
+            {
+                        "pageId": "agro",
+                        "pageTitle": "Page 06: Agrochemicals & Seeds Industry",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Challenge Scan",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/challenge_scan.jpg"
+            },
+            {
+                        "pageId": "oil_gas",
+                        "pageTitle": "Page 07: Oil & Gas Industry",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Og Sol 1 1785749610391",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/og_sol_1_1785749610391.jpg"
+            },
+            {
+                        "pageId": "oil_gas",
+                        "pageTitle": "Page 07: Oil & Gas Industry",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Og Sol 2 1785749620743",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/og_sol_2_1785749620743.jpg"
+            },
+            {
+                        "pageId": "oil_gas",
+                        "pageTitle": "Page 07: Oil & Gas Industry",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Og Sol 3 1785749631383",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/og_sol_3_1785749631383.jpg"
+            },
+            {
+                        "pageId": "oil_gas",
+                        "pageTitle": "Page 07: Oil & Gas Industry",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Og 3",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/og_3.jpg"
+            },
+            {
+                        "pageId": "oil_gas",
+                        "pageTitle": "Page 07: Oil & Gas Industry",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Og 5",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/og_5.jpg"
+            },
+            {
+                        "pageId": "oil_gas",
+                        "pageTitle": "Page 07: Oil & Gas Industry",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Og 4",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/og_4.jpg"
+            },
+            {
+                        "pageId": "oil_gas",
+                        "pageTitle": "Page 07: Oil & Gas Industry",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Og 1",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/og_1.jpg"
+            },
+            {
+                        "pageId": "oil_gas",
+                        "pageTitle": "Page 07: Oil & Gas Industry",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Og 7",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/og_7.jpg"
+            },
+            {
+                        "pageId": "oil_gas",
+                        "pageTitle": "Page 07: Oil & Gas Industry",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Og 2",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/og_2.jpg"
+            },
+            {
+                        "pageId": "oil_gas",
+                        "pageTitle": "Page 07: Oil & Gas Industry",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Og 6",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/og_6.jpg"
+            },
+            {
+                        "pageId": "oil_gas",
+                        "pageTitle": "Page 07: Oil & Gas Industry",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Og 8",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/og_8.jpg"
+            },
+            {
+                        "pageId": "elec",
+                        "pageTitle": "Page 08: Electrical Appliances & Parts",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Ea Sol 1 1785749642123",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/ea_sol_1_1785749642123.jpg"
+            },
+            {
+                        "pageId": "elec",
+                        "pageTitle": "Page 08: Electrical Appliances & Parts",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Ea Sol 2 1785749653909",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/ea_sol_2_1785749653909.jpg"
+            },
+            {
+                        "pageId": "elec",
+                        "pageTitle": "Page 08: Electrical Appliances & Parts",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Ea Sol 3 1785749664852",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/ea_sol_3_1785749664852.jpg"
+            },
+            {
+                        "pageId": "elec",
+                        "pageTitle": "Page 08: Electrical Appliances & Parts",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Ea Sol 4 1785749676334",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/ea_sol_4_1785749676334.jpg"
+            },
+            {
+                        "pageId": "elec",
+                        "pageTitle": "Page 08: Electrical Appliances & Parts",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Ea 1",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/ea_1.jpg"
+            },
+            {
+                        "pageId": "elec",
+                        "pageTitle": "Page 08: Electrical Appliances & Parts",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Ea 4",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/ea_4.jpg"
+            },
+            {
+                        "pageId": "elec",
+                        "pageTitle": "Page 08: Electrical Appliances & Parts",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Ea 8",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/ea_8.jpg"
+            },
+            {
+                        "pageId": "elec",
+                        "pageTitle": "Page 08: Electrical Appliances & Parts",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Ea 3",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/ea_3.jpg"
+            },
+            {
+                        "pageId": "elec",
+                        "pageTitle": "Page 08: Electrical Appliances & Parts",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Ea 5",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/ea_5.jpg"
+            },
+            {
+                        "pageId": "elec",
+                        "pageTitle": "Page 08: Electrical Appliances & Parts",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Ea 7",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/ea_7.jpg"
+            },
+            {
+                        "pageId": "elec",
+                        "pageTitle": "Page 08: Electrical Appliances & Parts",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Ea 6",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/ea_6.jpg"
+            },
+            {
+                        "pageId": "elec",
+                        "pageTitle": "Page 08: Electrical Appliances & Parts",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Ea 2",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/ea_2.jpg"
+            },
+            {
+                        "pageId": "about_us",
+                        "pageTitle": "Page 09: About Us Page",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "About Platform",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/themes/smart-epsilon/template-parts/sections/about-who/assets/about_platform.jpg"
+            },
+            {
+                        "pageId": "about_us",
+                        "pageTitle": "Page 09: About Us Page",
+                        "sec": "Section Asset \u00b7 Content Image",
+                        "title": "Se Map",
+                        "url": "https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/08/se-map.png"
+            }
+];
+
+        let selectedPage = 'all';
+
+        function filterPage(pId, btnEl) {
+            selectedPage = pId;
+            document.querySelectorAll('.page-tab-btn').forEach(b => b.classList.remove('active'));
+            if (btnEl) btnEl.classList.add('active');
+            renderCards();
+        }
+
+        function openModal(imgSrc, title) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-img').src = imgSrc;
+            document.getElementById('zoom-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('zoom-modal').style.display = 'none';
+        }
+
+        function renderCards() {
+            const container = document.getElementById('pages-container');
+            container.innerHTML = '';
+
+            const groups = {};
+            ACTUAL_IMAGES_DATA.forEach(item => {
+                if (selectedPage !== 'all' && item.pageId !== selectedPage) return;
+                if (!groups[item.pageId]) {
+                    groups[item.pageId] = {
+                        title: item.pageTitle,
+                        items: []
+                    };
+                }
+                groups[item.pageId].items.push(item);
+            });
+
+            Object.keys(groups).forEach(pKey => {
+                const grp = groups[pKey];
+                const pageUrl = PAGE_LINKS[pKey] || "#";
+                const block = document.createElement('div');
+                block.className = 'page-section-block';
+
+                let cardsHtml = '';
+                grp.items.forEach(item => {
+                    cardsHtml += `
+                        <div class="card">
+                            <div class="card-img-box" onclick="openModal('${item.url}', '${item.title.replace(/'/g, "\\'")}')">
+                                <img src="${item.url}" alt="${item.title}" loading="lazy" />
+                                <span class="zoom-badge">🔍 Click to Zoom</span>
+                            </div>
+                            <div class="card-content">
+                                <span class="sec-tag">${item.sec || 'Section Image'}</span>
+                                <h4 class="img-name">${item.title}</h4>
+                                <div class="img-source-code">📁 URL: <a href="${item.url}" target="_blank" style="color:#60a5fa;">${item.url}</a></div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                block.innerHTML = `
+                    <div class="page-block-header">
+                        <div class="page-title">
+                            📁 ${grp.title}
+                            <a href="${pageUrl}" target="_blank" style="font-size: 0.78rem; font-weight: 700; color: #60a5fa; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); padding: 4px 12px; border-radius: 20px; text-decoration: none; margin-left: 10px;">🔗 Visit Page ↗</a>
+                        </div>
+                        <span style="font-size:0.85rem; color:var(--text-muted); font-weight:700;">${grp.items.length} Content Image(s)</span>
+                    </div>
+                    <div class="image-cards-grid">
+                        ${cardsHtml}
+                    </div>
+                `;
+
+                container.appendChild(block);
+            });
+        }
+
+        // Initial render
+        renderCards();
+    </script>
+</body>
+</html>
