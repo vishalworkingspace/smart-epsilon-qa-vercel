@@ -281,6 +281,49 @@
             border: 1px solid rgba(16, 185, 129, 0.4);
         }
 
+        .nav-btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn-green {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.3) 0%, rgba(5, 150, 105, 0.4) 100%);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.6);
+        }
+
+        .nav-btn-green:hover {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #fff;
+            border-color: #34d399;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn-purple {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3) 0%, rgba(124, 58, 237, 0.4) 100%);
+            color: #c084fc;
+            border: 1px solid rgba(192, 132, 252, 0.6);
+        }
+
+        .nav-btn-purple:hover {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: #fff;
+            border-color: #c084fc;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+            transform: translateY(-2px);
+        }
+
         .btn-lock-session {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.12);
@@ -528,9 +571,9 @@
             <div class="badge-row">
                 <div class="badge-left">
                     <span class="pill-badge pill-purple">👑 Master Executive Hub</span>
-                    <span class="pill-badge pill-green">🎉 ALL 10 PAGES 100% AUDITED & APPROVED</span>
-                    <a href="./image_audit_portal.html" class="pill-badge pill-blue" style="text-decoration:none; transition: transform 0.2s ease;">🖼️ IMAGE AUDIT PORTAL ➔</a>
-                    <a href="./go_live_checklist.html" class="pill-badge pill-amber" style="text-decoration:none; transition: transform 0.2s ease;">🚀 GO-LIVE CHECKLIST ➔</a>
+                    <span class="pill-badge pill-green">🎉 ALL 10 PAGES 100% AUDITED &amp; APPROVED</span>
+                    <a href="./image_audit_portal.html" class="nav-btn-action nav-btn-green">🖼️ Image Audit Portal ➔</a>
+                    <a href="./go_live_checklist.html" class="nav-btn-action nav-btn-purple">🚀 Go-Live Checklist ➔</a>
                 </div>
                 <button class="btn-lock-session" onclick="lockSession()">🔒 Lock Session</button>
             </div>
@@ -556,32 +599,6 @@
                 </div>
             </div>
         </header>
-
-        <!-- GO-LIVE & MIGRATION PROTOCOL BANNER -->
-        <div class="go-live-banner" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.18) 0%, rgba(59, 130, 246, 0.18) 100%); border: 1px solid rgba(139, 92, 246, 0.4); border-radius: 20px; padding: 24px 30px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
-            <div>
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                    <span class="pill-badge pill-amber">🚀 PRE-LAUNCH PROTOCOL</span>
-                    <span class="pill-badge pill-green">🟢 LIVE CHECKLIST ACTIVE</span>
-                </div>
-                <h3 style="font-size: 1.35rem; font-weight: 800; color: #fff; margin-bottom: 6px;">Smart Epsilon — Master Go-Live & Migration Checklist</h3>
-                <p style="color: #94a3b8; font-size: 0.92rem; margin: 0;">Interactive pre-launch verification tracking Client Server Credentials, Data Migration, Page Readiness, 301 Redirects, and Security.</p>
-            </div>
-            <a href="./go_live_checklist.html" class="btn-unlock" style="text-decoration: none; width: auto; padding: 12px 24px; font-size: 0.92rem; margin: 0;">Open Go-Live Checklist ➔</a>
-        </div>
-
-        <!-- NEW IMAGE AUDIT & REPLACEMENT PORTAL BANNER -->
-        <div class="image-audit-banner" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.18) 0%, rgba(16, 185, 129, 0.18) 100%); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 20px; padding: 24px 30px; margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
-            <div>
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                    <span class="pill-badge pill-purple">🖼️ NEW CLIENT FEATURE</span>
-                    <span class="pill-badge pill-green">🟢 22 IMAGES INDEXED (10 PAGES)</span>
-                </div>
-                <h3 style="font-size: 1.35rem; font-weight: 800; color: #fff; margin-bottom: 6px;">Image Audit &amp; Real-Photo Replacement Portal</h3>
-                <p style="color: #94a3b8; font-size: 0.92rem; margin: 0;">Page-by-page grid of all non-banner stock images, AI renders &amp; UI diagrams across all 10 pages for client inspection and real photo proposals.</p>
-            </div>
-            <a href="./image_audit_portal.html" class="btn-unlock" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); text-decoration: none; width: auto; padding: 12px 24px; font-size: 0.92rem; margin: 0;">Open Image Audit Portal ➔</a>
-        </div>
 
         <!-- SECTION TITLE -->
         <div class="section-header">
