@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Video Intelligence — Smart Epsilon</title>
+<link rel="icon" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700;8..144,800&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   SMART EPSILON — AI VIDEO INTELLIGENCE · MOCKUP v2 "EVIDENCE FIRST"
+   Tokens mirrored verbatim from the production theme:
+   wp-content/themes/smart-epsilon/assets/css/globals.css
+   ========================================================================== */
+
+:root{
+  --color-primary:#6b62ac;
+  --color-primary-hover:#2b2868;
+  --color-primary-soft:rgba(107,98,172,.08);
+  --color-primary-border:rgba(107,98,172,.2);
+  --color-primary-glow:0 0 0 1px rgba(107,98,172,.12),0 20px 48px rgba(107,98,172,.15);
+  --color-secondary:#2b2868;
+  --color-secondary-soft:#dad0ec;
+
+  --color-navy:#0f0f25;
+  --color-ink:#111111;
+  --color-ink-soft:#555555;
+  --color-muted:#737373;
+  --color-surface:#ffffff;
+  --color-surface-soft:#f7f7fa;
+  --color-surface-tint:#f3f1f8;
+  --color-line:rgba(15,15,37,.1);
+  --color-line-strong:rgba(15,15,37,.18);
+
+  --color-teal:#0d9488;
+  --color-success:#22c55e;
+  --color-danger:#ef4444;
+  --color-amber:#f59e0b;
+
+  --color-bg-dark:#06060f;
+  --color-bg-dark-elevated:#0e0d1a;
+  --color-bg-dark-panel:#12111f;
+  --color-ink-on-dark:#f4f3f8;
+  --color-ink-on-dark-soft:rgba(244,243,248,.62);
+  --color-primary-on-dark:#8b7fd4;
+  --color-primary-bright-on-dark:#b8aef0;
+  --color-line-on-dark:rgba(255,255,255,.08);
+  --color-line-strong-on-dark:rgba(255,255,255,.16);
+
+  --font-body:"Google Sans Flex",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --font-display:"Google Sans Flex",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --font-mono:ui-monospace,"SF Mono","Cascadia Code","Consolas",monospace;
+
+  --fs-2xs:.6875rem; --fs-xs:.8125rem; --fs-sm:.9375rem; --fs-base:1rem;
+  --fs-md:1.125rem; --fs-lg:1.375rem;
+  --fs-xl:clamp(1.75rem,3vw,2.25rem);
+  --fs-2xl:clamp(2rem,4vw,3rem);
+  --fs-hero:clamp(2rem,4.2vw,3.15rem);
+
+  --lh-tight:1.05; --lh-snug:1.25; --lh-normal:1.6;
+  --tracking-eyebrow:.12em;
+
+  --container-max:1440px;
+  --max:1440px;
+  --container-narrow:720px;
+  --gutter:clamp(1.25rem,4vw,3rem);
+  --section-pad-y:clamp(4.5rem,10vh,7.5rem);
+  --nav-h:72px;
+
+  --radius-sm:8px; --radius-md:14px; --radius:16px;
+  --radius-lg:22px; --radius-xl:28px; --radius-pill:999px;
+  --shadow-sm:0 2px 8px rgba(15,15,37,.06);
+  --shadow-md:0 12px 40px rgba(15,15,37,.1);
+  --shadow-lg:0 24px 64px rgba(15,15,37,.12);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --dur-fast:.2s; --dur-base:.4s; --dur-slow:.75s;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;font-family:var(--font-body);font-size:var(--fs-base);font-weight:400;
+  line-height:var(--lh-normal);color:var(--color-ink);background:var(--color-surface);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:clip;
+}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:500;letter-spacing:-.02em;line-height:var(--lh-tight);margin:0}
+p{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:4px}
+.section--dark :focus-visible{outline-color:var(--color-primary-bright-on-dark)}
+
+.container{width:100%;max-width:var(--container-max);margin-inline:auto;padding-inline:var(--gutter)}
+.section{padding-block:var(--section-pad-y)}
+.section--dark{background:var(--color-bg-dark);color:var(--color-ink-on-dark)}
+.section--dark h1,.section--dark h2,.section--dark h3{color:var(--color-ink-on-dark)}
+
+/* --- eyebrow (dot + dash marker, per globals.css) --- */
+.eyebrow{
+  position:relative;display:inline-flex;align-items:center;gap:.5rem;
+  margin:0 0 .75rem;padding-left:14px;
+  font-size:var(--fs-2xs);font-weight:800;letter-spacing:var(--tracking-eyebrow);
+  text-transform:uppercase;color:var(--color-primary);line-height:1.2;
+}
+.section--dark .eyebrow{color:var(--color-primary-bright-on-dark)}
+.eyebrow::before,.eyebrow::after{content:"";position:absolute;left:0;background:currentColor}
+.eyebrow::before{top:calc(.6em - 3px);width:6px;height:6px;border-radius:50%}
+.eyebrow::after{top:calc(.6em + 4px);width:10px;height:2px;border-radius:1px}
+
+.section-head{max-width:1060px;margin-bottom:3rem}
+.section-title{font-size:var(--fs-2xl);text-wrap:balance}
+.section-sub{margin-top:1.125rem;max-width:64ch;font-size:var(--fs-md);color:var(--color-ink-soft);line-height:var(--lh-normal)}
+/* keep the marquee section titles on a single line on desktop */
+@media (min-width:1100px){.section-title--single{white-space:nowrap}}
+/* heads that sit in a narrow sticky column step down one size so they stay on one line */
+.risk-head .section-title,.faq-head .section-title{font-size:var(--fs-xl)}
+.section--dark .section-sub{color:var(--color-ink-on-dark-soft)}
+.mono{font-family:var(--font-mono);font-size:var(--fs-2xs);letter-spacing:.06em;text-transform:uppercase}
+
+/* --- buttons --- */
+.btn{
+  --btn-bg:var(--color-navy);--btn-fg:#fff;--btn-border:transparent;
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  min-height:48px;padding:20px 30px;border:1px solid var(--btn-border);
+  border-radius:var(--radius-pill);background:var(--btn-bg);color:var(--btn-fg);
+  font-weight:600;font-size:18px;line-height:normal;white-space:nowrap;text-decoration:none;
+  transition:transform var(--dur-fast) var(--ease-out),box-shadow var(--dur-base) var(--ease-out),
+             background-color var(--dur-base) var(--ease-out),border-color var(--dur-base) var(--ease-out);
+}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{--btn-bg:var(--color-primary)}
+.btn-primary:hover{--btn-bg:var(--color-primary-hover);box-shadow:var(--color-primary-glow)}
+.btn-secondary{--btn-bg:transparent;--btn-fg:var(--color-ink);--btn-border:var(--color-line-strong)}
+.btn-secondary:hover{--btn-bg:var(--color-primary-soft);--btn-border:var(--color-primary)}
+.section--dark .btn-secondary{--btn-bg:rgba(255,255,255,.05);--btn-fg:#fff;--btn-border:rgba(255,255,255,.25)}
+.section--dark .btn-secondary:hover{--btn-bg:rgba(255,255,255,.12);--btn-border:rgba(255,255,255,.5)}
+.btn-sm{min-height:40px;padding:.6rem 1.15rem;font-size:var(--fs-xs)}
+
+/* ==========================================================================
+   S0 · HEADER
+   ========================================================================== */
+.site-header{
+  position:sticky;top:0;z-index:200;height:var(--nav-h);display:flex;align-items:center;
+  background:rgba(255,255,255,.88);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--color-line);
+}
+.header-inner{display:flex;align-items:center;justify-content:space-between;width:100%;gap:2rem}
+.logo img{height:34px;width:auto}
+.main-nav{display:flex;align-items:center;gap:2.25rem}
+.main-nav a{
+  font-size:var(--fs-sm);font-weight:600;color:var(--color-ink-soft);text-decoration:none;
+  display:inline-flex;align-items:center;gap:.3rem;transition:color var(--dur-fast) var(--ease-out);
+}
+.main-nav a:hover{color:var(--color-primary)}
+.main-nav .is-active{color:var(--color-primary);position:relative}
+.main-nav .is-active::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:var(--color-primary);border-radius:1px}
+.nav-caret{width:9px;height:9px;opacity:.55}
+
+/* ==========================================================================
+   S1 · HERO
+   ========================================================================== */
+.hero{
+  position:relative;overflow:hidden;
+  padding-block:clamp(3.5rem,8vh,6rem) clamp(4rem,9vh,6.5rem);
+}
+.hero::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(60% 55% at 18% 26%,rgba(107,98,172,.20) 0%,transparent 70%);
+}
+.hero .container{position:relative}
+.hero-grid{display:grid;grid-template-columns:minmax(0,52fr) minmax(0,48fr);gap:clamp(2.5rem,5vw,5rem);align-items:center}
+.hero-title{font-size:var(--fs-hero);max-width:24ch}
+.hero-title em{font-style:normal;color:var(--color-primary-bright-on-dark)}
+.hero-sub{margin-top:1.5rem;max-width:52ch;font-size:var(--fs-md);color:var(--color-ink-on-dark-soft)}
+.hero-chips{display:flex;flex-wrap:wrap;gap:.625rem;margin-top:2rem}
+.chip{
+  display:inline-flex;align-items:center;gap:.5rem;padding:.5rem 1rem;
+  border:1px solid var(--color-line-strong-on-dark);border-radius:var(--radius-pill);
+  font-size:var(--fs-xs);color:var(--color-ink-on-dark-soft);
+}
+.chip::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--color-primary-on-dark)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:.875rem;margin-top:2.5rem}
+
+/* evidence deck */
+.deck{position:relative;aspect-ratio:1200/680}
+.deck-item{
+  position:absolute;inset:0;border-radius:var(--radius-lg);overflow:hidden;
+  border:1px solid var(--color-line-strong-on-dark);background:var(--color-bg-dark-panel);
+  transition:opacity var(--dur-slow) var(--ease-out),transform var(--dur-slow) var(--ease-out);
+}
+.deck-item img{width:100%;height:100%;object-fit:cover}
+.deck-item[data-pos="0"]{opacity:1;transform:translate(0,0) scale(1);z-index:3;box-shadow:0 30px 70px rgba(0,0,0,.55)}
+.deck-item[data-pos="1"]{opacity:.5;transform:translate(3.2%,-5.5%) scale(.955);z-index:2}
+.deck-item[data-pos="2"]{opacity:.24;transform:translate(6.4%,-11%) scale(.91);z-index:1}
+.deck-caption{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  margin-top:1.125rem;color:var(--color-ink-on-dark-soft);
+}
+.deck-caption .mono{color:var(--color-primary-bright-on-dark)}
+.deck-dots{display:flex;gap:.4rem}
+.deck-dot{width:22px;height:2px;border-radius:1px;background:var(--color-line-strong-on-dark);transition:background var(--dur-fast) var(--ease-out)}
+.deck-dot.is-on{background:var(--color-primary-bright-on-dark)}
+
+/* ==========================================================================
+   S2 · COST OF NOT KNOWING
+   ========================================================================== */
+.risk-grid{display:grid;grid-template-columns:minmax(0,38fr) minmax(0,62fr);gap:clamp(2.5rem,5vw,5rem);align-items:start}
+.risk-head{position:sticky;top:calc(var(--nav-h) + 3rem)}
+.risk-list{border-top:1px solid var(--color-line)}
+.risk-item{
+  position:relative;display:grid;grid-template-columns:3.25rem 1fr;gap:1.25rem;
+  padding:1.75rem 0 1.75rem 1.25rem;border-bottom:1px solid var(--color-line);
+  transition:background var(--dur-fast) var(--ease-out);
+}
+.risk-item::before{
+  content:"";position:absolute;left:0;top:1.75rem;bottom:1.75rem;width:2px;
+  background:var(--color-primary);border-radius:1px;
+  opacity:0;transition:opacity var(--dur-fast) var(--ease-out);
+}
+.risk-item:hover::before{opacity:1}
+.risk-item:hover{background:var(--color-primary-soft)}
+.risk-num{font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--color-muted);padding-top:.35rem}
+.risk-q{font-size:var(--fs-lg);font-weight:500;letter-spacing:-.015em;line-height:var(--lh-snug)}
+.risk-a{margin-top:.625rem;font-size:var(--fs-sm);color:var(--color-ink-soft);max-width:62ch}
+
+/* ==========================================================================
+   S3 · FOUR AREAS, PROVEN  ★ centrepiece
+   ========================================================================== */
+.proof{background:var(--color-bg-dark)}
+.proof-layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:clamp(2.5rem,5vw,4.5rem);align-items:start}
+.rail,.stage{min-width:0}
+.rail{position:sticky;top:calc(var(--nav-h) + 2.5rem)}
+.rail-label{margin-bottom:1.125rem;color:rgba(244,243,248,.38)}
+.rail-list{border-left:1px solid var(--color-line-on-dark)}
+.rail-btn{
+  position:relative;display:block;width:100%;text-align:left;padding:.9rem 0 .9rem 1.25rem;
+  color:var(--color-ink-on-dark-soft);transition:color var(--dur-fast) var(--ease-out);
+}
+.rail-btn::before{
+  content:"";position:absolute;left:-1px;top:.55rem;bottom:.55rem;width:2px;
+  background:var(--color-primary-bright-on-dark);border-radius:1px;
+  opacity:0;transition:opacity var(--dur-fast) var(--ease-out);
+}
+.rail-btn:hover{color:var(--color-ink-on-dark)}
+.rail-btn.is-active{color:var(--color-ink-on-dark)}
+.rail-btn.is-active::before{opacity:1}
+.rail-name{display:block;font-size:var(--fs-sm);font-weight:600}
+.rail-count{display:block;margin-top:.2rem;font-family:var(--font-mono);font-size:var(--fs-2xs);letter-spacing:.06em;color:rgba(244,243,248,.4)}
+.rail-foot{margin-top:1.75rem;padding-left:1.25rem;font-size:var(--fs-2xs);line-height:1.5;color:rgba(244,243,248,.34);max-width:26ch}
+
+.area{padding-bottom:clamp(3.5rem,7vh,5.5rem);scroll-margin-top:calc(var(--nav-h) + 2rem)}
+.area:last-child{padding-bottom:0}
+.area-head{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;padding-bottom:1.25rem;margin-bottom:2rem;border-bottom:1px solid var(--color-line-on-dark)}
+.area-title{font-size:var(--fs-xl)}
+.area-thesis{font-size:var(--fs-sm);color:var(--color-primary-bright-on-dark)}
+.frames{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1.25rem,2.4vw,2rem)}
+.frame--wide{grid-column:1 / -1}
+
+figure.frame{margin:0}
+.frame-btn{
+  display:block;width:100%;padding:0;border-radius:var(--radius-md);overflow:hidden;
+  border:1px solid var(--color-line-on-dark);background:var(--color-bg-dark-panel);
+  transition:border-color var(--dur-base) var(--ease-out),transform var(--dur-fast) var(--ease-out),box-shadow var(--dur-base) var(--ease-out);
+}
+.frame-btn img{width:100%;aspect-ratio:1200/680;object-fit:cover;display:block}
+.frame-btn:hover{border-color:var(--color-line-strong-on-dark);transform:translateY(-2px);box-shadow:0 18px 44px rgba(0,0,0,.45)}
+.frame-meta{margin-top:.875rem}
+.frame-slug{display:flex;align-items:center;gap:.5rem;color:rgba(244,243,248,.42)}
+.frame-slug .tag{
+  font-family:var(--font-body);font-size:var(--fs-2xs);font-weight:700;letter-spacing:.08em;
+  padding:.15rem .5rem;border-radius:var(--radius-sm);
+  background:rgba(139,127,212,.16);color:var(--color-primary-bright-on-dark);
+}
+.frame-detect{
+  display:flex;align-items:center;gap:.55rem;margin-top:.6rem;
+  font-size:var(--fs-sm);font-weight:600;color:var(--color-ink-on-dark);
+}
+.dot{width:7px;height:7px;border-radius:50%;flex:none}
+.dot--ok{background:var(--color-success);box-shadow:0 0 8px rgba(34,197,94,.55)}
+.dot--warn{background:var(--color-amber);box-shadow:0 0 8px rgba(245,158,11,.5)}
+.dot--alert{background:var(--color-danger);box-shadow:0 0 8px rgba(239,68,68,.5)}
+.frame-note{margin-top:.4rem;font-size:var(--fs-sm);color:var(--color-ink-on-dark-soft);max-width:58ch}
+
+/* lightbox */
+.lightbox{
+  position:fixed;inset:0;z-index:600;display:none;align-items:center;justify-content:center;
+  padding:clamp(1rem,4vw,3rem);background:rgba(6,6,15,.94);
+}
+.lightbox[open],.lightbox.is-open{display:flex}
+.lightbox-inner{width:min(1200px,100%);animation:lbIn .2s var(--ease-out)}
+@keyframes lbIn{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:scale(1)}}
+.lightbox img{width:100%;border-radius:var(--radius-md);border:1px solid var(--color-line-strong-on-dark)}
+.lightbox-bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:1rem;color:var(--color-ink-on-dark-soft);flex-wrap:wrap}
+.lightbox-title{font-size:var(--fs-sm);font-weight:600;color:var(--color-ink-on-dark)}
+.lb-controls{display:flex;gap:.5rem}
+.lb-btn{
+  width:38px;height:38px;display:grid;place-items:center;border-radius:var(--radius-pill);
+  border:1px solid var(--color-line-strong-on-dark);color:var(--color-ink-on-dark);
+  transition:background var(--dur-fast) var(--ease-out);
+}
+.lb-btn:hover{background:rgba(255,255,255,.1)}
+
+/* ==========================================================================
+   S4 · APPLICATION INDEX
+   ========================================================================== */
+.apps{background:var(--color-surface-soft)}
+
+.tag{
+  display:inline-flex;align-items:center;font-size:var(--fs-2xs);font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;padding:.2rem .55rem;border-radius:var(--radius-sm);white-space:nowrap;
+}
+.tag--existing{background:var(--color-primary-soft);color:var(--color-primary)}
+.tag--purpose{background:transparent;border:1px solid var(--color-line-strong);color:var(--color-ink-soft)}
+.tag--hybrid{background:var(--color-secondary-soft);color:var(--color-secondary)}
+
+/* filter bar */
+.filters{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2.25rem}
+.filter{
+  display:inline-flex;align-items:center;gap:.55rem;padding:.55rem 1.05rem;
+  border:1px solid var(--color-line-strong);border-radius:var(--radius-pill);
+  font-size:var(--fs-xs);font-weight:600;color:var(--color-ink-soft);background:transparent;
+  transition:all var(--dur-fast) var(--ease-out);
+}
+.filter:hover{border-color:var(--color-primary);color:var(--color-ink)}
+.filter .n{font-family:var(--font-mono);font-size:var(--fs-2xs);opacity:.65}
+.filter.is-on{background:var(--color-primary);border-color:var(--color-primary);color:#fff}
+.filter.is-on .n{opacity:.8}
+.filter-hint{margin-bottom:2.25rem;font-size:var(--fs-xs);color:var(--color-muted)}
+
+/* matrix */
+.apps-table{max-width:1180px;border-top:1px solid var(--color-line-strong)}
+.app-cols{
+  display:grid;grid-template-columns:20rem minmax(0,1fr) 9.5rem;gap:1.5rem;
+  padding:.7rem .9rem;border-bottom:1px solid var(--color-line);
+  color:var(--color-muted);
+}
+.app-group{margin:0}
+.app-group-head{
+  display:flex;align-items:center;justify-content:space-between;gap:.75rem;
+  padding:1.4rem .9rem .7rem;border-bottom:1px solid var(--color-line-strong);
+}
+.app-group-title{font-size:var(--fs-base);font-weight:600;letter-spacing:-.01em}
+.app-group-count{font-family:var(--font-mono);font-size:var(--fs-2xs);letter-spacing:.06em;color:var(--color-muted)}
+.app-row{
+  position:relative;display:grid;grid-template-columns:20rem minmax(0,1fr) 9.5rem;gap:1.5rem;align-items:baseline;
+  padding:.95rem .9rem;border-bottom:1px solid var(--color-line);
+  transition:background var(--dur-fast) var(--ease-out);
+}
+.app-row::before{
+  content:"";position:absolute;left:0;top:.5rem;bottom:.5rem;width:2px;
+  background:var(--color-primary);border-radius:1px;opacity:0;
+  transition:opacity var(--dur-fast) var(--ease-out);
+}
+.app-row:hover{background:var(--color-surface)}
+.app-row:hover::before{opacity:1}
+.app-row.is-hidden,.app-group.is-hidden{display:none}
+.app-name{font-size:var(--fs-sm);font-weight:500;color:var(--color-ink);white-space:nowrap}
+.app-desc{font-size:var(--fs-sm);color:var(--color-ink-soft)}
+.app-cam{justify-self:start}
+
+/* ==========================================================================
+   S5 · FITS THE STACK
+   ========================================================================== */
+.stack-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--color-line)}
+.stack-col{padding:2.5rem 2rem 0 0;border-right:1px solid var(--color-line)}
+.stack-col:last-child{border-right:0;padding-right:0}
+.stack-col:not(:first-child){padding-left:2rem}
+.stack-icon{color:var(--color-primary);margin-bottom:1.25rem}
+.stack-title{font-size:var(--fs-md);font-weight:600;letter-spacing:-.01em}
+.stack-body{margin-top:.75rem;font-size:var(--fs-sm);color:var(--color-ink-soft)}
+
+/* ==========================================================================
+   S6 · ROLLOUT
+   ========================================================================== */
+.rollout{background:var(--color-bg-dark-elevated)}
+.timeline{position:relative;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1.5rem;margin-top:1rem}
+.timeline::before{content:"";position:absolute;left:0;right:0;top:11px;height:1px;background:var(--color-line-on-dark)}
+.tl-step{position:relative;padding-top:2.5rem}
+.tl-step::before{
+  content:"";position:absolute;top:6px;left:0;width:11px;height:11px;border-radius:50%;
+  background:var(--color-bg-dark-elevated);border:2px solid var(--color-primary-on-dark);
+}
+.tl-num{position:absolute;top:0;left:1.5rem;font-family:var(--font-mono);font-size:var(--fs-2xs);letter-spacing:.08em;color:rgba(244,243,248,.4)}
+.tl-title{font-size:var(--fs-sm);font-weight:600;color:var(--color-ink-on-dark)}
+.tl-body{margin-top:.5rem;font-size:var(--fs-xs);line-height:1.55;color:var(--color-ink-on-dark-soft)}
+.rollout-note{
+  margin-top:3.5rem;padding-top:1.5rem;border-top:1px solid var(--color-line-on-dark);
+  max-width:74ch;font-size:var(--fs-sm);color:var(--color-ink-on-dark-soft);
+}
+
+/* ==========================================================================
+   S7 · INSIGHTS
+   ========================================================================== */
+.posts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem}
+.post{
+  display:flex;flex-direction:column;padding:1.75rem;border:1px solid var(--color-line);
+  border-radius:var(--radius-lg);text-decoration:none;background:var(--color-surface);
+  transition:border-color var(--dur-base) var(--ease-out),transform var(--dur-fast) var(--ease-out),box-shadow var(--dur-base) var(--ease-out);
+}
+.post:hover{border-color:var(--color-primary-border);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.post-cat{color:var(--color-primary);margin-bottom:auto}
+.post-title{margin-top:1.5rem;font-size:var(--fs-md);font-weight:500;letter-spacing:-.015em;line-height:var(--lh-snug)}
+.post-ex{margin-top:.75rem;font-size:var(--fs-sm);color:var(--color-ink-soft)}
+.post-foot{display:flex;align-items:center;justify-content:space-between;margin-top:1.75rem;padding-top:1rem;border-top:1px solid var(--color-line);font-size:var(--fs-xs);color:var(--color-muted)}
+.post-arrow{color:var(--color-primary);transition:transform var(--dur-fast) var(--ease-out)}
+.post:hover .post-arrow{transform:translateX(3px)}
+
+/* ==========================================================================
+   S8 · FAQ
+   ========================================================================== */
+.faq{background:var(--color-surface-tint)}
+.faq-grid{display:grid;grid-template-columns:minmax(0,40fr) minmax(0,60fr);gap:clamp(2.5rem,5vw,5rem);align-items:start}
+.faq-head{position:sticky;top:calc(var(--nav-h) + 3rem)}
+.faq-list{border-top:1px solid var(--color-line-strong)}
+.faq-item{border-bottom:1px solid var(--color-line-strong)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;gap:2rem;width:100%;padding:1.5rem 0;text-align:left;font-size:var(--fs-md);font-weight:500;letter-spacing:-.01em;transition:color var(--dur-fast) var(--ease-out)}
+.faq-q:hover{color:var(--color-primary)}
+.faq-sign{flex:none;width:22px;height:22px;position:relative}
+.faq-sign::before,.faq-sign::after{content:"";position:absolute;background:var(--color-primary);border-radius:1px;transition:transform var(--dur-fast) var(--ease-out),opacity var(--dur-fast) var(--ease-out)}
+.faq-sign::before{left:0;right:0;top:10px;height:2px}
+.faq-sign::after{top:0;bottom:0;left:10px;width:2px}
+.faq-item.is-open .faq-sign::after{transform:scaleY(0);opacity:0}
+.faq-a{display:none;padding:0 0 1.5rem;font-size:var(--fs-sm);color:var(--color-ink-soft);max-width:70ch}
+.faq-item.is-open .faq-a{display:block}
+
+/* ==========================================================================
+   S10 · FOOTER — copied verbatim from the production theme
+   wp-content/themes/smart-epsilon/assets/css/footer.css
+   ========================================================================== */
+.site-footer{
+  position:relative;z-index:1;clear:both;display:block;width:100%;overflow:hidden;
+  background:#090714;color:#f0f4ff;padding:5rem 0 3.5rem;
+  font-family:var(--font-body);font-size:inherit;line-height:inherit;
+  border-top:1px solid rgba(255,255,255,.05);
+}
+.site-footer a{text-decoration:none;color:inherit}
+.site-footer a:hover{text-decoration:none}
+.footer-inner{
+  max-width:var(--max);padding-inline:var(--gutter);margin:0 auto;
+  display:grid;grid-template-columns:1fr auto;gap:4rem;align-items:end;
+}
+.footer-main{display:flex;flex-direction:column;gap:2.5rem;width:100%;min-width:0}
+.footer-columns{display:grid;grid-template-columns:1.15fr .85fr .95fr .95fr;gap:2.5rem;align-items:start;width:100%}
+
+.footer-contact-card{
+  background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:16px;
+  padding:2rem 1.75rem;display:flex;flex-direction:column;gap:1.5rem;min-height:180px;justify-content:space-between;
+}
+.footer-contact-list{display:flex;flex-direction:column;gap:10px;font-size:.825rem;color:rgba(240,244,255,.75)}
+.site-footer .footer-contact-link{display:flex;align-items:flex-start;gap:8px;color:inherit;transition:color .2s;line-height:1.4}
+.site-footer .footer-contact-link svg{margin-top:1px;flex-shrink:0}
+.site-footer a.footer-contact-link:hover{color:var(--color-primary);text-decoration:none}
+
+.footer-col{display:flex;flex-direction:column;gap:14px}
+.site-footer .footer-acc-trigger,
+.site-footer .footer-acc-trigger:hover,
+.site-footer .footer-acc-trigger:focus,
+.site-footer .footer-acc-trigger:active{
+  display:flex;align-items:center;justify-content:space-between;gap:.75rem;width:100%;
+  margin:0 0 .5rem;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;
+  -webkit-appearance:none;appearance:none;font-family:var(--font-body);font-size:.8rem;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;color:rgba(240,244,255,.4);text-align:left;cursor:default;transition:none;
+}
+.footer-acc-icons{display:none;color:rgba(240,244,255,.55);flex-shrink:0}
+.footer-icon-plus,.footer-icon-minus{display:none}
+.footer-acc-panel{display:flex;flex-direction:column;gap:14px}
+.footer-acc-panel a{font-size:.875rem;color:rgba(240,244,255,.65);transition:color .2s}
+.footer-acc-panel a:hover,.footer-acc-panel a:focus-visible{color:#fff;outline:none}
+
+.footer-accent-line{height:2px;width:100%;background:#6b62ac}
+
+.footer-brand-mark{width:280px;flex-shrink:0;display:flex;justify-content:flex-end;align-items:flex-end;align-self:stretch}
+.footer-brand-img{display:block;width:280px;height:auto;max-width:100%;object-fit:contain}
+
+.footer-bottom{
+  max-width:var(--max);padding-inline:var(--gutter);margin:4rem auto 0;padding-top:2rem;
+  border-top:1px solid rgba(255,255,255,.06);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem;
+}
+.footer-copy{font-size:.8rem;color:rgba(240,244,255,.45)}
+.footer-badges{display:flex;gap:8px;flex-wrap:wrap}
+.footer-badges span{
+  font-size:.7rem;font-weight:600;color:rgba(240,244,255,.4);
+  border:1px solid rgba(255,255,255,.08);padding:4px 10px;border-radius:6px;
+  text-transform:uppercase;letter-spacing:.05em;
+}
+
+@media (max-width:1366px){
+  .footer-acc-panel a{font-size:13px}
+  .footer-brand-img{width:250px}
+  .footer-columns{gap:20px;grid-template-columns:1.15fr 1.25fr 1.25fr .75fr}
+}
+@media (max-width:1100px){
+  .footer-inner{grid-template-columns:1fr;gap:2.5rem;align-items:start}
+  .footer-brand-mark{width:180px;justify-content:flex-start}
+  .footer-brand-img{width:180px}
+  .footer-columns{grid-template-columns:1.2fr 1fr 1fr 1fr;gap:1.75rem}
+}
+@media (max-width:900px){
+  .footer-columns{grid-template-columns:1fr 1fr;gap:2rem}
+  .footer-contact-card{grid-column:1 / -1}
+}
+@media (max-width:767px){
+  .site-footer{padding:3.25rem 0 2.5rem}
+  .footer-inner{gap:2rem}
+  .footer-main{gap:1.75rem}
+  .footer-columns{grid-template-columns:1fr;gap:0}
+  .footer-contact-card{grid-column:auto;margin-bottom:1.25rem;min-height:0;padding:1.5rem 1.25rem}
+  .footer-col{gap:0;border-bottom:1px solid rgba(255,255,255,.08)}
+  .site-footer .footer-acc-trigger,
+  .site-footer .footer-acc-trigger:hover,
+  .site-footer .footer-acc-trigger:focus,
+  .site-footer .footer-acc-trigger:active{
+    cursor:pointer;padding:1rem 0;margin:0;font-size:.8125rem;color:rgba(240,244,255,.72);transition:color .2s;
+  }
+  .site-footer .footer-acc-trigger:hover,
+  .site-footer .footer-col.is-open .footer-acc-trigger{color:#fff;background:transparent;box-shadow:none}
+  .footer-acc-icons{display:grid;place-items:center}
+  .footer-icon-plus{display:block}
+  .footer-icon-minus{display:none}
+  .footer-col.is-open .footer-icon-plus{display:none}
+  .footer-col.is-open .footer-icon-minus{display:block}
+  .footer-acc-panel{overflow:hidden;height:0;gap:0;transition:height .32s var(--ease-out)}
+  .footer-acc-panel a{display:block;padding:.65rem 0;border-top:1px solid rgba(255,255,255,.04)}
+  .footer-acc-panel a:first-child{border-top:0;padding-top:.15rem}
+  .footer-acc-panel a:last-child{padding-bottom:1rem}
+  .footer-brand-mark{width:120px;opacity:.85}
+  .footer-brand-img{width:120px}
+  .footer-bottom{margin-top:2.5rem;padding-top:1.5rem;flex-direction:column;align-items:flex-start;gap:1rem}
+  .footer-copy{font-size:.75rem;line-height:1.5}
+}
+@media (max-width:480px){
+  .footer-badges span{font-size:.65rem;padding:3px 8px}
+}
+@media (prefers-reduced-motion:reduce){.footer-acc-panel{transition:none!important}}
+
+/* ==========================================================================
+   REVEAL
+   ========================================================================== */
+.reveal{opacity:0;transform:translateY(12px);transition:opacity var(--dur-base) var(--ease-out),transform var(--dur-base) var(--ease-out)}
+.reveal.is-in{opacity:1;transform:none}
+
+/* ==========================================================================
+   RESPONSIVE — 1440 / 1024 / 768 / 480
+   ========================================================================== */
+@media (max-width:1200px){
+  .proof-layout{grid-template-columns:230px minmax(0,1fr)}
+  .app-cols,.app-row{grid-template-columns:17rem minmax(0,1fr) 9.5rem;gap:1.25rem}
+}
+@media (max-width:1024px){
+  .hero-grid{grid-template-columns:1fr;gap:3rem}
+  .hero-title{max-width:22ch}
+  .risk-grid{grid-template-columns:1fr;gap:2.5rem}
+  .risk-head{position:static}
+  .proof-layout{grid-template-columns:minmax(0,1fr);gap:2rem}
+  .rail{position:sticky;top:var(--nav-h);z-index:20;background:var(--color-bg-dark);padding-block:1rem;margin-inline:calc(var(--gutter)*-1);padding-inline:var(--gutter)}
+  .rail-label,.rail-foot{display:none}
+  .rail-list{display:flex;gap:.5rem;overflow-x:auto;border-left:0;scrollbar-width:none;min-width:0}
+  .rail-list::-webkit-scrollbar{display:none}
+  .rail-btn{padding:.6rem 1rem;border:1px solid var(--color-line-on-dark);border-radius:var(--radius-pill);white-space:nowrap}
+  .rail-btn::before{display:none}
+  .rail-btn.is-active{border-color:var(--color-primary-on-dark);background:rgba(139,127,212,.14)}
+  .rail-count{display:none}
+  .timeline{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:2.5rem}
+  .timeline::before{display:none}
+  .tl-step{padding-top:2.25rem;border-top:1px solid var(--color-line-on-dark)}
+  .tl-step::before{top:-6px}
+  .posts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .faq-grid{grid-template-columns:1fr;gap:2.5rem}
+  .faq-head{position:static}
+  .app-name{white-space:normal}
+}
+@media (max-width:768px){
+  :root{--section-pad-y:64px}
+  .main-nav{display:none}
+  .frames{grid-template-columns:1fr}
+  .app-cols{display:none}
+  .app-row{grid-template-columns:1fr;gap:.35rem;padding:1.15rem .75rem}
+  .app-cam{margin-top:.35rem}
+  .filters{gap:.4rem}
+  .filter{padding:.45rem .85rem}
+  .stack-grid{grid-template-columns:1fr}
+  .stack-col{border-right:0;border-bottom:1px solid var(--color-line);padding:2rem 0}
+  .stack-col:not(:first-child){padding-left:0}
+  .stack-col:last-child{border-bottom:0}
+  .timeline{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .posts{grid-template-columns:1fr}
+  .btn{min-height:42px;padding:.7rem 1.2rem;font-size:var(--fs-sm)}
+  .risk-item{grid-template-columns:2.5rem 1fr;gap:.9rem}
+}
+@media (max-width:480px){
+  :root{--section-pad-y:48px}
+  .timeline{grid-template-columns:1fr}
+  .deck-item[data-pos="1"],.deck-item[data-pos="2"]{display:none}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ==========================================================================
+     S0 · HEADER
+     ========================================================================== -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="logo" href="#" aria-label="Smart Epsilon — home"><img src="assets/logo.svg" alt="Smart Epsilon"></a>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="#" class="is-active">Solutions
+        <svg class="nav-caret" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </a>
+      <a href="#">Industries
+        <svg class="nav-caret" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </a>
+      <a href="#">Case Studies</a>
+      <a href="#">Company
+        <svg class="nav-caret" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </a>
+    </nav>
+    <a class="btn btn-primary btn-sm" href="https://smartepsilon.wpenginepowered.com/contact/">Contact us</a>
+  </div>
+</header>
+
+<main>
+
+<!-- ==========================================================================
+     S1 · HERO
+     ========================================================================== -->
+<section class="hero section--dark">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">AI Video Intelligence</p>
+        <h1 class="hero-title">The cameras you already have are watching. Now they can <em>tell you what's happening.</em></h1>
+        <p class="hero-sub">Smart Epsilon turns existing CCTV — and purpose-placed cameras exactly where you need them — into a live layer of your supply chain, connected to the same platform tracking every unit.</p>
+        <ul class="hero-chips">
+          <li class="chip">Works with your existing CCTV</li>
+          <li class="chip">Purpose-placed coverage where it counts</li>
+          <li class="chip">Live in ~6 weeks</li>
+        </ul>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://smartepsilon.wpenginepowered.com/contact/">Schedule a Demo</a>
+          <a class="btn btn-secondary" href="#evidence">See the evidence</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="deck" id="deck">
+          <div class="deck-item" data-pos="0" data-slug="Perimeter fence · night IR · existing CCTV">
+            <img src="real_video_proofs/Security%20Perimeter%20Intrusion%20real_perimeter.jpg"
+                 alt="Night infrared camera frame of a person climbing a boundary fence, marked by the system as an intrusion at 02:14." width="1200" height="680" fetchpriority="high">
+          </div>
+          <div class="deck-item" data-pos="1" data-slug="Gate entry · ANPR · purpose-placed">
+            <img src="real_video_proofs/Efficiency%20ANPR%20real_anpr.jpg"
+                 alt="Plant gate camera reading a truck number plate and lifting the barrier after an authorised match." width="1200" height="680">
+          </div>
+          <div class="deck-item" data-pos="2" data-slug="Racking aisle · PPE and proximity · existing CCTV">
+            <img src="real_video_proofs/Safety%20PPE%20real_c09.jpg"
+                 alt="Warehouse aisle camera confirming two workers in full PPE while tracking a forklift at safe clearance." width="1200" height="680">
+          </div>
+        </div>
+        <div class="deck-caption">
+          <span class="mono" id="deck-slug">Perimeter fence · night IR · existing CCTV</span>
+          <span class="deck-dots" id="deck-dots" aria-hidden="true">
+            <i class="deck-dot is-on"></i><i class="deck-dot"></i><i class="deck-dot"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     S2 · THE COST OF NOT KNOWING
+     ========================================================================== -->
+<section class="section">
+  <div class="container risk-grid">
+    <div class="risk-head reveal">
+      <p class="eyebrow">Real-world risks</p>
+      <h2 class="section-title">The Cost of Not Knowing</h2>
+      <p class="section-sub">These aren't security footnotes. They're the moments a blind spot turns into a liability, a loss, or a dispute you can't win.</p>
+    </div>
+
+    <ol class="risk-list reveal">
+      <li class="risk-item">
+        <span class="risk-num">01</span>
+        <div>
+          <h3 class="risk-q">A worker was injured in a zone with no safety monitoring. What's your liability exposure?</h3>
+          <p class="risk-a">Without visual proof of compliance or non-compliance, an incident investigation runs on witness accounts — and the gaps get filled by lawyers, not your team.</p>
+        </div>
+      </li>
+      <li class="risk-item">
+        <span class="risk-num">02</span>
+        <div>
+          <h3 class="risk-q">Inventory is missing, and nobody can say when or how.</h3>
+          <p class="risk-a">Without visual evidence tied to a timeframe, shrinkage becomes an unsolvable write-off instead of a specific, traceable incident.</p>
+        </div>
+      </li>
+      <li class="risk-item">
+        <span class="risk-num">03</span>
+        <div>
+          <h3 class="risk-q">A carrier disputes a freight damage claim, insisting the shipment left the warehouse already broken.</h3>
+          <p class="risk-a">Without a visual record at load-out, you're negotiating with no proof either way — and disputes default to costing you.</p>
+        </div>
+      </li>
+      <li class="risk-item">
+        <span class="risk-num">04</span>
+        <div>
+          <h3 class="risk-q">A cold-chain excursion ruined a shipment, and you found out from the customer.</h3>
+          <p class="risk-a">Without continuous visual and thermal monitoring, a temperature failure goes undetected until the product has already failed.</p>
+        </div>
+      </li>
+      <li class="risk-item">
+        <span class="risk-num">05</span>
+        <div>
+          <h3 class="risk-q">Your team spends three days a quarter counting stock, and the count is outdated before it's entered.</h3>
+          <p class="risk-a">Manual physical counts are slow, disruptive, and stale the moment they're finished. A count that takes days to produce is already out of date by the time anyone acts on it.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     S3 · FOUR AREAS, PROVEN  ★ centrepiece
+     ========================================================================== -->
+<section class="section proof section--dark" id="evidence">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Field evidence</p>
+      <h2 class="section-title section-title--single">Four areas. Thirteen frames. Already built.</h2>
+      <p class="section-sub">Not a roadmap and not a rendering. Every frame below is detection output from a Smart Epsilon deployment — the model's own labels, exactly as the operator sees them.</p>
+    </div>
+
+    <div class="proof-layout">
+      <!-- sticky rail -->
+      <aside class="rail">
+        <p class="mono rail-label">The four areas</p>
+        <div class="rail-list" id="rail">
+          <button class="rail-btn is-active" data-target="area-safety">
+            <span class="rail-name">Safety &amp; Compliance</span><span class="rail-count">04 frames</span>
+          </button>
+          <button class="rail-btn" data-target="area-ops">
+            <span class="rail-name">Operations &amp; Quality</span><span class="rail-count">03 frames</span>
+          </button>
+          <button class="rail-btn" data-target="area-eff">
+            <span class="rail-name">Efficiency &amp; Flow</span><span class="rail-count">03 frames</span>
+          </button>
+          <button class="rail-btn" data-target="area-sec">
+            <span class="rail-name">Security &amp; Access</span><span class="rail-count">03 frames</span>
+          </button>
+        </div>
+        <p class="rail-foot">Select any frame to open it at full resolution.</p>
+      </aside>
+
+      <!-- evidence stage -->
+      <div class="stage">
+
+        <!-- AREA 1 -->
+        <div class="area" id="area-safety">
+          <div class="area-head">
+            <h3 class="area-title">Safety &amp; Compliance</h3>
+            <p class="area-thesis">Caught in the act, not after the fact.</p>
+          </div>
+          <div class="frames">
+            <figure class="frame frame--wide reveal">
+              <button class="frame-btn" data-lb="0"><img src="real_video_proofs/Safety%20PPE%20real_c09.jpg" alt="Warehouse racking aisle: two workers walking, both marked PPE OK, with a loaded forklift tracked ahead of them at 4.8 metres clearance." loading="lazy" width="1200" height="680"></button>
+              <figcaption class="frame-meta">
+                <span class="frame-slug mono">Racking aisle <span class="tag">Existing CCTV</span></span>
+                <span class="frame-detect"><i class="dot dot--ok"></i>PPE OK ×2 · forklift clearance 4.8 m</span>
+                <span class="frame-note">Both operatives compliant and the aisle gap inside tolerance — logged as normal, no alert raised. The system records what went right as readily as what went wrong.</span>
+              </figcaption>
+            </figure>
+
+            <figure class="frame reveal">
+              <button class="frame-btn" data-lb="1"><img src="real_video_proofs/Safety%20real_proximity.jpg" alt="Warehouse floor: a forklift and a pedestrian both boxed in red, flagged at 1.6 metres separation." loading="lazy" width="1200" height="680"></button>
+              <figcaption class="frame-meta">
+                <span class="frame-slug mono">Bagged goods store <span class="tag">Existing CCTV</span></span>
+                <span class="frame-detect"><i class="dot dot--warn"></i>Proximity 1.6 m · warning</span>
+                <span class="frame-note">Pedestrian inside the forklift exclusion radius while a load is raised — flagged before it becomes an incident report.</span>
+              </figcaption>
+            </figure>
+
+            <figure class="frame reveal">
+              <button class="frame-btn" data-lb="2"><img src="real_video_proofs/Safety%20Speed%20real_speed.jpg" alt="Plant access road beside process piping: a pickup boxed in red and measured at 26 km/h next to a posted 10 km/h limit sign." loading="lazy" width="1200" height="680"></button>
+              <figcaption class="frame-meta">
+                <span class="frame-slug mono">Internal plant road <span class="tag">Existing CCTV</span></span>
+                <span class="frame-detect"><i class="dot dot--alert"></i>Over-speed · 26 km/h in a 10 zone</span>
+                <span class="frame-note">Measured at more than twice the posted site limit, with the frame attached to the safety register entry.</span>
+              </figcaption>
+            </figure>
+
+            <figure class="frame frame--wide reveal">
+              <button class="frame-btn" data-lb="3"><img src="real_video_proofs/Safety%20Spillage%20real_spill.jpg" alt="Processing corridor: an overturned drum and a spreading amber liquid spill outlined by the system, with housekeeping alerted." loading="lazy" width="1200" height="680"></button>
+              <figcaption class="frame-meta">
+                <span class="frame-slug mono">Process corridor <span class="tag">Existing CCTV</span></span>
+                <span class="frame-detect"><i class="dot dot--alert"></i>Spillage · housekeeping alerted</span>
+                <span class="frame-note">The drum going over and the spill spreading were detected in the same frame — housekeeping was paged before the next shift walked through it.</span>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <!-- AREA 2 -->
+        <div class="area" id="area-ops">
+          <div class="area-head">
+            <h3 class="area-title">Operations &amp; Quality</h3>
+            <p class="area-thesis">The line tells you before the customer does.</p>
+          </div>
+          <div class="frames">
+            <figure class="frame frame--wide reveal">
+              <button class="frame-btn" data-lb="4"><img src="real_video_proofs/Ops%20%26%20Quality%20Conveyer%20Counting%20real_i02.jpg" alt="Two conveyor views: machined cylinders counted 16 to the front row, and filled bottles counted at 84 caps in the zone." loading="lazy" width="1200" height="680"></button>
+              <figcaption class="frame-meta">
+                <span class="frame-slug mono">Conveyor line <span class="tag">Hybrid</span></span>
+                <span class="frame-detect"><i class="dot dot--ok"></i>Count verified · 84 caps · 16 per row</span>
+                <span class="frame-note">Counted at full line speed, and every tally carries the frame it came from — the number is auditable, not asserted.</span>
+              </figcaption>
+            </figure>
+
+            <figure class="frame reveal">
+              <button class="frame-btn" data-lb="5"><img src="real_video_proofs/Ops%20%26%20Quality%20Quality%20real_i01.jpg" alt="Four inspection views flagging a gouge in a machined ring, a crack in a glass bottle, a burnt component on a circuit board, and a tear in a fabric roll." loading="lazy" width="1200" height="680"></button>
+              <figcaption class="frame-meta">
+                <span class="frame-slug mono">Inspection station <span class="tag">Purpose-placed</span></span>
+                <span class="frame-detect"><i class="dot dot--alert"></i>Gouge · crack · burnt · tear</span>
+                <span class="frame-note">Four substrates on one model family — machined metal, glass, electronics and web material.</span>
+              </figcaption>
+            </figure>
+
+            <figure class="frame reveal">
+              <button class="frame-btn" data-lb="6"><img src="real_video_proofs/Ops%20%26%20Quality%20-%20Label.%20verification%20real_i03.jpg" alt="Four verification views confirming a printed batch and expiry code, a stamped serial, a printed lot label and an inkjet date code on a can base." loading="lazy" width="1200" height="680"></button>
+              <figcaption class="frame-meta">
+                <span class="frame-slug mono">Dispatch chokepoint <span class="tag">Purpose-placed</span></span>
+                <span class="frame-detect"><i class="dot dot--ok"></i>Batch · serial · label · print — all OK</span>
+                <span class="frame-note">Printed, stamped, labelled or laser-marked — read and matched to the batch record before the pallet moves.</span>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <!-- AREA 3 -->
+        <div class="area" id="area-eff">
+          <div class="area-head">
+            <h3 class="area-title">Efficiency &amp; Flow</h3>
+            <p class="area-thesis">Bottlenecks, exposed.</p>
+          </div>
+          <div class="frames">
+            <figure class="frame frame--wide reveal">
+              <button class="frame-btn" data-lb="7"><img src="real_video_proofs/Efficiency%20ANPR%20real_anpr.jpg" alt="Plant gate: a truck boxed by the system with its number plate read as GJ 01 AB 4081, matched as authorised, and the barrier opening." loading="lazy" width="1200" height="680"></button>
+              <figcaption class="frame-meta">
+                <span class="frame-slug mono">Main gate <span class="tag">Purpose-placed</span></span>
+                <span class="frame-detect"><i class="dot dot--ok"></i>Plate read · authorised · gate open</span>
+                <span class="frame-note">Matched against the day's appointment list and the barrier lifted — no gate register, no manual entry, no queue behind it.</span>
+              </figcaption>
+            </figure>
+
+            <figure class="frame reveal">
+              <button class="frame-btn" data-lb="8"><img src="real_video_proofs/Efficiency%20Loading%20Unloading%20real_c06.jpg" alt="Container yard: a rubber-tyred gantry crane and an internal transfer vehicle both tracked, with the handling cycle timed at 4 minutes 20 seconds." loading="lazy" width="1200" height="680"></button>
+              <figcaption class="frame-meta">
+                <span class="frame-slug mono">Yard and dock <span class="tag">Hybrid</span></span>
+                <span class="frame-detect"><i class="dot dot--ok"></i>Handling cycle 4 min 20 s · normal</span>
+                <span class="frame-note">Crane-to-trailer cycle timed automatically. Dwell is recorded against the move itself, not reconstructed from a clipboard afterwards.</span>
+              </figcaption>
+            </figure>
+
+            <figure class="frame reveal">
+              <button class="frame-btn" data-lb="9"><img src="real_video_proofs/Efficiency%20Congestion%20Analysis%20real_overcrowd.jpg" alt="Plant canteen at peak: a defined zone outlined by the system and flagged as over its occupancy limit." loading="lazy" width="1200" height="680"></button>
+              <figcaption class="frame-meta">
+                <span class="frame-slug mono">Canteen · zone A <span class="tag">Existing CCTV</span></span>
+                <span class="frame-detect"><i class="dot dot--warn"></i>Zone occupancy over limit</span>
+                <span class="frame-note">The same density model that finds a packing-bay bottleneck finds a shift-staggering problem at lunch.</span>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <!-- AREA 4 -->
+        <div class="area" id="area-sec">
+          <div class="area-head">
+            <h3 class="area-title">Security &amp; Access</h3>
+            <p class="area-thesis">See who's where, the moment it matters.</p>
+          </div>
+          <div class="frames">
+            <figure class="frame frame--wide reveal">
+              <button class="frame-btn" data-lb="10"><img src="real_video_proofs/Security%20Perimeter%20Intrusion%20real_perimeter.jpg" alt="Night infrared frame: a person climbing the boundary fence, outlined by the system and escalated as a critical perimeter breach at 02:14." loading="lazy" width="1200" height="680"></button>
+              <figcaption class="frame-meta">
+                <span class="frame-slug mono">North boundary · night IR <span class="tag">Hybrid</span></span>
+                <span class="frame-detect"><i class="dot dot--alert"></i>Perimeter breach · critical · 02:14</span>
+                <span class="frame-note">Detected in infrared, in the dark, at two in the morning — and escalated to the guard room while the person was still on the fence.</span>
+              </figcaption>
+            </figure>
+
+            <figure class="frame reveal">
+              <button class="frame-btn" data-lb="11"><img src="real_video_proofs/Security%20Pathway%20intrusion%20real_pathway.jpg" alt="Plant roadway: a person boxed by the system for walking in the vehicle lane instead of the marked walkway, with a loaded truck approaching." loading="lazy" width="1200" height="680"></button>
+              <figcaption class="frame-meta">
+                <span class="frame-slug mono">Vehicle route <span class="tag">Existing CCTV</span></span>
+                <span class="frame-detect"><i class="dot dot--warn"></i>Person in vehicle lane</span>
+                <span class="frame-note">Walking the truck route rather than the marked walkway — with a loaded vehicle already inbound in the same frame.</span>
+              </figcaption>
+            </figure>
+
+            <figure class="frame reveal">
+              <button class="frame-btn" data-lb="12"><img src="real_video_proofs/Security%20Unauthorized%20parking%20real_noparking.jpg" alt="Service lane: a van parked across a red-striped fire lane beside a hydrant point, flagged as a no-parking violation with a three-minute dwell." loading="lazy" width="1200" height="680"></button>
+              <figcaption class="frame-meta">
+                <span class="frame-slug mono">Fire lane <span class="tag">Existing CCTV</span></span>
+                <span class="frame-detect"><i class="dot dot--alert"></i>Vehicle in fire lane · 3 min dwell</span>
+                <span class="frame-note">Hydrant access blocked and the dwell timer already running — surfaced now, not discovered in the next safety audit.</span>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     S4 · THE APPLICATION INDEX
+     ========================================================================== -->
+<section class="section apps">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Capabilities</p>
+      <h2 class="section-title section-title--single">Everything we can run on a camera.</h2>
+      <p class="section-sub">Some of this runs on the cameras you already have. Some is worth placing exactly where it counts. Every line says which — before you ask.</p>
+    </div>
+
+    <div class="filters reveal" id="filters" role="group" aria-label="Filter capabilities by camera requirement">
+      <button class="filter is-on" data-cam="all">All capabilities <span class="n">21</span></button>
+      <button class="filter" data-cam="existing">Existing CCTV <span class="n">11</span></button>
+      <button class="filter" data-cam="purpose">Purpose-placed <span class="n">05</span></button>
+      <button class="filter" data-cam="hybrid">Hybrid <span class="n">05</span></button>
+    </div>
+
+    <div class="apps-table reveal" id="apps-table">
+      <div class="app-cols mono">
+        <span>Capability</span><span>What it solves</span><span>Runs on</span>
+      </div>
+
+      <div class="app-group">
+        <div class="app-group-head"><h3 class="app-group-title">Safety &amp; Compliance</h3><span class="app-group-count">05</span></div>
+        <div class="app-row" data-cam="existing"><span class="app-name">PPE &amp; Safety Compliance</span><span class="app-desc">Hard hats, vests, gloves and restricted-zone adherence, monitored continuously.</span><span class="tag tag--existing app-cam">Existing CCTV</span></div>
+        <div class="app-row" data-cam="existing"><span class="app-name">Machine Proximity &amp; Guarding</span><span class="app-desc">Pedestrians inside the exclusion radius of forklifts, robotic arms or presses.</span><span class="tag tag--existing app-cam">Existing CCTV</span></div>
+        <div class="app-row" data-cam="existing"><span class="app-name">Spillage &amp; Hazard Detection</span><span class="app-desc">Liquid spills, chemical leaks and floor debris, before somebody walks through them.</span><span class="tag tag--existing app-cam">Existing CCTV</span></div>
+        <div class="app-row" data-cam="existing"><span class="app-name">Site Speed Monitoring</span><span class="app-desc">Vehicles over the posted plant limit on internal roads and in yards.</span><span class="tag tag--existing app-cam">Existing CCTV</span></div>
+        <div class="app-row" data-cam="existing"><span class="app-name">Exit &amp; Fire Lane Obstruction</span><span class="app-desc">Emergency exits, fire lanes and breaker panels confirmed clear, with a dwell timer.</span><span class="tag tag--existing app-cam">Existing CCTV</span></div>
+      </div>
+
+      <div class="app-group">
+        <div class="app-group-head"><h3 class="app-group-title">Operations &amp; Quality</h3><span class="app-group-count">05</span></div>
+        <div class="app-row" data-cam="purpose"><span class="app-name">High-Speed Quality Inspection</span><span class="app-desc">Defect, fill-level and print-quality checks at production speed.</span><span class="tag tag--purpose app-cam">Purpose-placed</span></div>
+        <div class="app-row" data-cam="purpose"><span class="app-name">Label &amp; Carton Verification</span><span class="app-desc">A physical check at chokepoints, backing up barcode scans when one is missed.</span><span class="tag tag--purpose app-cam">Purpose-placed</span></div>
+        <div class="app-row" data-cam="hybrid"><span class="app-name">Conveyor &amp; Unit Counting</span><span class="app-desc">Counts at full line speed, with the frame behind every tally.</span><span class="tag tag--hybrid app-cam">Hybrid</span></div>
+        <div class="app-row" data-cam="hybrid"><span class="app-name">Physical Inventory Verification</span><span class="app-desc">Shelf, rack and bin-level counts without pulling a team onto the floor.</span><span class="tag tag--hybrid app-cam">Hybrid</span></div>
+        <div class="app-row" data-cam="existing"><span class="app-name">Line Downtime Detection</span><span class="app-desc">Jams, unplanned stops and bottlenecks flagged visually as they happen.</span><span class="tag tag--existing app-cam">Existing CCTV</span></div>
+      </div>
+
+      <div class="app-group">
+        <div class="app-group-head"><h3 class="app-group-title">Efficiency &amp; Flow</h3><span class="app-group-count">07</span></div>
+        <div class="app-row" data-cam="existing"><span class="app-name">Loading / Unloading Verification</span><span class="app-desc">Confirms what's actually loaded matches the manifest, in real time.</span><span class="tag tag--existing app-cam">Existing CCTV</span></div>
+        <div class="app-row" data-cam="purpose"><span class="app-name">ANPR Gate Automation</span><span class="app-desc">Plate recognition at gate entry and exit, matched against the appointment list.</span><span class="tag tag--purpose app-cam">Purpose-placed</span></div>
+        <div class="app-row" data-cam="hybrid"><span class="app-name">Yard &amp; Dock Monitoring</span><span class="app-desc">Trailer position, dock assignment and dwell time across the yard.</span><span class="tag tag--hybrid app-cam">Hybrid</span></div>
+        <div class="app-row" data-cam="existing"><span class="app-name">Congestion &amp; Zone Occupancy</span><span class="app-desc">Human and vehicle density across aisles, gates, canteens and packing stations.</span><span class="tag tag--existing app-cam">Existing CCTV</span></div>
+        <div class="app-row" data-cam="existing"><span class="app-name">Equipment Utilisation</span><span class="app-desc">Active operating hours against idle time for forklifts, cranes and AGVs.</span><span class="tag tag--existing app-cam">Existing CCTV</span></div>
+        <div class="app-row" data-cam="purpose"><span class="app-name">Freight Fill &amp; Dimensioning</span><span class="app-desc">Underfilled shipments and billing discrepancies caught before the truck leaves.</span><span class="tag tag--purpose app-cam">Purpose-placed</span></div>
+        <div class="app-row" data-cam="purpose"><span class="app-name">Cold Chain Compliance</span><span class="app-desc">Visual temperature-zone monitoring at storage and transit points.</span><span class="tag tag--purpose app-cam">Purpose-placed</span></div>
+      </div>
+
+      <div class="app-group">
+        <div class="app-group-head"><h3 class="app-group-title">Security &amp; Access</h3><span class="app-group-count">04</span></div>
+        <div class="app-row" data-cam="hybrid"><span class="app-name">Perimeter Intrusion</span><span class="app-desc">Fence-line scaling, wall breaches and boundary crossings, day or night.</span><span class="tag tag--hybrid app-cam">Hybrid</span></div>
+        <div class="app-row" data-cam="existing"><span class="app-name">Restricted Zone Intrusion</span><span class="app-desc">Unauthorised entry into vaults, server rooms, hazardous or high-value zones.</span><span class="tag tag--existing app-cam">Existing CCTV</span></div>
+        <div class="app-row" data-cam="hybrid"><span class="app-name">Theft &amp; Shrinkage Detection</span><span class="app-desc">Unusual removal or tampering flagged the moment it happens.</span><span class="tag tag--hybrid app-cam">Hybrid</span></div>
+        <div class="app-row" data-cam="existing"><span class="app-name">Unauthorised Yard Parking</span><span class="app-desc">Vehicles in non-designated spots or blocking emergency access, with dwell timing.</span><span class="tag tag--existing app-cam">Existing CCTV</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     S5 · FITS THE STACK YOU ALREADY RUN
+     ========================================================================== -->
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Deployment</p>
+      <h2 class="section-title">Fits the stack you already run.</h2>
+    </div>
+    <div class="stack-grid reveal">
+      <div class="stack-col">
+        <svg class="stack-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 7.5l11-3v11l-11-3z"/><path d="M14 7.5l6-2.5v9l-6-2.5"/><path d="M6.5 15.5V20"/><path d="M4 20h5"/>
+        </svg>
+        <h3 class="stack-title">Works with your existing CCTV</h3>
+        <p class="stack-body">Start with the cameras already installed. There is no forced hardware replacement and no rip-and-replace of a security system that works.</p>
+      </div>
+      <div class="stack-col">
+        <svg class="stack-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="10" r="2.5"/><path d="M12 2.5v2"/><path d="M12 15.5V21"/><path d="M4.5 21h15"/><path d="M6.2 4.2l1.4 1.4"/><path d="M17.8 4.2l-1.4 1.4"/>
+        </svg>
+        <h3 class="stack-title">Purpose-placed where it counts</h3>
+        <p class="stack-body">Add dedicated coverage — thermal, high-speed, depth-sensing — only at the points where the return justifies the optics.</p>
+      </div>
+      <div class="stack-col">
+        <svg class="stack-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><path d="M10 6.5h4a3 3 0 0 1 3 3v4"/><path d="M14.5 11.5L17 14l2.5-2.5"/>
+        </svg>
+        <h3 class="stack-title">Connected to the same platform</h3>
+        <p class="stack-body">Every flagged event links back to the batch, shipment or SKU it happened to — not a disconnected alert in a separate security tool.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     S6 · ONE ROLLOUT PROCESS
+     ========================================================================== -->
+<section class="section rollout section--dark">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Methodology</p>
+      <h2 class="section-title">One rollout process.</h2>
+    </div>
+    <div class="timeline reveal">
+      <div class="tl-step"><span class="tl-num">01</span><h3 class="tl-title">Discovery</h3><p class="tl-body">Map your current camera coverage, facilities, and where the real blind spots are.</p></div>
+      <div class="tl-step"><span class="tl-num">02</span><h3 class="tl-title">Scoping</h3><p class="tl-body">Agree which zones use existing CCTV, which need purpose-placed cameras, and a realistic date — in writing.</p></div>
+      <div class="tl-step"><span class="tl-num">03</span><h3 class="tl-title">POC</h3><p class="tl-body">Prove the model end-to-end in one zone before committing any further.</p></div>
+      <div class="tl-step"><span class="tl-num">04</span><h3 class="tl-title">Pilot Zone</h3><p class="tl-body">Run a real operational period through full monitoring and alerting, not a simulated test.</p></div>
+      <div class="tl-step"><span class="tl-num">05</span><h3 class="tl-title">Team Training</h3><p class="tl-body">Get plant, warehouse and security teams confident on the new alert workflow.</p></div>
+      <div class="tl-step"><span class="tl-num">06</span><h3 class="tl-title">Complete Rollout</h3><p class="tl-body">Scale across remaining zones, sites and camera types at your pace.</p></div>
+    </div>
+    <p class="rollout-note reveal">The timeline is sized to what you're actually deploying. One warehouse on existing CCTV moves fast; a multi-site rollout with new camera placement takes longer. The sequence is what stays constant — it's how we scope the real timeline with you, instead of quoting one before we've seen your facilities.</p>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     S7 · INSIGHTS
+     NOTE FOR REVIEW: these are the three live posts from smartepsilon.com most
+     relevant to this audience. No AI Video Intelligence articles exist yet —
+     see Open Question 1 in MOCKUP-PROMPT.md.
+     ========================================================================== -->
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Insights</p>
+      <h2 class="section-title">Reading for the people who'll run this.</h2>
+      <p class="section-sub">More from the Smart Epsilon team on protecting product, margin and trust across the chain.</p>
+    </div>
+    <div class="posts reveal">
+      <a class="post" href="https://smartepsilon.com/the-real-cost-of-counterfeiting-for-indian-manufacturers/">
+        <span class="post-cat mono">Manufacturing</span>
+        <h3 class="post-title">The Real Cost of Counterfeiting for Indian Manufacturers</h3>
+        <p class="post-ex">What the loss actually looks like on the factory floor, past the headline statistics.</p>
+        <span class="post-foot">Read article
+          <svg class="post-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9"/><path d="M8.5 4.5L12 8l-3.5 3.5"/></svg>
+        </span>
+      </a>
+      <a class="post" href="https://smartepsilon.com/how-to-choose-an-anti-counterfeit-platform/">
+        <span class="post-cat mono">Buyer's guide</span>
+        <h3 class="post-title">How to Choose an Anti-Counterfeit Platform</h3>
+        <p class="post-ex">The questions worth asking a vendor before you commit a line, a budget, or a season.</p>
+        <span class="post-foot">Read article
+          <svg class="post-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9"/><path d="M8.5 4.5L12 8l-3.5 3.5"/></svg>
+        </span>
+      </a>
+      <a class="post" href="https://smartepsilon.com/counterfeit-seeds-real-losses/">
+        <span class="post-cat mono">Agrochemicals</span>
+        <h3 class="post-title">Counterfeit Seeds, Real Losses</h3>
+        <p class="post-ex">Why authentication at the point of sale matters most to the person furthest down the chain.</p>
+        <span class="post-foot">Read article
+          <svg class="post-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9"/><path d="M8.5 4.5L12 8l-3.5 3.5"/></svg>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     S8 · FAQ
+     ========================================================================== -->
+<section class="section faq">
+  <div class="container faq-grid">
+    <div class="faq-head reveal">
+      <p class="eyebrow">Before you ask</p>
+      <h2 class="section-title">Frequently asked questions.</h2>
+      <p class="section-sub">Honest answers, no sales preamble. If something here isn't covered, our engineers will answer it directly on the call.</p>
+    </div>
+    <div class="faq-list reveal" id="faq">
+      <div class="faq-item is-open">
+        <button class="faq-q" aria-expanded="true">Do we need to replace our existing security cameras?<span class="faq-sign" aria-hidden="true"></span></button>
+        <div class="faq-a">No. The system connects to standard CCTV already installed. New cameras are added only in specific, purpose-justified locations — cold storage, high-value zones, or a production line running faster than a general-purpose camera can resolve.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">Is this constant surveillance of our employees?<span class="faq-sign" aria-hidden="true"></span></button>
+        <div class="faq-a">No. The system is configured around defined events and zones — safety compliance, loading verification, restricted access — not continuous individual monitoring.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">How is this different from the video analytics our security vendor already offers?<span class="faq-sign" aria-hidden="true"></span></button>
+        <div class="faq-a">Most standalone tools generate alerts with no connection to your actual supply chain data. Every event here links directly to the batch, shipment or SKU it happened to — which is what turns an alert into something you can act on commercially.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">Does this just generate more alerts nobody looks at?<span class="faq-sign" aria-hidden="true"></span></button>
+        <div class="faq-a">It only flags what impacts operations — a missed scan, a damaged pallet, a safety violation — and ties the video directly to the affected SKU. Thresholds, zones and recipients are tuned per site during the pilot, not shipped as defaults.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ==========================================================================
+     S10 · FOOTER
+     ========================================================================== -->
+<svg class="footer-sprite" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="se-footer-icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="se-footer-icon-minus" viewBox="0 0 24 24"><path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<footer id="colophon" class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-main">
+      <div class="footer-columns">
+
+        <div class="footer-contact-card">
+          <div class="footer-contact-list">
+            <a href="mailto:sales@smartepsilon.com" class="footer-contact-link">
+              <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+              <span>sales@smartepsilon.com</span>
+            </a>
+            <a href="tel:+919558831881" class="footer-contact-link">
+              <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+              <span>+91 95588 31881</span>
+            </a>
+            <a href="https://maps.app.goo.gl/U2x61VStM3b5EhMh9" class="footer-contact-link" target="_blank" rel="noopener noreferrer">
+              <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+              <span>402, Ornet Arcade, Near Simandhar Tower, Bodakdev, Ahmedabad – 380054, Gujarat, India</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col" data-footer-accordion>
+          <button class="footer-acc-trigger" type="button" aria-expanded="false" aria-controls="footer-acc-1" id="footer-acc-1-btn">
+            <span>Solutions</span>
+            <span class="footer-acc-icons" aria-hidden="true">
+              <svg class="footer-icon-plus" width="18" height="18"><use href="#se-footer-icon-plus"/></svg>
+              <svg class="footer-icon-minus" width="18" height="18"><use href="#se-footer-icon-minus"/></svg>
+            </span>
+          </button>
+          <div class="footer-acc-panel" id="footer-acc-1" role="region" aria-labelledby="footer-acc-1-btn">
+            <a href="https://smartepsilon.wpenginepowered.com/solution-track-trace/">Track &amp; Trace</a>
+            <a href="https://smartepsilon.wpenginepowered.com/solution-anti-counterfeiting/">Anti-Counterfeiting - Kavach</a>
+            <a href="https://smartepsilon.wpenginepowered.com/payment-linked-incentives-solution-smart-epsilon/">Payment-linked Incentives</a>
+            <a href="https://smartepsilon.wpenginepowered.com/ai-video-intelligence-smart-epsilon/">AI Video Intelligence</a>
+          </div>
+        </div>
+
+        <div class="footer-col" data-footer-accordion>
+          <button class="footer-acc-trigger" type="button" aria-expanded="false" aria-controls="footer-acc-2" id="footer-acc-2-btn">
+            <span>Industries</span>
+            <span class="footer-acc-icons" aria-hidden="true">
+              <svg class="footer-icon-plus" width="18" height="18"><use href="#se-footer-icon-plus"/></svg>
+              <svg class="footer-icon-minus" width="18" height="18"><use href="#se-footer-icon-minus"/></svg>
+            </span>
+          </button>
+          <div class="footer-acc-panel" id="footer-acc-2" role="region" aria-labelledby="footer-acc-2-btn">
+            <a href="https://smartepsilon.wpenginepowered.com/agrochemicals-smart-epsilon/">Agrochemicals &amp; Seeds</a>
+            <a href="https://smartepsilon.wpenginepowered.com/oil-and-gas-smart-epsilon/">Oil &amp; Gas</a>
+            <a href="https://smartepsilon.wpenginepowered.com/electrical-appliances-parts-smart-epsilon/">Electrical Appliances &amp; Parts</a>
+          </div>
+        </div>
+
+        <div class="footer-col" data-footer-accordion>
+          <button class="footer-acc-trigger" type="button" aria-expanded="false" aria-controls="footer-acc-3" id="footer-acc-3-btn">
+            <span>Corporate</span>
+            <span class="footer-acc-icons" aria-hidden="true">
+              <svg class="footer-icon-plus" width="18" height="18"><use href="#se-footer-icon-plus"/></svg>
+              <svg class="footer-icon-minus" width="18" height="18"><use href="#se-footer-icon-minus"/></svg>
+            </span>
+          </button>
+          <div class="footer-acc-panel" id="footer-acc-3" role="region" aria-labelledby="footer-acc-3-btn">
+            <a href="https://smartepsilon.wpenginepowered.com/contact/">Contact Support</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-accent-line" aria-hidden="true"></div>
+    </div>
+
+    <div class="footer-brand-mark">
+      <img class="footer-brand-img" src="assets/symbol.png" alt="Smart Epsilon Symbol" width="280" height="280" loading="lazy" decoding="async">
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Smart Epsilon, a Value Chain Solutions company. All rights reserved.</span>
+    <div class="footer-badges">
+      <span>ISO 9001:2015</span>
+      <span>ISO 27001:2022</span>
+    </div>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Detection frame, full resolution">
+  <div class="lightbox-inner">
+    <img id="lb-img" alt="">
+    <div class="lightbox-bar">
+      <div>
+        <p class="lightbox-title" id="lb-title"></p>
+        <p class="mono" id="lb-slug" style="margin-top:.3rem;color:rgba(244,243,248,.45)"></p>
+      </div>
+      <div class="lb-controls">
+        <button class="lb-btn" id="lb-prev" aria-label="Previous frame">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
+        </button>
+        <button class="lb-btn" id="lb-next" aria-label="Next frame">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg>
+        </button>
+        <button class="lb-btn" id="lb-close" aria-label="Close">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- reveal on scroll ---------- */
+  var reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && !reduced) {
+    var ro = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add('is-in'); ro.unobserve(e.target); }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px' });
+    reveals.forEach(function(el){ ro.observe(el); });
+  } else {
+    reveals.forEach(function(el){ el.classList.add('is-in'); });
+  }
+
+  /* ---------- S1 · hero evidence deck ---------- */
+  var deck = document.getElementById('deck');
+  if (deck) {
+    var items = Array.prototype.slice.call(deck.querySelectorAll('.deck-item'));
+    var dots  = Array.prototype.slice.call(document.querySelectorAll('#deck-dots .deck-dot'));
+    var slug  = document.getElementById('deck-slug');
+    var top   = 0;
+    function paint(){
+      items.forEach(function(el, i){
+        var pos = (i - top + items.length) % items.length;
+        el.setAttribute('data-pos', String(pos));
+      });
+      dots.forEach(function(d, i){ d.classList.toggle('is-on', i === top); });
+      slug.textContent = items[top].getAttribute('data-slug');
+    }
+    if (!reduced) {
+      setInterval(function(){ top = (top + 1) % items.length; paint(); }, 6000);
+    }
+    paint();
+  }
+
+  /* ---------- S3 · sticky rail ---------- */
+  var railBtns = Array.prototype.slice.call(document.querySelectorAll('.rail-btn'));
+  var areas    = railBtns.map(function(b){ return document.getElementById(b.getAttribute('data-target')); });
+
+  railBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var t = document.getElementById(btn.getAttribute('data-target'));
+      if (t) t.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+    });
+  });
+
+  if ('IntersectionObserver' in window) {
+    var ao = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (!e.isIntersecting) return;
+        var i = areas.indexOf(e.target);
+        if (i < 0) return;
+        railBtns.forEach(function(b, j){ b.classList.toggle('is-active', j === i); });
+      });
+    }, { rootMargin: '-25% 0px -60%', threshold: 0 });
+    areas.forEach(function(a){ if (a) ao.observe(a); });
+  }
+
+  /* ---------- S3 · lightbox ---------- */
+  var frameBtns = Array.prototype.slice.call(document.querySelectorAll('.frame-btn'));
+  var lb        = document.getElementById('lightbox');
+  var lbImg     = document.getElementById('lb-img');
+  var lbTitle   = document.getElementById('lb-title');
+  var lbSlug    = document.getElementById('lb-slug');
+  var index     = 0;
+  var lastFocus = null;
+
+  function show(i){
+    index = (i + frameBtns.length) % frameBtns.length;
+    var btn = frameBtns[index];
+    var img = btn.querySelector('img');
+    var fig = btn.closest('figure');
+    lbImg.src = img.getAttribute('src');
+    lbImg.alt = img.getAttribute('alt');
+    lbTitle.textContent = fig.querySelector('.frame-detect').textContent.trim();
+    lbSlug.textContent  = fig.querySelector('.frame-slug').textContent.trim();
+  }
+  function open(i){
+    lastFocus = document.activeElement;
+    show(i);
+    lb.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('lb-close').focus();
+  }
+  function close(){
+    lb.classList.remove('is-open');
+    document.body.style.overflow = '';
+    if (lastFocus) lastFocus.focus();
+  }
+
+  frameBtns.forEach(function(btn, i){ btn.addEventListener('click', function(){ open(i); }); });
+  document.getElementById('lb-close').addEventListener('click', close);
+  document.getElementById('lb-prev').addEventListener('click', function(){ show(index - 1); });
+  document.getElementById('lb-next').addEventListener('click', function(){ show(index + 1); });
+  lb.addEventListener('click', function(e){ if (e.target === lb) close(); });
+
+  document.addEventListener('keydown', function(e){
+    if (!lb.classList.contains('is-open')) return;
+    if (e.key === 'Escape')     { close(); }
+    if (e.key === 'ArrowLeft')  { show(index - 1); }
+    if (e.key === 'ArrowRight') { show(index + 1); }
+    if (e.key === 'Tab') {
+      var f = lb.querySelectorAll('button');
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+
+  /* ---------- S4 · capability filters ---------- */
+  var filters  = Array.prototype.slice.call(document.querySelectorAll('.filter'));
+  var appRows  = Array.prototype.slice.call(document.querySelectorAll('.app-row'));
+  var appGroups= Array.prototype.slice.call(document.querySelectorAll('.app-group'));
+
+  filters.forEach(function(f){
+    f.addEventListener('click', function(){
+      var cam = f.getAttribute('data-cam');
+      filters.forEach(function(x){ x.classList.toggle('is-on', x === f); });
+
+      appRows.forEach(function(r){
+        r.classList.toggle('is-hidden', cam !== 'all' && r.getAttribute('data-cam') !== cam);
+      });
+
+      appGroups.forEach(function(g){
+        var shown = g.querySelectorAll('.app-row:not(.is-hidden)').length;
+        g.classList.toggle('is-hidden', shown === 0);
+        var c = g.querySelector('.app-group-count');
+        if (c) c.textContent = (shown < 10 ? '0' : '') + shown;
+      });
+    });
+  });
+
+  /* ---------- S8 · FAQ ---------- */
+  document.querySelectorAll('.faq-q').forEach(function(q){
+    q.addEventListener('click', function(){
+      var item = q.parentElement;
+      var open = item.classList.toggle('is-open');
+      q.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+
+  /* ---------- S10 · footer accordion (mobile only, matches theme footer.js) ---------- */
+  var mqFooter = window.matchMedia('(max-width: 767px)');
+  document.querySelectorAll('[data-footer-accordion]').forEach(function(col){
+    var trigger = col.querySelector('.footer-acc-trigger');
+    var panel   = col.querySelector('.footer-acc-panel');
+    if (!trigger || !panel) return;
+
+    trigger.addEventListener('click', function(){
+      if (!mqFooter.matches) return;
+      var open = col.classList.toggle('is-open');
+      trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      panel.style.height = open ? panel.scrollHeight + 'px' : '0px';
+    });
+  });
+  mqFooter.addEventListener('change', function(e){
+    document.querySelectorAll('[data-footer-accordion]').forEach(function(col){
+      var panel = col.querySelector('.footer-acc-panel');
+      var trigger = col.querySelector('.footer-acc-trigger');
+      col.classList.remove('is-open');
+      if (trigger) trigger.setAttribute('aria-expanded', 'false');
+      if (panel) panel.style.height = e.matches ? '0px' : '';
+    });
+  });
+})();
+</script>
+</body>
+</html>
