@@ -1,0 +1,4297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Video Intelligence — Smart Epsilon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700;8..144,800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/logo.svg">
+    
+    <style>
+/* GLOBALS */
+/**
+ * Smart Epsilon — Global Design System
+ * ---------------------------------------------------------------------------
+ * Single source of truth for shared UI primitives.
+ * Use these tokens/classes everywhere so homepage + inner pages stay consistent.
+ *
+ * Loaded by WordPress (functions.php) after parent CSS.
+ * Fonts: Google Sans Flex via wp_enqueue; JUST Sans via assets/css/fonts.css.
+ *
+ * Quick reference
+ * ---------------
+ * Primary:     #6b62ac  (--color-primary / --se-purple)
+ * Secondary:   #2b2868  (--color-secondary / --se-purple-deep)
+ * Font body:   "Google Sans Flex" (--font-body)
+ * Font display:"Google Sans Flex" (--font-display)
+ * Font brand:  "JUST Sans"        (--font-brand) — local woff2 via fonts.css
+ * Container:   1440px   (--container-max) + gutter clamp(1.25rem, 4vw, 3rem)
+ * Buttons:     .btn.btn-primary | .btn.btn-secondary
+ * Eyebrow:     .eyebrow | .eyebrow-pill
+ * ---------------------------------------------------------------------------
+ */
+
+
+/* ==========================================================================
+   1. COLOR TOKENS
+   ========================================================================== */
+
+:root {
+  /* Brand */
+  --color-primary: #6b62ac;
+  --color-primary-hover: #2b2868;
+  --color-primary-soft: rgba(107, 98, 172, 0.08);
+  --color-primary-border: rgba(107, 98, 172, 0.2);
+  --color-primary-glow: 0 0 0 1px rgba(107, 98, 172, 0.12),
+    0 20px 48px rgba(107, 98, 172, 0.15);
+
+  --color-secondary: #2b2868;
+  --color-secondary-hover: #6b62ac;
+  --color-secondary-soft: #dad0ec;
+
+  /* Neutrals */
+  --color-navy: #0f0f25;
+  --color-ink: #111111;
+  --color-ink-soft: #555555;
+  --color-muted: #737373;
+  --color-surface: #ffffff;
+  --color-surface-soft: #f7f7fa;
+  --color-surface-tint: #f3f1f8;
+
+  /* Lines */
+  --color-line: rgba(15, 15, 37, 0.1);
+  --color-line-strong: rgba(15, 15, 37, 0.18);
+
+  /* Support */
+  --color-teal: #0d9488;
+  --color-success: #22c55e;
+  --color-danger: #ef4444;
+  --color-amber: #f59e0b;
+
+  /* Dark surfaces (hero / CTA / footer) */
+  --color-bg-dark: #06060f;
+  --color-bg-dark-elevated: #0e0d1a;
+  --color-bg-dark-panel: #12111f;
+  --color-ink-on-dark: #f4f3f8;
+  --color-ink-on-dark-soft: rgba(244, 243, 248, 0.62);
+  --color-primary-on-dark: #8b7fd4;
+  --color-primary-bright-on-dark: #b8aef0;
+  --color-line-on-dark: rgba(255, 255, 255, 0.08);
+  --color-line-strong-on-dark: rgba(255, 255, 255, 0.16);
+
+  /* Aliases kept for existing CSS (--se-* / --accent) */
+  --se-purple: var(--color-primary);
+  --se-purple-deep: var(--color-secondary);
+  --se-purple-light: var(--color-secondary-soft);
+  --se-navy: var(--color-navy);
+  --se-ink: var(--color-ink);
+  --se-muted: var(--color-muted);
+  --se-surface: var(--color-surface);
+  --se-surface-soft: var(--color-surface-soft);
+  --se-surface-tint: var(--color-surface-tint);
+  --se-line: var(--color-line);
+  --se-line-strong: var(--color-line-strong);
+  --se-teal: var(--color-teal);
+  --se-success: var(--color-success);
+  --se-danger: var(--color-danger);
+  --se-amber: var(--color-amber);
+
+  --accent: var(--color-primary);
+  --accent-bright: var(--color-secondary);
+  --accent-dim: var(--color-primary-soft);
+  --bg: var(--color-surface);
+  --bg-elevated: var(--color-surface-soft);
+  --bg-panel: var(--color-surface-tint);
+  --ink: var(--color-ink);
+  --ink-soft: var(--color-ink-soft);
+  --line: var(--color-line);
+  --line-strong: var(--color-line-strong);
+  --success: var(--color-success);
+  --danger: var(--color-danger);
+
+  /* ========================================================================
+     2. LAYOUT
+     ======================================================================== */
+  --container-max: 1440px;
+  --container-narrow: 720px;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --section-pad-y: clamp(4.5rem, 10vh, 7.5rem);
+  /* Industry sections — stepped down by viewport (was flat 120px) */
+  --section-pad-industry: 120px;
+  --nav-h: 72px;
+  --max: var(--container-max);
+  --content-max: var(--container-max);
+  --content-narrow: var(--container-narrow);
+
+  /* ========================================================================
+     3. TYPE — font families
+     ======================================================================== */
+  --font-body: "Google Sans Flex", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    system-ui, sans-serif;
+  --font-display: "Google Sans Flex", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", system-ui, sans-serif;
+  --font-brand: "JUST Sans", "Google Sans Flex", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Consolas", monospace;
+
+  --fs-2xs: 0.6875rem; /* 11px — eyebrows / micro labels */
+  --fs-xs: 0.8125rem;
+  --fs-sm: 0.9375rem;
+  --fs-base: 1rem;
+  --fs-md: 1.125rem;
+  --fs-lg: 1.375rem;
+  --fs-xl: clamp(1.75rem, 3vw, 2.25rem);
+  --fs-2xl: clamp(2rem, 4vw, 3rem);
+  --fs-hero: clamp(2rem, 4.2vw, 3.15rem);
+  --fs-display: clamp(2.5rem, 6vw, 4.5rem);
+
+  --lh-tight: 1.05;
+  --lh-snug: 1.25;
+  --lh-normal: 1.6;
+  --lh-relaxed: 1.75;
+
+  --tracking-eyebrow: 0.12em;
+  --tracking-label: 0.12em;
+
+  /* ========================================================================
+     4. SPACE / RADIUS / SHADOW / MOTION
+     ======================================================================== */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+  --radius: 16px;
+
+  --shadow-sm: 0 2px 8px rgba(15, 15, 37, 0.06);
+  --shadow-md: 0 12px 40px rgba(15, 15, 37, 0.1);
+  --shadow-lg: 0 24px 64px rgba(15, 15, 37, 0.12);
+  --shadow-glow: var(--color-primary-glow);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease: var(--ease-out);
+  --dur-fast: 0.2s;
+  --dur-base: 0.4s;
+  --dur-slow: 0.75s;
+
+  --z-nav: 200;
+  --z-overlay: 500;
+  --z-skip: 1000;
+}
+
+/* Dark section token remaps */
+.stage--cta,
+.site-footer,
+.section--dark,
+.nav-drawer {
+  --accent: var(--color-primary-on-dark);
+  --accent-bright: var(--color-primary-bright-on-dark);
+  --accent-dim: rgba(139, 127, 212, 0.15);
+  --bg: var(--color-bg-dark);
+  --bg-elevated: var(--color-bg-dark-elevated);
+  --bg-panel: var(--color-bg-dark-panel);
+  --ink: var(--color-ink-on-dark);
+  --ink-soft: var(--color-ink-on-dark-soft);
+  --line: var(--color-line-on-dark);
+  --line-strong: var(--color-line-strong-on-dark);
+  --se-purple: var(--color-primary-on-dark);
+}
+
+/* ==========================================================================
+   5. CONTAINER
+   ========================================================================== */
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/*
+ * Genesis clearfix (::before/::after display:table) becomes empty flex/grid
+ * items when .container is also display:flex|grid — kills those ghosts.
+ */
+.container::before,
+.container::after,
+.site-content::before,
+.site-content::after {
+  content: none !important;
+  display: none !important;
+}
+
+.container--narrow {
+  max-width: var(--container-narrow);
+}
+
+.section-pad {
+  padding-block: var(--section-pad-y);
+  padding-inline: var(--gutter);
+}
+
+/* Industry section vertical rhythm — reduce 120px by breakpoint */
+@media (max-width: 1440px) {
+  :root {
+    --section-pad-industry: 96px;
+  }
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --section-pad-industry: 80px;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --section-pad-industry: 64px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --section-pad-industry: 48px;
+  }
+}
+
+/* ==========================================================================
+   5b. GLOBAL FONT APPLICATION
+   ========================================================================== */
+
+html {
+  font-size: 100%; /* Override Genesis 62.5% so rem tokens match the redesign (16px root) */
+  font-family: var(--font-body);
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  font-weight: 400;
+  line-height: var(--lh-normal);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/*
+ * Genesis sets overflow-x:hidden on html/body, which creates a scroll container
+ * and breaks position:sticky. overflow-x:clip clamps horizontal bleed without
+ * that side effect. Keep normal document (window) scrolling so scroll listeners
+ * and scrollY-based JS keep working.
+ */
+@supports (overflow: clip) {
+  html {
+    overflow-x: clip;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(107, 98, 172, 0.45) transparent;
+  }
+
+  body {
+    overflow-x: clip;
+  }
+
+  html::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  html::-webkit-scrollbar-thumb {
+    background: rgba(107, 98, 172, 0.45);
+    border-radius: 5px;
+  }
+
+  html::-webkit-scrollbar-thumb:hover {
+    background: rgba(107, 98, 172, 0.65);
+  }
+}
+
+@supports not (overflow: clip) {
+  html {
+    overflow-x: hidden;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.section-title,
+.page-title,
+.hero-headline,
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.font-brand {
+  font-family: var(--font-brand);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+button,
+input,
+textarea,
+select,
+.btn {
+  font-family: var(--font-body);
+}
+
+/* ==========================================================================
+   6. BUTTONS
+   Usage:
+     <a class="btn btn-primary">Primary CTA</a>
+     <a class="btn btn-secondary">Secondary / ghost</a>
+     <a class="btn btn-primary btn-sm">Small</a>
+   ========================================================================== */
+
+.btn {
+  --btn-bg: var(--color-navy);
+  --btn-fg: #ffffff;
+  --btn-border: transparent;
+  --btn-bg-hover: var(--color-primary);
+  --btn-fg-hover: #ffffff;
+  --btn-border-hover: transparent;
+  --btn-shadow-hover: var(--shadow-md);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 20px 30px;
+  border: 1px solid var(--btn-border);
+  border-radius: var(--radius-pill);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--font-body);
+  font-weight: 600;
+  /* font-size: var(--fs-sm); */
+  font-size: 18px;
+  line-height: normal;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    background-color var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out);
+  will-change: transform;
+}
+
+.btn .icon {
+  flex-shrink: 0;
+  width: 1em;
+  height: 1em;
+  color: currentColor;
+}
+
+.btn:hover {
+  background: var(--btn-bg-hover);
+  color: var(--btn-fg-hover);
+  border-color: var(--btn-border-hover);
+  box-shadow: var(--btn-shadow-hover);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn:focus,
+.btn:focus-visible {
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  border-color: var(--btn-border);
+  box-shadow: none;
+  outline: none;
+}
+
+/* Primary — filled brand purple */
+.btn-primary,
+.btn-primary-purple {
+  --btn-bg: var(--color-primary);
+  --btn-fg: #ffffff;
+  --btn-border: transparent;
+  --btn-bg-hover: var(--color-primary-hover);
+  --btn-fg-hover: #ffffff;
+  --btn-border-hover: transparent;
+  --btn-shadow-hover: var(--shadow-glow);
+}
+
+/* Secondary — outlined / ghost */
+.btn-secondary,
+.btn-ghost,
+.btn-secondary-light {
+  --btn-bg: transparent;
+  --btn-fg: var(--color-ink);
+  --btn-border: var(--color-line-strong);
+  --btn-bg-hover: var(--color-primary-soft);
+  --btn-fg-hover: var(--color-ink);
+  --btn-border-hover: var(--color-primary);
+  --btn-shadow-hover: none;
+}
+
+/* Inverse — white fill (on dark heroes) */
+.btn-inverse {
+  --btn-bg: #ffffff;
+  --btn-fg: var(--color-navy);
+  --btn-border: transparent;
+  --btn-bg-hover: var(--color-surface-tint);
+  --btn-fg-hover: var(--color-navy);
+  --btn-shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+/* On dark backgrounds */
+.section--dark .btn-secondary,
+.section--dark .btn-ghost,
+.stage--hero .btn-secondary,
+.stage--hero .btn-ghost,
+.stage--cta .btn-secondary,
+.stage--cta .btn-ghost,
+.nav-drawer .btn-ghost {
+  --btn-bg: rgba(255, 255, 255, 0.05);
+  --btn-fg: #ffffff;
+  --btn-border: rgba(255, 255, 255, 0.25);
+  --btn-bg-hover: rgba(255, 255, 255, 0.12);
+  --btn-fg-hover: #ffffff;
+  --btn-border-hover: rgba(255, 255, 255, 0.5);
+}
+
+.stage--hero .btn-primary,
+.stage--cta .btn-primary,
+.site-header .btn-primary.nav-cta {
+  --btn-bg: var(--color-primary);
+  --btn-fg: #ffffff;
+  --btn-bg-hover: var(--color-secondary);
+  --btn-fg-hover: #ffffff;
+}
+
+/* Sizes */
+.btn-sm {
+  min-height: 40px;
+  padding: 0.6rem 1.15rem;
+  font-size: var(--fs-xs);
+}
+
+.btn-lg,
+.stage--hero .btn {
+  min-height: 56px;
+  padding: 1rem 2rem;
+  font-size: 1.15rem;
+}
+
+/* Mobile — slightly smaller buttons */
+@media (max-width: 768px) {
+  .btn {
+    min-height: 42px;
+    padding: 0.7rem 1.2rem;
+    font-size: 0.875rem;
+    gap: 0.4rem;
+  }
+
+  .btn-sm {
+    min-height: 36px;
+    padding: 0.5rem 0.95rem;
+    font-size: 0.75rem;
+  }
+
+  .btn-lg,
+  .stage--hero .btn {
+    min-height: 46px;
+    padding: 0.8rem 1.35rem;
+    font-size: 0.9375rem;
+  }
+
+  .site-header .btn-primary.nav-cta {
+    min-height: 40px;
+    padding: 0.55rem 1.05rem;
+    font-size: 0.8125rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn {
+    min-height: 40px;
+    padding: 0.65rem 1.05rem;
+    font-size: 0.8125rem;
+  }
+
+  .btn-lg,
+  .stage--hero .btn {
+    min-height: 44px;
+    padding: 0.75rem 1.2rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* Text link */
+.btn-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0;
+  border: 0;
+  border-bottom: 1.5px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  min-height: 0;
+  color: var(--color-primary);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  box-shadow: none;
+  transition:
+    border-color var(--dur-base),
+    gap var(--dur-base),
+    color var(--dur-base);
+}
+
+.btn-link:hover {
+  background: transparent;
+  border-color: currentColor;
+  box-shadow: none;
+  gap: 0.6rem;
+  color: var(--color-secondary);
+}
+
+.btn-link .icon {
+  width: 1em;
+  height: 1em;
+}
+
+/* Magnetic wrapper (optional JS) */
+[data-magnetic] {
+  display: inline-flex;
+  vertical-align: middle;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+/* ---- Scroll progress (site-wide) ---- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: calc(var(--z-nav) + 1);
+  pointer-events: none;
+  background: transparent;
+}
+
+.scroll-progress::after {
+  content: "";
+  display: block;
+  height: 100%;
+  width: var(--scroll-pct, 0%);
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-hover));
+  transition: width 0.1s linear;
+}
+
+.admin-bar .scroll-progress {
+  top: 32px;
+}
+
+@media screen and (max-width: 782px) {
+  .admin-bar .scroll-progress {
+    top: 46px;
+  }
+}
+
+/* ---- Back to top (site-wide) ---- */
+.back-to-top {
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right, 0px));
+  bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
+  z-index: calc(var(--z-nav) + 2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #ffffff;
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(0.75rem);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  background: var(--color-primary-hover);
+  box-shadow: var(--shadow-glow);
+}
+
+.back-to-top:focus,
+.back-to-top:focus-visible {
+  outline: none;
+}
+
+.back-to-top__icon {
+  display: block;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   7. EYEBROWS / LABELS
+   Usage:
+     <p class="eyebrow">Solutions</p>
+     <span class="eyebrow-pill">Live product</span>
+   ========================================================================== */
+
+.eyebrow {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 var(--space-3);
+  padding-left: 14px;
+  font-family: var(--font-body);
+  font-size: var(--fs-2xs);
+  font-weight: 800;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-primary);
+  line-height: 1.2;
+}
+
+/*
+ * Marker = dot with a short rule under it. Both are pinned to the first line
+ * box (0.6em = half of line-height) so they hold their place when the label
+ * wraps or sits in a centred header.
+ */
+.eyebrow::before,
+.eyebrow::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  background: currentColor;
+}
+
+.eyebrow::before {
+  top: calc(0.6em - 3px);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.eyebrow::after {
+  top: calc(0.6em + 4px);
+  width: 10px;
+  height: 2px;
+  border-radius: 1px;
+}
+
+/* Pill badge eyebrow */
+.eyebrow-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 var(--space-5);
+  padding: 0.45rem 1.05rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-primary-border);
+  background: var(--color-primary-soft);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  line-height: 1.2;
+}
+
+.eyebrow-pill::before {
+  content: none;
+}
+
+.eyebrow-pill--live::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-success);
+  box-shadow: 0 0 10px var(--color-success);
+  animation: se-pulse 2s ease infinite;
+}
+
+.section--dark .eyebrow,
+.stage--cta .eyebrow,
+.stage--hero .eyebrow {
+  color: var(--color-primary-on-dark);
+}
+
+.section--dark .eyebrow-pill,
+.stage--hero .eyebrow-pill {
+  color: var(--color-primary-on-dark);
+  background: rgba(139, 127, 212, 0.12);
+  border-color: rgba(139, 127, 212, 0.28);
+}
+
+/* Micro uppercase labels (forms, mega menus, aside) */
+.label-caps {
+  margin: 0;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+@keyframes se-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(0.85);
+  }
+}
+
+/* ==========================================================================
+   8. SECTION HEAD / TEXT HELPERS
+   ========================================================================== */
+
+.section-head {
+  max-width: 640px;
+  margin-bottom: var(--space-8);
+}
+
+.section-head--center {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  font-weight: 500;
+  line-height: var(--lh-tight);
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+}
+
+.section-title em,
+.text-accent {
+  font-style: normal;
+  color: var(--color-primary);
+}
+
+.section-lede,
+.lede {
+  margin-top: var(--space-4);
+  font-size: var(--fs-md);
+  line-height: var(--lh-relaxed);
+  color: var(--color-muted);
+  max-width: 52ch;
+}
+
+/* ==========================================================================
+   9. FOCUS / A11Y
+   ========================================================================== */
+
+a:focus,
+a:focus-visible,
+a:active,
+button:focus,
+button:focus-visible,
+button:active,
+[role="button"]:focus,
+[role="button"]:focus-visible {
+  outline: none;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2.5px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  z-index: var(--z-skip);
+  background: var(--color-primary);
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 0 var(--radius-sm) 0;
+  font-weight: 600;
+  font-size: var(--fs-sm);
+}
+
+.skip-link:focus-visible {
+  left: 0;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   10. REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn-link,
+  .eyebrow-pill--live::before,
+  [data-magnetic],
+  .back-to-top {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .btn:active {
+    transform: none;
+  }
+
+  .scroll-progress::after {
+    transition: none;
+  }
+
+  .back-to-top.is-visible {
+    transform: none;
+  }
+}
+
+@media (max-width: 768px) {
+  [data-magnetic] {
+    transform: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-lede, .lede {
+    font-size: 14px;
+    line-height: 22px;
+  }
+}
+
+
+/* HEADER */
+/**
+ * Smart Epsilon site header
+ * Depends on: assets/css/globals.css (tokens, .container, .btn)
+ * Single source — no duplicate selectors.
+ */
+
+/* ---- Utilities / WP + Genesis conflict resets ---- */
+.icon {
+	display: inline-block;
+	vertical-align: middle;
+	flex-shrink: 0;
+}
+
+.se-site {
+	padding-top: calc(var(--nav-h) + 0.75rem);
+}
+
+/* Homepage / flexible pages with full-bleed hero — override Genesis #page padding */
+body.home #page.se-site,
+body.front-page #page.se-site,
+body.page-template-templatesflexible-sections-php #page.se-site,
+body.page-template-templatesindustry-php #page.se-site,
+body.page-template-templatesanti-counterfeiting-php #page.se-site,
+body.page-template-templatescontact-page-php #page.se-site {
+	padding-top: 0;
+}
+
+.admin-bar .site-header {
+	top: 32px;
+}
+
+@media screen and (max-width: 782px) {
+	.admin-bar .site-header {
+		top: 46px;
+	}
+}
+
+.site-header .container.nav-row::before,
+.site-header .container.nav-row::after {
+	content: none !important;
+	display: none !important;
+}
+
+/* ---- Header shell ---- */
+.site-header {
+	position: fixed;
+	inset: 0 0 auto;
+	z-index: var(--z-nav);
+	display: block;
+	width: 100%;
+	max-width: none;
+	margin: 0;
+	padding-block: 1rem;
+	padding-inline: 0;
+	/* background: rgba(255, 255, 255, 0.68); */
+	background: #fff;
+	backdrop-filter: blur(28px);
+	-webkit-backdrop-filter: blur(28px);
+	border-bottom: 1px solid rgba(107, 98, 172, 0.16);
+	box-shadow: 0 8px 32px rgba(107, 98, 172, 0.05);
+	transition:
+		padding-block var(--dur-base) var(--ease-out),
+		background var(--dur-base) var(--ease-out);
+}
+
+.site-header.is-scrolled {
+	padding-block: 0.7rem;
+}
+
+/* Beat Genesis `.site-header .container { display: block }` */
+.site-header .container.nav-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	width: 100%;
+	max-width: var(--container-max);
+	margin-inline: auto;
+	padding-inline: var(--gutter);
+	float: none;
+}
+
+.site-header .brand {
+	display: inline-flex;
+	align-items: center;
+	flex-shrink: 0;
+	text-decoration: none;
+	color: var(--color-ink);
+}
+
+.site-header .brand img {
+	height: 36px;
+	width: auto;
+	display: block;
+}
+
+/* ---- Desktop nav ---- */
+.site-header .primary-nav {
+	display: none;
+	align-items: center;
+	gap: 0.25rem;
+}
+
+.site-header .nav-item {
+	position: relative;
+}
+
+/* Beat Genesis `a { color: #62707c }` — use design tokens */
+.site-header .nav-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.3rem;
+	padding: 0.55rem 0.9rem;
+	font-family: var(--font-body);
+	font-size: 0.9375rem;
+	font-weight: 500;
+	line-height: 1.2;
+	letter-spacing: normal;
+	text-transform: none;
+	text-decoration: none;
+	color: var(--color-ink);
+	border-radius: var(--radius-pill);
+	transition:
+		color var(--dur-fast) var(--ease-out),
+		background var(--dur-fast) var(--ease-out);
+}
+
+.site-header .nav-link--mega {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.3rem;
+}
+
+.site-header .nav-link:hover,
+.site-header .nav-link:focus,
+.site-header .nav-link:focus-visible,
+.site-header .nav-item.is-open > .nav-link {
+	color: var(--color-primary);
+	background: rgba(15, 15, 37, 0.05);
+	outline: none;
+}
+
+.site-header .nav-chevron {
+	width: 14px;
+	height: 14px;
+	opacity: 0.7;
+	transition: transform 0.25s var(--ease-out);
+}
+
+.site-header .nav-item.is-open .nav-chevron {
+	transform: rotate(180deg);
+}
+
+/* ---- Dropdown panels ---- */
+.site-header .dropdown-panel {
+	position: absolute;
+	top: calc(100% + 10px);
+	left: 50%;
+	z-index: var(--z-overlay);
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	width: 380px;
+	max-width: min(380px, calc(100vw - 2 * var(--gutter)));
+	padding: 0.75rem;
+	background: var(--color-surface);
+	border: 1px solid var(--color-line-strong);
+	border-radius: 16px;
+	box-shadow: var(--shadow-lg);
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transform: translateX(-50%) translateY(8px);
+	transition:
+		opacity 0.22s var(--ease-out),
+		transform 0.22s var(--ease-out),
+		visibility 0.22s;
+}
+
+.site-header .nav-item.is-open .dropdown-panel {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+	transform: translateX(-50%) translateY(0);
+}
+
+.site-header .dropdown-panel[hidden] {
+	display: flex !important;
+}
+
+/* ---- Mega panel (Industries) ---- */
+.site-header .mega-panel {
+	position: absolute;
+	top: calc(100% + 10px);
+	left: 50%;
+	z-index: var(--z-overlay);
+	width: min(800px, calc(100vw - 2 * var(--gutter)));
+	padding: 0;
+	background: var(--color-surface);
+	border: 1px solid var(--color-line-strong);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow-lg);
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transform: translateX(-50%) translateY(8px);
+	transition:
+		opacity 0.22s var(--ease-out),
+		transform 0.22s var(--ease-out),
+		visibility 0.22s;
+}
+
+.site-header .nav-item.is-open .mega-panel {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+	transform: translateX(-50%) translateY(0);
+}
+
+.site-header .mega-panel[hidden] {
+	display: block !important;
+}
+
+.site-header .mega-panel__inner {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 0;
+}
+
+.site-header .mega-col--grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 0.75rem 2rem;
+	padding: 1.5rem;
+	width: 100%;
+	max-width: none;
+}
+
+/* ---- Mega / dropdown links (match redesign screenshot) ---- */
+.site-header .mega-link {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 0.65rem 0.7rem;
+	border-radius: 10px;
+	text-decoration: none;
+	color: var(--color-ink);
+	transition:
+		background var(--dur-fast) var(--ease-out),
+		color var(--dur-fast) var(--ease-out);
+}
+
+.site-header .mega-link:hover,
+.site-header .mega-link:focus,
+.site-header .mega-link:focus-visible {
+	background: var(--color-primary-soft);
+	color: var(--color-secondary);
+	outline: none;
+}
+
+.site-header .mega-link-icon {
+	width: 36px;
+	height: 36px;
+	border-radius: 10px;
+	display: grid;
+	place-items: center;
+	flex-shrink: 0;
+	background: var(--color-primary-soft);
+	color: var(--color-primary);
+	border: 1px solid var(--color-primary-border);
+}
+
+.site-header .mega-link-icon img,
+.site-header .mega-link-icon-img {
+	width: 16px;
+	height: 16px;
+	object-fit: contain;
+	display: block;
+}
+
+.site-header .mega-col--grid .mega-link-icon {
+	width: 40px;
+	height: 40px;
+}
+
+.site-header .mega-col--grid .mega-link-icon img,
+.site-header .mega-col--grid .mega-link-icon-img {
+	width: 20px;
+	height: 20px;
+}
+
+.site-header .mega-link-icon-placeholder {
+	display: block;
+	width: 16px;
+	height: 16px;
+	border-radius: 4px;
+	background: currentColor;
+	opacity: 0.2;
+}
+
+/* Stacked title + description — never inline */
+.site-header .mega-link-text {
+	display: flex !important;
+	flex-direction: column !important;
+	flex-wrap: nowrap;
+	align-items: flex-start;
+	justify-content: center;
+	gap: 2px;
+	min-width: 0;
+	flex: 1 1 auto;
+}
+
+.site-header .mega-link-title {
+	display: block !important;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: var(--font-display);
+	font-size: 0.9375rem;
+	font-weight: 600;
+	line-height: 1.25;
+	letter-spacing: -0.01em;
+	color: var(--color-ink);
+	white-space: normal;
+}
+
+.site-header .mega-link-desc {
+	display: block !important;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: var(--font-body);
+	font-size: 0.6875rem; /* 11px — matches redesign */
+	font-weight: 400;
+	line-height: 1.35;
+	color: var(--color-ink-soft);
+	white-space: normal;
+}
+
+.site-header .mega-link:hover .mega-link-title,
+.site-header .mega-link:focus-visible .mega-link-title {
+	color: var(--color-secondary);
+}
+
+.site-header .mega-link:hover .mega-link-desc,
+.site-header .mega-link:focus-visible .mega-link-desc {
+	color: var(--color-ink-soft);
+}
+
+/* ---- Actions ---- */
+.site-header .nav-actions {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.site-header .nav-cta {
+	display: none;
+	text-decoration: none;
+}
+
+.site-header .nav-toggle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	border: 1px solid rgba(15, 15, 37, 0.12);
+	border-radius: 8px;
+	background: #6b62ac;
+	color: var(--color-ink);
+	cursor: pointer;
+}
+
+.site-header .nav-toggle svg path {
+	stroke: #fff;
+}
+
+/* ---- Mobile drawer ---- */
+.nav-drawer {
+	position: fixed;
+	inset: 0;
+	z-index: var(--z-overlay);
+	display: block;
+	padding: var(--space-6) var(--space-5);
+	overflow-y: auto;
+	background: var(--color-bg-dark);
+	color: var(--color-ink-on-dark);
+	transform: translateX(100%);
+	visibility: hidden;
+	transition:
+		transform var(--dur-slow) var(--ease-in-out),
+		visibility var(--dur-slow);
+}
+
+.nav-drawer.is-open {
+	transform: translateX(0);
+	visibility: visible;
+}
+
+.nav-drawer-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: var(--space-6);
+}
+
+.nav-drawer-head img {
+	height: 32px;
+	width: auto;
+	filter: brightness(0) invert(1);
+}
+
+.nav-drawer-head .nav-toggle {
+	border-color: rgba(255, 255, 255, 0.16);
+	background: rgba(255, 255, 255, 0.06);
+	color: #fff;
+}
+
+.nav-drawer-list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.15rem;
+}
+
+.nav-drawer-list > a,
+.nav-drawer-list summary {
+	display: block;
+	padding: 0.85rem 0;
+	font-family: var(--font-display);
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: var(--color-ink-on-dark);
+	text-decoration: none;
+	border-bottom: 1px solid var(--color-line-on-dark);
+	cursor: pointer;
+	list-style: none;
+}
+
+.nav-drawer-list summary::-webkit-details-marker {
+	display: none;
+}
+
+.nav-drawer-list summary::after {
+	content: "";
+	float: right;
+	width: 0.55rem;
+	height: 0.55rem;
+	margin-top: 0.55rem;
+	border-right: 2px solid var(--color-ink-on-dark-soft);
+	border-bottom: 2px solid var(--color-ink-on-dark-soft);
+	transform: rotate(45deg);
+	transition: transform 0.2s var(--ease-out);
+}
+
+.nav-drawer-list details[open] summary::after {
+	transform: rotate(-135deg);
+	margin-top: 0.75rem;
+}
+
+.nav-drawer-sub {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+	padding: 0.35rem 0 1rem;
+}
+
+.nav-drawer-sub .mega-link {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 0.65rem 0.7rem;
+	border-radius: 10px;
+	text-decoration: none;
+	color: var(--color-ink-on-dark);
+	transition:
+		background var(--dur-fast) var(--ease-out),
+		color var(--dur-fast) var(--ease-out);
+}
+
+.nav-drawer-sub .mega-link:hover,
+.nav-drawer-sub .mega-link:focus-visible {
+	background: rgba(255, 255, 255, 0.12);
+	color: var(--color-primary-on-dark);
+	outline: none;
+}
+
+.nav-drawer-sub .mega-link-icon {
+	width: 40px;
+	height: 40px;
+	border-radius: 10px;
+	display: grid;
+	place-items: center;
+	flex-shrink: 0;
+	background: rgba(255, 255, 255, 0.14);
+	border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.nav-drawer-sub .mega-link-icon img,
+.nav-drawer-sub .mega-link-icon-img {
+	width: 20px;
+	height: 20px;
+	object-fit: contain;
+	display: block;
+	filter: brightness(0) invert(1);
+}
+
+.nav-drawer-sub .mega-link-icon-placeholder {
+	display: block;
+	width: 20px;
+	height: 20px;
+	border-radius: 4px;
+	background: currentColor;
+	opacity: 0.2;
+}
+
+.nav-drawer-sub .mega-link-text {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+	gap: 2px;
+	min-width: 0;
+	flex: 1 1 auto;
+}
+
+.nav-drawer-sub .mega-link-title {
+	display: block;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: var(--font-display);
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1.25;
+	color: var(--color-ink-on-dark);
+}
+
+.nav-drawer-sub .mega-link-desc {
+	display: block;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: var(--font-body);
+	font-size: 0.6875rem;
+	font-weight: 400;
+	line-height: 1.35;
+	color: var(--color-ink-on-dark-soft);
+}
+
+.nav-drawer-sub .mega-link:hover .mega-link-title,
+.nav-drawer-sub .mega-link:focus-visible .mega-link-title {
+	color: var(--color-primary-on-dark);
+}
+
+.nav-drawer-cta {
+	margin-top: var(--space-7);
+}
+
+.nav-drawer-cta .btn {
+	width: 100%;
+	text-decoration: none;
+	font-size: 16px;
+    padding: 15px 0;
+}
+
+/* ---- Responsive ---- */
+@media (min-width: 1024px) {
+	.site-header .primary-nav {
+		display: flex;
+	}
+
+	.site-header .nav-cta {
+		display: inline-flex;
+	}
+
+	.site-header .nav-toggle {
+		display: none;
+	}
+}
+
+@media (max-width: 1023px) {
+	.site-header .dropdown-panel,
+	.site-header .mega-panel {
+		display: none !important;
+	}
+}
+
+@media (max-width: 899px) {
+	.site-header .mega-col--grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 480px) {
+	.site-header .brand img {
+		height: 35px;
+	}
+
+	.site-header .nav-toggle {
+		width: 40px;
+		height: 40px;
+	}
+
+	.nav-drawer-list > a,
+	.nav-drawer-list summary {
+		font-size: 1.125rem;
+	}
+}
+
+
+/* FOOTER */
+/**
+ * Smart Epsilon site footer
+ * Depends on: assets/css/globals.css
+ */
+
+/* Neutralize Genesis Block Theme footer chrome */
+.site-footer::before,
+.site-footer::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* ==========================================================================
+   Footer shell — exact live colors
+   ========================================================================== */
+
+.site-footer {
+  position: relative;
+  z-index: 1;
+  clear: both;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  background: #090714;
+  color: #f0f4ff;
+  padding: 5rem 0 3.5rem;
+  font-family: var(--font-body);
+  font-size: inherit;
+  line-height: inherit;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.site-footer a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.site-footer a:hover {
+  text-decoration: none;
+}
+
+.footer-inner {
+  max-width: var(--max);
+  padding-inline: var(--gutter);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4rem;
+  align-items: end;
+}
+
+.footer-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.footer-columns {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr 0.95fr 0.95fr;
+  gap: 2.5rem;
+  align-items: start;
+  width: 100%;
+}
+
+/* ---- Contact card ---- */
+.footer-contact-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-height: 180px;
+  justify-content: space-between;
+}
+
+.footer-contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 0.825rem;
+  color: rgba(240, 244, 255, 0.75);
+}
+
+.site-footer .footer-contact-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: inherit;
+  transition: color 0.2s;
+  line-height: 1.4;
+}
+
+.site-footer .footer-contact-link svg {
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+
+.site-footer a.footer-contact-link:visited {
+  color: inherit;
+}
+
+.site-footer a.footer-contact-link:hover,
+.site-footer a.footer-contact-link:visited:hover {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.site-footer a.footer-contact-link:focus,
+.site-footer a.footer-contact-link:focus-visible {
+  color: inherit;
+  text-decoration: none;
+  outline: none;
+}
+
+.site-footer .footer-contact-link--static {
+  cursor: default;
+}
+
+.site-footer .footer-contact-link--static:hover,
+.site-footer .footer-contact-link--static:focus {
+  color: inherit;
+  text-decoration: none;
+}
+
+.footer-social {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.site-footer .footer-social a {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f0f4ff;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.site-footer .footer-social a:hover,
+.site-footer .footer-social a:focus-visible {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #f0f4ff;
+  outline: none;
+  text-decoration: none;
+}
+
+/* ---- Link columns / accordion ---- */
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Reset Genesis `button` / `button:hover` chrome (blue fill, inset glow, bold CTA weight) */
+.site-footer .footer-acc-trigger,
+.site-footer .footer-acc-trigger:hover,
+.site-footer .footer-acc-trigger:focus,
+.site-footer .footer-acc-trigger:focus-visible,
+.site-footer .footer-acc-trigger:active {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  margin: 0 0 0.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  -webkit-appearance: none;
+  appearance: none;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(240, 244, 255, 0.4);
+  text-align: left;
+  cursor: default;
+  transition: none;
+}
+
+.footer-acc-icons {
+  display: none;
+  color: rgba(240, 244, 255, 0.55);
+  flex-shrink: 0;
+}
+
+.footer-icon-plus,
+.footer-icon-minus {
+  display: none;
+}
+
+.footer-acc-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.footer-acc-panel a {
+  font-size: 0.875rem;
+  color: rgba(240, 244, 255, 0.65);
+  transition: color 0.2s;
+}
+
+.footer-acc-panel a:hover,
+.footer-acc-panel a:focus-visible {
+  color: #ffffff;
+  outline: none;
+}
+
+/* Purple accent rule under columns */
+.footer-accent-line {
+  height: 2px;
+  width: 100%;
+  background: #6b62ac;
+}
+
+/* Brand symbol */
+.footer-brand-mark {
+  width: 280px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  align-self: stretch;
+}
+
+.footer-brand-img {
+  display: block;
+  width: 280px;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* Bottom bar */
+.footer-bottom {
+  max-width: var(--max);
+  padding-inline: var(--gutter);
+  margin: 4rem auto 0;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.footer-copy {
+  font-size: 0.8rem;
+  color: rgba(240, 244, 255, 0.45);
+}
+
+.footer-copy a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.footer-copy a:hover {
+  color: rgba(240, 244, 255, 0.75);
+}
+
+.footer-copy a:focus,
+.footer-copy a:focus-visible,
+.footer-copy a:active {
+  color: inherit;
+  outline: none;
+  text-decoration: underline;
+}
+
+.footer-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.footer-badges span {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(240, 244, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 1366px) {
+  .footer-acc-panel a {
+    font-size: 13px;
+  }
+  .footer-brand-img {
+    width: 250px;
+  }
+  .footer-columns {
+    gap: 20px;
+    grid-template-columns: 1.15fr 1.25fr 1.25fr 0.75fr;
+  }
+}
+
+/* ==========================================================================
+   Tablet
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+  .footer-inner {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  .footer-brand-mark {
+    width: 180px;
+    justify-content: flex-start;
+  }
+
+  .footer-brand-img {
+    width: 180px;
+  }
+
+  .footer-columns {
+    grid-template-columns: 1.2fr 1fr 1fr 1fr;
+    gap: 1.75rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .footer-columns {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .footer-contact-card {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ==========================================================================
+   Mobile — accordion with + / −
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .site-footer {
+    padding: 3.25rem 0 2.5rem;
+  }
+
+  .footer-inner {
+    gap: 2rem;
+  }
+
+  .footer-main {
+    gap: 1.75rem;
+  }
+
+  .footer-columns {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .footer-contact-card {
+    grid-column: auto;
+    margin-bottom: 1.25rem;
+    min-height: 0;
+    padding: 1.5rem 1.25rem;
+  }
+
+  .footer-col {
+    gap: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .site-footer .footer-acc-trigger,
+  .site-footer .footer-acc-trigger:hover,
+  .site-footer .footer-acc-trigger:focus,
+  .site-footer .footer-acc-trigger:focus-visible,
+  .site-footer .footer-acc-trigger:active {
+    cursor: pointer;
+    padding: 1rem 0;
+    margin: 0;
+    font-size: 0.8125rem;
+    color: rgba(240, 244, 255, 0.72);
+    transition: color 0.2s;
+  }
+
+  .site-footer .footer-acc-trigger:hover,
+  .site-footer .footer-col.is-open .footer-acc-trigger,
+  .site-footer .footer-col.is-open .footer-acc-trigger:hover,
+  .site-footer .footer-col.is-open .footer-acc-trigger:focus {
+    color: #ffffff;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .footer-acc-icons {
+    display: grid;
+    place-items: center;
+  }
+
+  .footer-icon-plus {
+    display: block;
+  }
+
+  .footer-icon-minus {
+    display: none;
+  }
+
+  .footer-col.is-open .footer-icon-plus {
+    display: none;
+  }
+
+  .footer-col.is-open .footer-icon-minus {
+    display: block;
+  }
+
+  .footer-acc-panel {
+    overflow: hidden;
+    height: 0;
+    gap: 0;
+    transition: height 0.32s var(--ease-out);
+  }
+
+  .footer-acc-panel a {
+    display: block;
+    padding: 0.65rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .footer-acc-panel a:first-child {
+    border-top: 0;
+    padding-top: 0.15rem;
+  }
+
+  .footer-acc-panel a:last-child {
+    padding-bottom: 1rem;
+  }
+
+  .footer-brand-mark {
+    width: 120px;
+    opacity: 0.85;
+  }
+
+  .footer-brand-img {
+    width: 120px;
+  }
+
+  .footer-bottom {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .footer-copy {
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-badges span {
+    font-size: 0.65rem;
+    padding: 3px 8px;
+  }
+
+  .footer-social a {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-acc-panel {
+    transition: none !important;
+  }
+}
+
+
+/* CUSTOM ELEVATED STYLES */
+
+/* ==========================================================================
+   PERFECT REDESIGN OVERRIDES — ELEVATED PRESENTATION & SUBTLE ANIMATIONS
+   ========================================================================== */
+
+*, *::before, *::after {
+    box-sizing: border-box !important;
+}
+
+html {
+    font-size: 16px !important;
+    overflow-x: hidden !important;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    font-family: 'Google Sans Flex', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Header overflow fix & sticky navigation */
+.site-header {
+    position: sticky !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-bottom: 1px solid rgba(15, 15, 37, 0.08) !important;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.03) !important;
+    z-index: 1000 !important;
+    padding-block: 0.75rem !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+}
+
+.site-header .container.nav-row {
+    max-width: 1320px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 24px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 1.5rem !important;
+}
+
+/* Fix button sizes globally: sleek, compact, elegant corporate style */
+.btn {
+    min-height: 38px !important;
+    height: 38px !important;
+    padding: 0 18px !important;
+    font-size: 0.84rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.01em !important;
+    border-radius: 8px !important;
+    gap: 7px !important;
+    line-height: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-sizing: border-box !important;
+    box-shadow: none !important;
+}
+
+.btn-primary, .btn--primary {
+    background: #6b62ac !important;
+    color: #ffffff !important;
+    border: 1px solid #6b62ac !important;
+}
+
+.btn-primary:hover, .btn--primary:hover {
+    background: #59509a !important;
+    border-color: #59509a !important;
+    transform: translateY(-1.5px) !important;
+    box-shadow: 0 4px 16px rgba(107, 98, 172, 0.3) !important;
+}
+
+.btn-secondary, .btn--ghost {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+}
+
+.btn-secondary:hover, .btn--ghost:hover {
+    background: #f8fafc !important;
+    border-color: #94a3b8 !important;
+    color: #0f172a !important;
+    transform: translateY(-1.5px) !important;
+}
+
+.stage--hero .btn--ghost {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+}
+
+.stage--hero .btn--ghost:hover {
+    background: rgba(255, 255, 255, 0.16) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    transform: translateY(-1.5px) !important;
+}
+
+.site-header .nav-cta {
+    min-height: 34px !important;
+    height: 34px !important;
+    padding: 0 14px !important;
+    font-size: 0.8125rem !important;
+    border-radius: 6px !important;
+    background: #6b62ac !important;
+    color: #ffffff !important;
+    border: 1px solid #6b62ac !important;
+}
+
+/* Section standard container & left-aligned headers */
+.site-container {
+    max-width: 1320px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 24px;
+    box-sizing: border-box;
+}
+
+.section-head-left {
+    text-align: left !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 0 32px 0 !important;
+    padding: 0 !important;
+}
+
+.section-eyebrow {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    color: #6b62ac !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    margin-bottom: 10px !important;
+}
+
+.section-heading {
+    font-size: clamp(1.85rem, 2.8vw, 2.5rem) !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    line-height: 1.22 !important;
+    letter-spacing: -0.02em !important;
+    margin: 0 0 12px 0 !important;
+    text-align: left !important;
+    max-width: 100% !important;
+}
+
+.section-lede, .lede, p.section-lede {
+    font-size: 1.05rem !important;
+    color: #475569 !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
+    text-align: left !important;
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+/* ==========================================================================
+   HERO SECTION — High Tech CCTV HUD & Live Scanline
+   ========================================================================== */
+.stage--hero {
+    background: #080811;
+    color: #ffffff;
+    position: relative;
+    padding: 76px 0 84px;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hero-video-wrapper {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+    opacity: 0.28;
+    pointer-events: none;
+}
+
+.hero-video-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-video-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 75% 50%, rgba(107, 98, 172, 0.22) 0%, transparent 60%),
+                linear-gradient(180deg, rgba(8, 8, 17, 0.8) 0%, #080811 100%);
+}
+
+.hero-layout-grid {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 48px;
+    align-items: center;
+}
+
+.hero-copy {
+    text-align: left;
+}
+
+.hero-label-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 12px;
+    background: rgba(107, 98, 172, 0.2);
+    border: 1px solid rgba(139, 127, 212, 0.4);
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #b8aef0;
+    margin-bottom: 18px;
+}
+
+.hero-title {
+    font-size: clamp(2.2rem, 3.8vw, 3.3rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    margin: 0 0 18px;
+}
+
+.hero-title .t-accent {
+    color: #b8aef0;
+    background: linear-gradient(135deg, #ffffff 20%, #b8aef0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-deck {
+    font-size: 1.08rem;
+    color: rgba(244, 243, 248, 0.82);
+    line-height: 1.6;
+    margin: 0 0 28px;
+    max-width: 640px;
+}
+
+.trust-chips-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 32px;
+}
+
+.features-pill-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    font-size: 0.8125rem;
+    color: #f1f5f9;
+    font-weight: 500;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.features-pill-tag:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.features-pill-tag svg {
+    color: #34d399;
+    flex-shrink: 0;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.hero-visual-card {
+    background: #100f21;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 24px 52px -10px rgba(0, 0, 0, 0.7);
+    transition: border-color 0.3s ease;
+}
+
+.hero-visual-card:hover {
+    border-color: rgba(107, 98, 172, 0.5);
+}
+
+.hero-visual-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.72rem;
+    font-family: ui-monospace, monospace;
+    color: #94a3b8;
+}
+
+.hero-feed-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #34d399;
+    font-weight: 700;
+}
+
+.hero-visual-imgbox {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1200 / 680;
+    background: #000;
+    overflow: hidden;
+}
+
+.hero-visual-imgbox img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.hero-visual-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    font-size: 0.75rem;
+    color: #cbd5e1;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* ==========================================================================
+   QUOTE WALL (The Cost of Not Knowing) — Subtle Ambient Polish
+   ========================================================================== */
+.quote-wall-section {
+    padding: 84px 0;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border-bottom: 1px solid #eaecf0;
+    position: relative;
+}
+
+.quote-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.quote-card {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid #eaecf0;
+    border-radius: 12px;
+    padding: 26px 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.quote-card:hover {
+    border-color: #cbd5e1;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(15, 15, 37, 0.06);
+}
+
+.quote-card::before {
+    content: "“";
+    position: absolute;
+    top: 10px;
+    right: 18px;
+    font-size: 3.5rem;
+    font-family: Georgia, serif;
+    color: rgba(107, 98, 172, 0.09);
+    line-height: 1;
+    pointer-events: none;
+}
+
+.quote-card-text {
+    font-size: 0.98rem;
+    line-height: 1.6;
+    color: #1e293b;
+    font-style: normal;
+    margin: 0 0 16px;
+    font-weight: 500;
+}
+
+.quote-author-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 14px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.quote-author-role {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.quote-author-sector {
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+/* ==========================================================================
+   PROOFS SHOWCASE SECTION — Strict Equal Height, Interactive Polish
+   ========================================================================== */
+.proof-showcase-section {
+    padding: 84px 0;
+    background-color: #ffffff;
+    background-image: radial-gradient(#eaecf0 1px, transparent 1px);
+    background-size: 28px 28px;
+    border-bottom: 1px solid #eaecf0;
+    position: relative;
+}
+
+.proof-nav-pills-wrap {
+    display: flex;
+    justify-content: flex-start;
+    margin: 0 0 32px 0;
+}
+
+.proof-nav-pills {
+    display: inline-flex;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 30px;
+    padding: 4px;
+    gap: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    flex-wrap: wrap;
+}
+
+.proof-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 34px;
+    padding: 0 16px;
+    border-radius: 20px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+}
+
+.proof-pill-btn svg {
+    width: 15px;
+    height: 15px;
+    stroke-width: 2;
+}
+
+.proof-pill-btn:hover {
+    color: #0f172a;
+    background: #f1f5f9;
+}
+
+.proof-pill-btn.active {
+    background: #6b62ac;
+    color: #ffffff;
+    border-color: #6b62ac;
+    box-shadow: 0 2px 8px rgba(107, 98, 172, 0.25);
+}
+
+.proof-pill-btn.active svg {
+    color: #ffffff;
+}
+
+/* Two-column grid: Equal height stretch */
+.showcase-grid-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    gap: 32px;
+    align-items: stretch !important;
+}
+
+.feature-cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+}
+
+.feature-item-card {
+    background: #ffffff;
+    border: 1px solid #eaecf0;
+    border-left: 3px solid transparent !important;
+    border-radius: 12px;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-sizing: border-box;
+    flex: 1;
+}
+
+.feature-item-card:hover {
+    border-color: #cbd5e1;
+    background: #ffffff;
+    transform: translateX(4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+}
+
+.feature-item-card.active {
+    border-left-color: #6b62ac !important;
+    border-color: #d8d4ec;
+    background: #faf9fd;
+    box-shadow: 0 4px 16px rgba(107, 98, 172, 0.08);
+}
+
+.feature-icon-wrapper {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background: #f4f3fb;
+    color: #6b62ac;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+.feature-item-card.active .feature-icon-wrapper {
+    background: #6b62ac;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(107, 98, 172, 0.3);
+}
+
+.feature-icon-wrapper svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
+}
+
+.feature-text-block {
+    flex: 1;
+    min-width: 0;
+    word-break: break-word;
+}
+
+.feature-item-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 4px 0;
+    line-height: 1.35;
+}
+
+.feature-item-desc {
+    font-size: 0.8125rem;
+    color: #64748b;
+    line-height: 1.45;
+    margin: 0;
+}
+
+/* Proof Display Card — 1200x680 Native Ratio, Full Height Match */
+.proof-display-card {
+    background: #ffffff;
+    border: 1px solid #eaecf0;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+    position: sticky;
+    top: 90px;
+    width: 100%;
+    box-sizing: border-box;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.proof-card-topbar {
+    padding: 12px 18px;
+    background: #ffffff;
+    border-bottom: 1px solid #eaecf0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.proof-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #047857;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-family: ui-monospace, monospace;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.proof-cam-code {
+    font-size: 0.72rem;
+    font-family: ui-monospace, monospace;
+    color: #64748b;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.proof-media-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1200 / 680;
+    background: #0b0f19;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.proof-media-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.22s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.proof-media-container:hover img {
+    transform: scale(1.02);
+}
+
+.proof-media-container img.fade-out {
+    opacity: 0.35;
+    transform: scale(0.99);
+}
+
+/* Corner HUD reticles */
+.proof-media-container::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 14px;
+    height: 14px;
+    border-top: 2px solid rgba(255, 255, 255, 0.6);
+    border-left: 2px solid rgba(255, 255, 255, 0.6);
+    pointer-events: none;
+    z-index: 4;
+}
+
+.proof-media-container::after {
+    content: "";
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 14px;
+    height: 14px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.6);
+    border-left: 2px solid rgba(255, 255, 255, 0.6);
+    pointer-events: none;
+    z-index: 4;
+}
+
+.proof-zoom-indicator {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(4px);
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 5px 11px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 5;
+}
+
+.proof-details-panel {
+    padding: 18px 20px;
+    background: #ffffff;
+    box-sizing: border-box;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.proof-panel-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 6px 0;
+    line-height: 1.35;
+    word-break: break-word;
+}
+
+.proof-panel-desc {
+    font-size: 0.85rem;
+    color: #64748b;
+    line-height: 1.5;
+    margin: 0 0 14px 0;
+    word-break: break-word;
+}
+
+.proof-telemetry-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding-top: 12px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.telemetry-chip {
+    background: #f8fafc;
+    border: 1px solid #eaecf0;
+    color: #475569;
+    font-size: 0.72rem;
+    font-family: ui-monospace, monospace;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+}
+
+.telemetry-chip:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+    border-color: #cbd5e1;
+}
+
+/* ==========================================================================
+   ARCHITECTURE & INTEGRATION SECTION — Step Cards with Glow
+   ========================================================================== */
+.integration-section {
+    padding: 84px 0;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    border-bottom: 1px solid #eaecf0;
+    position: relative;
+}
+
+.arch-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    position: relative;
+}
+
+.arch-step-card {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid #eaecf0;
+    border-radius: 14px;
+    padding: 26px 24px;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.arch-step-card:hover {
+    border-color: #6b62ac;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(107, 98, 172, 0.08);
+}
+
+.arch-tag-pill {
+    display: inline-block;
+    color: #6b62ac;
+    font-size: 0.7rem;
+    font-family: ui-monospace, monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: #f4f3fb;
+    border: 1px solid #e4e1f5;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    width: fit-content;
+    transition: all 0.2s ease;
+}
+
+.arch-step-card:hover .arch-tag-pill {
+    background: #6b62ac;
+    color: #ffffff;
+    border-color: #6b62ac;
+}
+
+.arch-step-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 8px 0;
+    line-height: 1.35;
+}
+
+.arch-step-desc {
+    font-size: 0.85rem;
+    color: #64748b;
+    line-height: 1.55;
+    margin: 0;
+}
+
+/* ==========================================================================
+   DEPLOYMENT ROLLOUT SECTION
+   ========================================================================== */
+.rollout-section {
+    padding: 84px 0;
+    background: #f8fafc;
+    border-bottom: 1px solid #eaecf0;
+    position: relative;
+}
+
+.rollout-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.rollout-step-box {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid #eaecf0;
+    border-radius: 12px;
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.rollout-step-box:hover {
+    border-color: #6b62ac;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(107, 98, 172, 0.08);
+}
+
+.rollout-num-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    font-family: ui-monospace, monospace;
+    color: #6b62ac;
+    background: #f4f3fb;
+    border: 1px solid #e4e1f5;
+    padding: 3px 9px;
+    border-radius: 20px;
+    width: fit-content;
+    margin-bottom: 14px;
+    transition: all 0.2s ease;
+}
+
+.rollout-step-box:hover .rollout-num-badge {
+    background: #6b62ac;
+    color: #ffffff;
+    border-color: #6b62ac;
+}
+
+.rollout-step-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 8px 0;
+    line-height: 1.35;
+}
+
+.rollout-step-desc {
+    font-size: 0.8125rem;
+    color: #64748b;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ==========================================================================
+   CASE STUDIES SECTION — Floating Metric Pills & Smooth Card Lift
+   ========================================================================== */
+.case-studies-section {
+    padding: 84px 0;
+    background: #ffffff;
+    border-bottom: 1px solid #eaecf0;
+}
+
+.case-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.case-card-item {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid #eaecf0;
+    border-radius: 14px;
+    overflow: hidden;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.case-card-item:hover {
+    border-color: #cbd5e1;
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px rgba(15, 15, 37, 0.08);
+}
+
+.case-thumb-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1200 / 680;
+    background: #0f172a;
+    overflow: hidden;
+}
+
+.case-thumb-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.case-card-item:hover .case-thumb-wrap img {
+    transform: scale(1.04);
+}
+
+.case-roi-pill {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(6px);
+    color: #34d399;
+    font-size: 0.68rem;
+    font-family: ui-monospace, monospace;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(52, 211, 153, 0.3);
+    z-index: 2;
+    letter-spacing: 0.04em;
+}
+
+.case-content-wrap {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.case-meta-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #6b62ac;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.case-item-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.4;
+    margin: 0 0 8px 0;
+}
+
+.case-item-excerpt {
+    font-size: 0.82rem;
+    color: #64748b;
+    line-height: 1.5;
+    margin: 0 0 16px 0;
+}
+
+.case-read-btn {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: #6b62ac;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    width: fit-content;
+    margin-top: auto;
+    transition: gap 0.2s ease;
+}
+
+.case-read-btn:hover {
+    color: #59509a;
+    gap: 9px;
+}
+
+/* ==========================================================================
+   FAQ SECTION — Clean Center-Aligned
+   ========================================================================== */
+.faq-section {
+    padding: 84px 0;
+    background: #f8fafc;
+    border-bottom: 1px solid #eaecf0;
+}
+
+.faq-section .section-head-center {
+    text-align: center !important;
+    max-width: 840px !important;
+    margin: 0 auto 40px auto !important;
+}
+
+.faq-section .section-eyebrow {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    color: #6b62ac !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    margin: 0 auto 10px auto !important;
+}
+
+.faq-section .section-heading {
+    text-align: center !important;
+    font-size: clamp(1.85rem, 2.8vw, 2.5rem) !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    line-height: 1.22 !important;
+    letter-spacing: -0.02em !important;
+    margin: 0 auto 12px auto !important;
+}
+
+.faq-section .section-lede {
+    text-align: center !important;
+    font-size: 1.05rem !important;
+    color: #475569 !important;
+    line-height: 1.6 !important;
+    max-width: 680px !important;
+    margin: 0 auto !important;
+}
+
+.faq-list {
+    max-width: 840px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.faq-item {
+    background: #ffffff;
+    border: 1px solid #eaecf0;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.faq-item:hover {
+    border-color: #cbd5e1 !important;
+}
+
+.faq-item.active {
+    border-color: #6b62ac !important;
+    box-shadow: 0 4px 16px rgba(107, 98, 172, 0.06) !important;
+}
+
+.faq-question-btn {
+    width: 100%;
+    padding: 18px 20px;
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.96rem;
+    font-weight: 600;
+    color: #0f172a;
+    text-align: left;
+    cursor: pointer;
+    gap: 14px;
+}
+
+.faq-icon-cross {
+    width: 18px;
+    height: 18px;
+    color: #6b62ac;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+}
+
+.faq-item.active .faq-icon-cross {
+    transform: rotate(45deg);
+}
+
+.faq-answer-panel {
+    display: none;
+    padding: 0 20px 18px;
+    font-size: 0.88rem;
+    color: #475569;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   CTA BANNER SECTION — Clean Center-Aligned
+   ========================================================================== */
+.cta-banner-section {
+    padding: 96px 0;
+    background: radial-gradient(circle at 50% 30%, #1e1b4b 0%, #0c0b1a 100%);
+    color: #ffffff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    text-align: center !important;
+}
+
+.cta-banner-content {
+    max-width: 820px !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+}
+
+.cta-banner-eyebrow {
+    color: #b8aef0 !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    margin: 0 auto 12px auto !important;
+    display: inline-block !important;
+    text-align: center !important;
+}
+
+.cta-banner-heading {
+    font-size: clamp(2rem, 3.2vw, 2.75rem) !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.02em !important;
+    margin: 0 auto 16px auto !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+}
+
+.cta-banner-desc {
+    font-size: 1.05rem !important;
+    color: rgba(244, 243, 248, 0.8) !important;
+    line-height: 1.6 !important;
+    margin: 0 auto 32px auto !important;
+    max-width: 680px !important;
+    text-align: center !important;
+}
+
+.cta-banner-actions {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 14px !important;
+    margin: 0 auto !important;
+    flex-wrap: wrap !important;
+}
+
+/* Modal Zoom for Proofs */
+.proof-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 20, 0.88);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.proof-modal-box {
+    background: #111022;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 14px;
+    max-width: 1200px;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
+}
+
+.proof-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.proof-modal-close-btn {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 1.4rem;
+    line-height: 1;
+    padding: 4px 8px;
+}
+
+.proof-modal-close-btn:hover {
+    color: #ffffff;
+}
+
+.proof-modal-body {
+    padding: 16px;
+    background: #000;
+}
+
+.proof-modal-body img {
+    width: 100%;
+    height: auto;
+    max-height: 78vh;
+    object-fit: contain;
+    display: block;
+    border-radius: 6px;
+}
+
+/* Animations & Keyframes */
+@keyframes pulseLive {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(0.8); opacity: 0.4; }
+}
+
+.live-pulse-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 10px #10b981;
+    animation: pulseLive 2s ease-in-out infinite;
+}
+
+@keyframes sweepScan {
+    0% { transform: translateY(-100%); opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { transform: translateY(600%); opacity: 0; }
+}
+
+.cctv-scanner-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent 0%, rgba(52, 211, 153, 0.8) 50%, transparent 100%);
+    box-shadow: 0 0 12px rgba(52, 211, 153, 0.7);
+    animation: sweepScan 4.5s linear infinite;
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* Subtle Scroll Reveal */
+.reveal-init {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.reveal-init.is-inview {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .hero-layout-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    .showcase-grid-layout {
+        grid-template-columns: 1fr;
+    }
+    .proof-display-card {
+        position: static;
+        margin-top: 24px;
+    }
+    .arch-cards-grid, .case-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .rollout-steps-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .quote-grid, .arch-cards-grid, .case-cards-grid, .rollout-steps-grid {
+        grid-template-columns: 1fr;
+    }
+    .hero-actions, .cta-banner-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .btn {
+        width: 100% !important;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- 100% AUTHENTIC SMART EPSILON HEADER -->
+    <header class="site-header site-header--sticky" data-sticky="true" id="site-header">
+<div class="container nav-row">
+<a aria-label="Smart Epsilon home" class="brand" href="https://smartepsilon.wpenginepowered.com/">
+<img alt="Smart Epsilon" decoding="async" fetchpriority="high" height="47" src="https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/logo.svg" width="170"/>
+</a>
+<nav aria-label="Primary" class="primary-nav">
+<div class="nav-item" data-mega="">
+<a aria-controls="mega-solutions" aria-expanded="false" aria-haspopup="true" class="nav-link nav-link--mega" href="http://smartepsilon.wpenginepowered.com/solutions/" id="nav-solutions-trigger">
+				Solutions									<svg aria-hidden="true" class="icon nav-chevron" fill="none" height="14" viewbox="0 0 24 24" width="14">
+<path d="M6 9l6 6 6-6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</a>
+<div aria-labelledby="nav-solutions-trigger" class="dropdown-panel" hidden="" id="mega-solutions" role="region">
+<a class="mega-link" data-product-select="1" href="http://smartepsilon.wpenginepowered.com/solution-track-trace/">
+<span aria-hidden="true" class="mega-link-icon">
+<img alt="" class="mega-link-icon-img" decoding="async" height="16" loading="lazy" src="https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/route.svg" width="16"/> </span>
+<span class="mega-link-text">
+<span class="mega-link-title">Track &amp; Trace</span>
+<span class="mega-link-desc">Serialization &amp; real-time visibility</span>
+</span>
+</a>
+<a class="mega-link" data-product-select="0" href="https://smartepsilon.wpenginepowered.com/solution-anti-counterfeiting/">
+<span aria-hidden="true" class="mega-link-icon">
+<img alt="" class="mega-link-icon-img" decoding="async" height="16" loading="lazy" src="https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/shield.svg" width="16"/> </span>
+<span class="mega-link-text">
+<span class="mega-link-title">Anti-Counterfeiting Solution - Kavach</span>
+<span class="mega-link-desc">Overt, covert &amp; forensic protection</span>
+</span>
+</a>
+<a class="mega-link" data-product-select="2" href="https://smartepsilon.wpenginepowered.com/payment-linked-incentives-solution-smart-epsilon/">
+<span aria-hidden="true" class="mega-link-icon">
+<img alt="" class="mega-link-icon-img" decoding="async" height="16" loading="lazy" src="https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/gift.svg" width="16"/> </span>
+<span class="mega-link-text">
+<span class="mega-link-title">Payment-linked Incentives</span>
+<span class="mega-link-desc">Incentives tied to verified collections</span>
+</span>
+</a>
+<a class="mega-link" data-product-select="3" href="https://smartepsilon.wpenginepowered.com/ai-video-intelligence-smart-epsilon/">
+<span aria-hidden="true" class="mega-link-icon">
+<img alt="" class="mega-link-icon-img" decoding="async" height="16" loading="lazy" src="https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/video.svg" width="16"/> </span>
+<span class="mega-link-text">
+<span class="mega-link-title">AI Video Intelligence</span>
+<span class="mega-link-desc">CCTV into supply chain intelligence</span>
+</span>
+</a>
+</div>
+</div>
+<div class="nav-item" data-mega="">
+<a aria-controls="mega-industries" aria-expanded="false" aria-haspopup="true" class="nav-link nav-link--mega" href="http://smartepsilon.wpenginepowered.com/industries/" id="nav-industries-trigger">
+				Industries									<svg aria-hidden="true" class="icon nav-chevron" fill="none" height="14" viewbox="0 0 24 24" width="14">
+<path d="M6 9l6 6 6-6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</a>
+<div aria-labelledby="nav-industries-trigger" class="dropdown-panel" hidden="" id="mega-industries" role="region">
+<a class="mega-link" href="http://smartepsilon.wpenginepowered.com/agrochemicals-smart-epsilon/">
+<span aria-hidden="true" class="mega-link-icon">
+<img alt="" class="mega-link-icon-img" decoding="async" height="16" loading="lazy" src="https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/seeding.svg" width="16"/> </span>
+<span class="mega-link-text">
+<span class="mega-link-title">Agrochemicals</span>
+<span class="mega-link-desc">Stop counterfeit before it costs you. </span>
+</span>
+</a>
+<a class="mega-link" href="http://smartepsilon.wpenginepowered.com/electrical-appliances-parts-smart-epsilon/">
+<span aria-hidden="true" class="mega-link-icon">
+<img alt="" class="mega-link-icon-img" decoding="async" height="16" loading="lazy" src="https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/bolt.svg" width="16"/> </span>
+<span class="mega-link-text">
+<span class="mega-link-title">Electrical Appliances &amp; Parts</span>
+<span class="mega-link-desc">Ensure genuine products and components.</span>
+</span>
+</a>
+<a class="mega-link" href="http://smartepsilon.wpenginepowered.com/oil-and-gas-smart-epsilon/">
+<span aria-hidden="true" class="mega-link-icon">
+<img alt="" class="mega-link-icon-img" decoding="async" height="16" loading="lazy" src="https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/leaf.svg" width="16"/> </span>
+<span class="mega-link-text">
+<span class="mega-link-title">Oil &amp; Gas</span>
+<span class="mega-link-desc">Track and verify products with confidence.</span>
+</span>
+</a>
+</div>
+</div>
+<div class="nav-item" data-mega="">
+<a aria-controls="mega-case-studies" aria-expanded="false" aria-haspopup="true" class="nav-link nav-link--mega" href="http://smartepsilon.wpenginepowered.com/case-studies/" id="nav-case-studies-trigger">
+				Case Studies									<svg aria-hidden="true" class="icon nav-chevron" fill="none" height="14" viewbox="0 0 24 24" width="14">
+<path d="M6 9l6 6 6-6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</a>
+<div aria-labelledby="nav-case-studies-trigger" class="dropdown-panel" hidden="" id="mega-case-studies" role="region">
+<a class="mega-link" href="http://smartepsilon.wpenginepowered.com/case-study-agrochemicals/">
+<span aria-hidden="true" class="mega-link-icon">
+<img alt="" class="mega-link-icon-img" decoding="async" height="16" loading="lazy" src="https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/seeding.svg" width="16"/> </span>
+<span class="mega-link-text">
+<span class="mega-link-title">Agrochemicals</span>
+<span class="mega-link-desc">Real-time visibility, from factory to farmer. </span>
+</span>
+</a>
+</div>
+</div>
+<div class="nav-item" data-mega="">
+<a aria-controls="mega-company" aria-expanded="false" aria-haspopup="true" class="nav-link nav-link--mega" href="http://smartepsilon.wpenginepowered.com/#company" id="nav-company-trigger">
+				Company									<svg aria-hidden="true" class="icon nav-chevron" fill="none" height="14" viewbox="0 0 24 24" width="14">
+<path d="M6 9l6 6 6-6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</a>
+<div aria-labelledby="nav-company-trigger" class="dropdown-panel" hidden="" id="mega-company" role="region">
+<a class="mega-link" href="http://smartepsilon.wpenginepowered.com/contact/">
+<span aria-hidden="true" class="mega-link-icon">
+<img alt="" class="mega-link-icon-img" decoding="async" height="16" loading="lazy" src="https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/mail.svg" width="16"/> </span>
+<span class="mega-link-text">
+<span class="mega-link-title">Contact</span>
+</span>
+</a>
+<a class="mega-link" href="http://smartepsilon.wpenginepowered.com/about-us/">
+<span aria-hidden="true" class="mega-link-icon">
+<img alt="" class="mega-link-icon-img" decoding="async" height="16" loading="lazy" src="https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/alert.svg" width="16"/> </span>
+<span class="mega-link-text">
+<span class="mega-link-title">About Us</span>
+</span>
+</a>
+</div>
+</div>
+</nav>
+<div class="nav-actions">
+<a class="btn btn-primary btn-sm nav-cta" href="http://smartepsilon.wpenginepowered.com/contact/">
+					Contact Us					<svg aria-hidden="true" class="icon" fill="none" height="16" viewbox="0 0 24 24" width="16">
+<path d="M4 12h16M14 6l6 6-6 6" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</a>
+<button aria-controls="nav-drawer" aria-expanded="false" aria-label="Open menu" class="nav-toggle" type="button">
+<svg aria-hidden="true" class="icon" fill="none" height="20" viewbox="0 0 24 24" width="20">
+<path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+</div>
+</header>
+
+    <!-- HERO SECTION -->
+    <section class="stage stage--hero" id="industry-hero">
+        <div class="hero-video-wrapper" aria-hidden="true">
+            <img src="https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/hero.jpg" alt="Smart Epsilon CCTV Intelligence">
+            <div class="hero-video-overlay"></div>
+        </div>
+        <div class="site-container">
+            <div class="hero-layout-grid">
+                <div class="hero-copy">
+                    <span class="hero-label-badge">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        AI Video Intelligence
+                    </span>
+                    <h1 class="hero-title">The cameras you already have are watching. Now they can <span class="t-accent">tell you what's happening.</span></h1>
+                    <p class="hero-deck">Smart Epsilon turns existing CCTV — and purpose-placed cameras exactly where you need them — into a live operational layer of your supply chain, connected to the same platform tracking every unit.</p>
+                    
+                    <div class="trust-chips-row">
+                        <span class="features-pill-tag">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Works with your existing CCTV
+                        </span>
+                        <span class="features-pill-tag">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Purpose-placed where it counts
+                        </span>
+                        <span class="features-pill-tag">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Live in ~6 weeks
+                        </span>
+                    </div>
+
+                    <div class="hero-actions">
+                        <a class="btn btn--primary" href="https://smartepsilon.wpenginepowered.com/contact/">
+                            Schedule a Demo
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </a>
+                        <a class="btn btn--ghost" href="#proof-showcase">
+                            Explore Visual Proofs
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="hero-visual-card">
+                        <div class="hero-visual-topbar">
+                            <span class="hero-feed-status"><span class="live-pulse-dot"></span> LIVE CAMERA FEED</span>
+                            <span>CAM-04 · CONVEYOR LINE 02</span>
+                            <span id="hero-live-clock" style="color:#34d399;">REC · 60 FPS</span>
+                        </div>
+                        <div class="hero-visual-imgbox">
+                            <div class="cctv-scanner-line"></div>
+                            <img src="proof_images/ops_conveyor.jpg" alt="Conveyor Counting Computer Vision Feed">
+                        </div>
+                        <div class="hero-visual-meta">
+                            <span>COUNT: 14,820 UNITS [99.4% ACCURACY]</span>
+                            <span style="color:#a78bfa;">MODEL: SE-V8-FLOW</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 1: THE COST OF NOT KNOWING (QUOTE WALL) -->
+    <section class="quote-wall-section" id="ac-problems">
+        <div class="site-container">
+            <div class="section-head-left">
+                <span class="section-eyebrow">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                    Real-World Operational Risks
+                </span>
+                <h2 class="section-heading">The Cost of Not Knowing</h2>
+                <p class="section-lede">These aren't security footnotes. They are the moments a blind spot turns into a million-dollar chargeback, an investigation, or a safety audit violation.</p>
+            </div>
+
+            <div class="quote-grid">
+                <div class="quote-card">
+                    <p class="quote-card-text">"We found the breach four weeks after it happened. The CCTV had overwritten the footage three weeks ago."</p>
+                    <div class="quote-author-row">
+                        <div>
+                            <div class="quote-author-role">Plant Security Lead</div>
+                            <div class="quote-author-sector">Chemical Manufacturing &amp; Logistics</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quote-card">
+                    <p class="quote-card-text">"The customer claimed half the shipment was missing. We had two cameras pointing at the dock and neither could confirm what actually went into the truck."</p>
+                    <div class="quote-author-row">
+                        <div>
+                            <div class="quote-author-role">Operations Director</div>
+                            <div class="quote-author-sector">3PL Cold Chain Distribution</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quote-card">
+                    <p class="quote-card-text">"A forklift entered an active pedestrian zone at speed. We only learned about it because a worker had to jump out of the way. No one reported it."</p>
+                    <div class="quote-author-row">
+                        <div>
+                            <div class="quote-author-role">EHS Director</div>
+                            <div class="quote-author-sector">Heavy Industrial Manufacturing</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quote-card">
+                    <p class="quote-card-text">"Carton count discrepancy at outbound took three days to reconcile with SAP. We had to physically count the entire bay twice."</p>
+                    <div class="quote-author-row">
+                        <div>
+                            <div class="quote-author-role">Warehouse Operations Head</div>
+                            <div class="quote-author-sector">Fast-Moving Consumer Goods (FMCG)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: VERIFIED VISUAL PROOFS ACROSS 4 PILLARS -->
+    <section class="proof-showcase-section" id="proof-showcase">
+        <div class="site-container">
+            <div class="section-head-left">
+                <span class="section-eyebrow">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                    Computer Vision In Action
+                </span>
+                <h2 class="section-heading">Verified Visual Proofs Across Four Operational Pillars</h2>
+                <p class="section-lede">Inspect how existing CCTV cameras detect operational deviations, capture high-resolution proof evidence, and trigger automated ERP and alert events in real time.</p>
+            </div>
+
+            <!-- LEFT-ALIGNED TAB PILLS -->
+            <div class="proof-nav-pills-wrap">
+                <div class="proof-nav-pills">
+                    <button class="proof-pill-btn active" onclick="switchCategory('safety', this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        Safety &amp; Compliance
+                    </button>
+                    <button class="proof-pill-btn" onclick="switchCategory('ops', this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                        Operations &amp; Quality
+                    </button>
+                    <button class="proof-pill-btn" onclick="switchCategory('eff', this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                        Efficiency &amp; Flow
+                    </button>
+                    <button class="proof-pill-btn" onclick="switchCategory('sec', this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        Security &amp; Access
+                    </button>
+                </div>
+            </div>
+
+            <!-- TWO-COLUMN PROOF SHOWCASE (EQUAL HEIGHT ALIGNED) -->
+            <div class="showcase-grid-layout">
+                <!-- LEFT: FEATURE LIST -->
+                <div class="feature-cards-list" id="feature-cards-list"></div>
+
+                <!-- RIGHT: HIGH-RES 1200x680 PROOF CARD -->
+                <div class="proof-display-card">
+                    <div class="proof-card-topbar">
+                        <span class="proof-status-badge" id="proof-status-badge">
+                            <span class="live-pulse-dot"></span>
+                            <span id="proof-status-text">Active Event</span>
+                        </span>
+                        <span class="proof-cam-code" id="proof-cam-code">FEED: CAM-01</span>
+                    </div>
+
+                    <div class="proof-media-container" onclick="openProofZoom()">
+                        <img id="proof-active-image" src="proof_images/safety_ppe.jpg" alt="AI Video Intelligence Proof">
+                        <div class="proof-zoom-indicator">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                            Inspect Full Proof (1200×680)
+                        </div>
+                    </div>
+
+                    <div class="proof-details-panel">
+                        <h3 class="proof-panel-title" id="proof-panel-title">Loading Detection...</h3>
+                        <p class="proof-panel-desc" id="proof-panel-desc">Initializing computer vision inspection parameters.</p>
+                        <div class="proof-telemetry-strip" id="proof-telemetry-strip"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: ARCHITECTURE & INTEGRATION (Fits the Stack You Already Run) -->
+    <section class="integration-section" id="ac-integrates">
+        <div class="site-container">
+            <div class="section-head-left">
+                <span class="section-eyebrow">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                    Zero Hardware Disruption
+                </span>
+                <h2 class="section-heading">Fits the Stack You Already Run</h2>
+                <p class="section-lede">Deploying computer vision should not require rip-and-replace capital expenditure. Smart Epsilon connects directly into your existing camera streams and enterprise IT systems.</p>
+            </div>
+
+            <div class="arch-cards-grid">
+                <div class="arch-step-card">
+                    <span class="arch-tag-pill">STEP 01 · INPUT</span>
+                    <h3 class="arch-step-title">Ingest &amp; Camera Integration</h3>
+                    <p class="arch-step-desc">Connects seamlessly over standard RTSP, ONVIF, Hikvision, Dahua, Axis, and Milestone protocols. No proprietary camera lock-in; new units are only deployed where specific angles are required.</p>
+                </div>
+
+                <div class="arch-step-card">
+                    <span class="arch-tag-pill">STEP 02 · INFERENCE</span>
+                    <h3 class="arch-step-title">Edge &amp; Cloud Vision Engine</h3>
+                    <p class="arch-step-desc">Performs sub-100ms inference locally on certified industrial edge gateways or high-throughput private cloud clusters with automated PII blurring and privacy masking.</p>
+                </div>
+
+                <div class="arch-step-card">
+                    <span class="arch-tag-pill">STEP 03 · DISPATCH</span>
+                    <h3 class="arch-step-title">Enterprise ERP &amp; Alert Dispatch</h3>
+                    <p class="arch-step-desc">Pushes verified photo evidence, SKU counts, and incident telemetry directly into SAP S/4HANA, Oracle NetSuite, Slack, Microsoft Teams, SMS, and MQTT message brokers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: DEPLOYMENT ROLLOUT (One Fast Rollout Process) -->
+    <section class="rollout-section" id="ac-rollout">
+        <div class="site-container">
+            <div class="section-head-left">
+                <span class="section-eyebrow">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                    Proven Methodology
+                </span>
+                <h2 class="section-heading">One Fast Rollout Process</h2>
+                <p class="section-lede">From camera audit to live operational monitoring in four structured, low-risk milestones.</p>
+            </div>
+
+            <div class="rollout-steps-grid">
+                <div class="rollout-step-box">
+                    <span class="rollout-num-badge">WEEK 01</span>
+                    <h4 class="rollout-step-title">Site &amp; Camera Audit</h4>
+                    <p class="rollout-step-desc">Map existing CCTV RTSP streams, verify frame rates, lighting conditions, and confirm operational zones without touching running production lines.</p>
+                </div>
+
+                <div class="rollout-step-box">
+                    <span class="rollout-num-badge">WEEKS 02–03</span>
+                    <h4 class="rollout-step-title">Edge Gateway Setup</h4>
+                    <p class="rollout-step-desc">Deploy certified industrial edge nodes on-premise and configure custom detection bounding boxes, confidence thresholds, and zone triggers.</p>
+                </div>
+
+                <div class="rollout-step-box">
+                    <span class="rollout-num-badge">WEEKS 04–05</span>
+                    <h4 class="rollout-step-title">Validation &amp; Pipeline</h4>
+                    <p class="rollout-step-desc">Run dual-validation with plant supervisors. Calibrate against actual ERP manifests until detection accuracy exceeds 99% benchmark.</p>
+                </div>
+
+                <div class="rollout-step-box">
+                    <span class="rollout-num-badge">WEEK 06+</span>
+                    <h4 class="rollout-step-title">Autonomous Go-Live</h4>
+                    <p class="rollout-step-desc">Full 24/7 autonomous monitoring with automated daily shift reconciliation logs, exception escalation, and enterprise SLA support.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: FEATURED CASE STUDIES & FIELD INSIGHTS -->
+    <section class="case-studies-section" id="case-studies">
+        <div class="site-container">
+            <div class="section-head-left">
+                <span class="section-eyebrow">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    Enterprise Results
+                </span>
+                <h2 class="section-heading">Featured Insights &amp; Operational Case Studies</h2>
+                <p class="section-lede">Learn how global enterprises deploy Smart Epsilon computer vision to eliminate blind spots, protect staff, and safeguard margins.</p>
+            </div>
+
+            <div class="case-cards-grid">
+                <div class="case-card-item">
+                    <div class="case-thumb-wrap">
+                        <span class="case-roi-pill">84% HAZARD REDUCTION</span>
+                        <img src="proof_images/safety_ppe.jpg" alt="Agrochemical Manufacturing Plant Safety Case Study">
+                    </div>
+                    <div class="case-content-wrap">
+                        <div>
+                            <span class="case-meta-tag">CASE STUDY · AGROCHEMICALS</span>
+                            <h4 class="case-item-title">How a Leading Agrochemical Major Reduced Plant Floor Hazards by 84%</h4>
+                            <p class="case-item-excerpt">Deploying automated PPE compliance scanning and chemical spill alerts eliminated safety audit gaps across three continuous-production facilities.</p>
+                        </div>
+                        <a href="https://smartepsilon.wpenginepowered.com/case-studies/" class="case-read-btn">
+                            Read Case Study
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="case-card-item">
+                    <div class="case-thumb-wrap">
+                        <span class="case-roi-pill">99.4% VERIFIED COUNT</span>
+                        <img src="proof_images/ops_conveyor.jpg" alt="Conveyor Belt Unit Counting Implementation Guide">
+                    </div>
+                    <div class="case-content-wrap">
+                        <div>
+                            <span class="case-meta-tag">TECHNICAL GUIDE · LOGISTICS</span>
+                            <h4 class="case-item-title">Converting Warehouse CCTV into Automated Conveyor &amp; Carton Counters</h4>
+                            <p class="case-item-excerpt">An engineering overview on achieving 99.4% unit count accuracy at full conveyor line speeds with photo-stamped audit records.</p>
+                        </div>
+                        <a href="https://smartepsilon.wpenginepowered.com/case-studies/" class="case-read-btn">
+                            Read Case Study
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="case-card-item">
+                    <div class="case-thumb-wrap">
+                        <span class="case-roi-pill">12 SEC GATE CLEARANCE</span>
+                        <img src="proof_images/eff_anpr.jpg" alt="Zero-Hardware ANPR Gate Automation Whitepaper">
+                    </div>
+                    <div class="case-content-wrap">
+                        <div>
+                            <span class="case-meta-tag">WHITEPAPER · SUPPLY CHAIN</span>
+                            <h4 class="case-item-title">Zero-Hardware ANPR Gate Automation for Multi-Tenant Logistics Parks</h4>
+                            <p class="case-item-excerpt">Eliminating gate congestion and turnaround delays using existing boom barrier cameras synchronized with digital manifests.</p>
+                        </div>
+                        <a href="https://smartepsilon.wpenginepowered.com/case-studies/" class="case-read-btn">
+                            Read Whitepaper
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: FREQUENTLY ASKED QUESTIONS (CENTER ALIGNED) -->
+    <section class="faq-section" id="industry-faq">
+        <div class="site-container">
+            <div class="section-head-center">
+                <span class="section-eyebrow">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    Clear Answers
+                </span>
+                <h2 class="section-heading">Frequently Asked Questions</h2>
+                <p class="section-lede">Direct answers on hardware compatibility, network bandwidth, and deployment timelines.</p>
+            </div>
+
+            <div class="faq-list">
+                <div class="faq-item active">
+                    <button class="faq-question-btn" onclick="toggleFaq(this)">
+                        <span>Do we have to replace our existing CCTV cameras to run Smart Epsilon?</span>
+                        <svg class="faq-icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </button>
+                    <div class="faq-answer-panel" style="display: block;">
+                        No. Smart Epsilon is engineered to work directly with the standard IP, CCTV, and PTZ cameras you already operate. As long as the camera outputs a standard RTSP or ONVIF digital video stream, our vision edge gateways can process the feed in real time. We only advise installing additional purpose-placed cameras when you require a specific, unobstructed macro angle (such as barcode scan tunnels or precision seal inspection).
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question-btn" onclick="toggleFaq(this)">
+                        <span>Will video processing consume our entire plant floor internet bandwidth?</span>
+                        <svg class="faq-icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </button>
+                    <div class="faq-answer-panel">
+                        No. The heavy computer vision model inference is executed locally on on-premise industrial edge nodes. High-bandwidth raw video feeds never leave your local plant network. The edge node only transmits lightweight JSON telemetry payloads, metadata triggers, and compressed photo-proof evidence when a verified operational event or threshold violation occurs.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question-btn" onclick="toggleFaq(this)">
+                        <span>How does Smart Epsilon connect to our SAP, Oracle, or WMS systems?</span>
+                        <svg class="faq-icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </button>
+                    <div class="faq-answer-panel">
+                        We provide pre-built certified connectors, REST APIs, webhooks, and MQTT pub/sub event brokers that map directly into SAP S/4HANA, Oracle NetSuite, Manhattan WMS, and custom databases. An automated event—such as a completed truck loading count—reconciles against the digital delivery note within milliseconds.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question-btn" onclick="toggleFaq(this)">
+                        <span>What happens when lighting changes or dust accumulates on camera lenses?</span>
+                        <svg class="faq-icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </button>
+                    <div class="faq-answer-panel">
+                        Our models are trained on real industrial conditions including glare, high-bay shadows, dust, and nighttime low-lux environments. The vision system includes built-in camera health telemetry that proactively alerts maintenance if a lens becomes obstructed, misaligned, or dirty.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: CTA BANNER (CENTER ALIGNED) -->
+    <section class="cta-banner-section" id="cta">
+        <div class="site-container">
+            <div class="cta-banner-content">
+                <span class="cta-banner-eyebrow">Ready for Operational Visibility?</span>
+                <h2 class="cta-banner-heading">See what your own cameras could already be telling you.</h2>
+                <p class="cta-banner-desc">Book a 30-minute operational assessment with our computer vision engineering team. We'll review your site layout, camera models, and provide a live feasibility report.</p>
+                <div class="cta-banner-actions">
+                    <a class="btn btn--primary" href="https://smartepsilon.wpenginepowered.com/contact/">
+                        Schedule a Platform Demo
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                    <a class="btn btn--ghost" style="background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.25);" href="https://smartepsilon.wpenginepowered.com/contact/">
+                        Contact Sales Engineering
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 100% AUTHENTIC SMART EPSILON FOOTER -->
+    <footer class="site-footer" id="colophon">
+<div class="footer-inner">
+<div class="footer-main">
+<div class="footer-columns">
+<div class="footer-contact-card">
+<div class="footer-contact-list">
+<a class="footer-contact-link" href="mailto:sales@smartepsilon.com">
+<svg aria-hidden="true" fill="currentColor" height="14" viewbox="0 0 20 20" width="14"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
+<span>sales@smartepsilon.com</span>
+</a>
+<a class="footer-contact-link" href="tel:+919558831881">
+<svg aria-hidden="true" fill="currentColor" height="14" viewbox="0 0 20 20" width="14"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path></svg>
+<span>+91 95588 31881</span>
+</a>
+<a class="footer-contact-link" href="https://maps.app.goo.gl/U2x61VStM3b5EhMh9" rel="noopener noreferrer" target="_blank">
+<svg aria-hidden="true" fill="currentColor" height="14" viewbox="0 0 20 20" width="14"><path clip-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" fill-rule="evenodd"></path></svg>
+<span>402, Ornet Arcade, Near Simandhar Tower, Bodakdev, Ahmedabad – 380054, Gujarat, India</span>
+</a>
+</div>
+</div>
+<div class="footer-col" data-footer-accordion="">
+<button aria-controls="footer-acc-1" aria-expanded="false" class="footer-acc-trigger" id="footer-acc-1-btn" type="button">
+<span>Solutions</span>
+<span aria-hidden="true" class="footer-acc-icons">
+<svg class="footer-icon-plus" height="18" width="18"><use href="#se-footer-icon-plus"></use></svg>
+<svg class="footer-icon-minus" height="18" width="18"><use href="#se-footer-icon-minus"></use></svg>
+</span>
+</button>
+<div aria-labelledby="footer-acc-1-btn" class="footer-acc-panel" id="footer-acc-1" role="region">
+<a data-product-select="1" href="http://smartepsilon.wpenginepowered.com/solution-track-trace/">Track &amp; Trace</a>
+<a data-product-select="0" href="http://smartepsilon.wpenginepowered.com/solution-anti-counterfeiting/">Anti-Counterfeiting - Kavach</a>
+<a data-product-select="2" href="http://smartepsilon.wpenginepowered.com/payment-linked-incentives-solution-smart-epsilon/">Payment-linked Incentives</a>
+<a data-product-select="3" href="http://smartepsilon.wpenginepowered.com/ai-video-intelligence-smart-epsilon/">AI Video Intelligence</a>
+</div>
+</div>
+<div class="footer-col" data-footer-accordion="">
+<button aria-controls="footer-acc-2" aria-expanded="false" class="footer-acc-trigger" id="footer-acc-2-btn" type="button">
+<span>Industries</span>
+<span aria-hidden="true" class="footer-acc-icons">
+<svg class="footer-icon-plus" height="18" width="18"><use href="#se-footer-icon-plus"></use></svg>
+<svg class="footer-icon-minus" height="18" width="18"><use href="#se-footer-icon-minus"></use></svg>
+</span>
+</button>
+<div aria-labelledby="footer-acc-2-btn" class="footer-acc-panel" id="footer-acc-2" role="region">
+<a href="http://smartepsilon.wpenginepowered.com/agrochemicals-smart-epsilon/">Agrochemicals &amp; Seeds</a>
+<a href="http://smartepsilon.wpenginepowered.com/oil-and-gas-smart-epsilon/">Oil &amp; Gas</a>
+<a href="http://smartepsilon.wpenginepowered.com/electrical-appliances-parts-smart-epsilon/">Electrical Appliances &amp; Parts</a>
+</div>
+</div>
+<div class="footer-col" data-footer-accordion="">
+<button aria-controls="footer-acc-3" aria-expanded="false" class="footer-acc-trigger" id="footer-acc-3-btn" type="button">
+<span>Corporate</span>
+<span aria-hidden="true" class="footer-acc-icons">
+<svg class="footer-icon-plus" height="18" width="18"><use href="#se-footer-icon-plus"></use></svg>
+<svg class="footer-icon-minus" height="18" width="18"><use href="#se-footer-icon-minus"></use></svg>
+</span>
+</button>
+<div aria-labelledby="footer-acc-3-btn" class="footer-acc-panel" id="footer-acc-3" role="region">
+<a href="http://smartepsilon.wpenginepowered.com/contact/">Contact Support</a>
+</div>
+</div>
+</div>
+<div aria-hidden="true" class="footer-accent-line"></div>
+</div>
+<div class="footer-brand-mark">
+<img alt="Smart Epsilon Symbol" class="footer-brand-img" decoding="async" height="280" loading="lazy" src="https://smartepsilon.wpenginepowered.com/wp-content/uploads/2026/07/symbol.png" width="280"/>
+</div>
+</div>
+<div class="footer-bottom">
+<span class="footer-copy">© 2026 Smart Epsilon, a Value Chain Solutions company. All rights reserved.  </span>
+<div class="footer-badges">
+<span>ISO 9001:2015</span>
+<span>ISO 27001:2022</span>
+</div>
+</div>
+</footer>
+
+    <!-- MODAL FOR FULLSCREEN PROOF INSPECTION -->
+    <div class="proof-modal-overlay" id="proof-modal" onclick="if(event.target===this)closeProofZoom()">
+        <div class="proof-modal-box">
+            <div class="proof-modal-header">
+                <span id="proof-modal-title">Computer Vision Proof Inspection</span>
+                <button class="proof-modal-close-btn" onclick="closeProofZoom()">&times;</button>
+            </div>
+            <div class="proof-modal-body">
+                <img id="proof-modal-img" src="" alt="High Resolution Proof">
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+    
+        const PROOF_DATABASE = {
+            safety: {
+                name: "Safety & Compliance",
+                items: [
+                    {
+                        id: "ppe",
+                        title: "PPE & Protective Gear Compliance",
+                        desc: "Scans plant entry points, catwalks, and hazardous chemical bays to flag workers missing mandatory hard hats, high-visibility vests, or protective eye gear. Bounding box detections generate instant photo evidence.",
+                        img: "proof_images/safety_ppe.jpg",
+                        status: "Live Detection Active",
+                        cam: "FEED: CAM-01 · ZONE: CHEMICAL BAY 04",
+                        tags: ["PPE COMPLIANCE: 88.4%", "HELMET: PASS", "VEST: DETECTED", "LATENCY: 38ms"]
+                    },
+                    {
+                        id: "speed",
+                        title: "Forklift Speed & Zone Violations",
+                        desc: "Monitors internal vehicle transit routes and high-traffic pedestrian intersections, measuring vehicle velocity and flagging speed limit infractions before collisions occur.",
+                        img: "proof_images/safety_speed.jpg",
+                        status: "Speed Violation Flagged",
+                        cam: "FEED: CAM-07 · AISLE 12 TRANSIT",
+                        tags: ["SPEED: 18.4 KM/H", "LIMIT: 10 KM/H", "SEVERITY: HIGH", "SMS DISPATCHED"]
+                    },
+                    {
+                        id: "spillage",
+                        title: "Chemical & Fluid Spillage Alerts",
+                        desc: "Surface pixel-anomaly models instantly detect liquid puddles, chemical drum leaks, and wet floor slip hazards across staging bays, preventing catastrophic slip-and-fall injuries.",
+                        img: "proof_images/safety_spillage.jpg",
+                        status: "Hazard Detected",
+                        cam: "FEED: CAM-03 · STAGING DOCK B",
+                        tags: ["AREA: 2.4 SQ M", "HAZARD: SLIP RISK", "ALERT: EHS DISPATCHED", "MQTT: #4091"]
+                    },
+                    {
+                        id: "proximity",
+                        title: "Forklift-Pedestrian Danger Zones",
+                        desc: "Calculates live geometric distance vectors between heavy moving equipment and nearby floor staff. Instantly triggers audible warning beacons when staff enter blind spots.",
+                        img: "proof_images/safety_proximity.jpg",
+                        status: "Proximity Breach Alert",
+                        cam: "FEED: CAM-09 · LOADING BAY 02",
+                        tags: ["DISTANCE: 1.2M", "SAFE BUFFER: 3.0M", "HORN: TRIGGERED", "LATENCY: 28ms"]
+                    }
+                ]
+            },
+            ops: {
+                name: "Operations & Quality",
+                items: [
+                    {
+                        id: "conveyor",
+                        title: "Conveyor Line Carton & Unit Counting",
+                        desc: "High-speed line vision counts packages, totes, and units moving along conveyor belts at full production speeds, providing 99.4% verified count accuracy with photo-stamped audit logs reconciled against ERP manifests.",
+                        img: "proof_images/ops_conveyor.jpg",
+                        status: "Active Line Count",
+                        cam: "FEED: CAM-04 · CONVEYOR LINE 02",
+                        tags: ["COUNT: 14,820 UNITS", "SPEED: 1.8 M/S", "ACCURACY: 99.4%", "SAP RECONCILED"]
+                    },
+                    {
+                        id: "quality",
+                        title: "Packaging Integrity & Seal Defect Inspection",
+                        desc: "Inspects cartons for crushed corners, broken tamper seals, torn tape, and physical deformities at the final packing station before pallets are wrapped for distribution.",
+                        img: "proof_images/ops_quality.jpg",
+                        status: "Defect Caught & Diverted",
+                        cam: "FEED: CAM-06 · PACKING STATION 01",
+                        tags: ["DEFECT: CRUSHED CORNER", "DIVERTER: ENGAGED", "CONFIDENCE: 98.7%"]
+                    },
+                    {
+                        id: "label",
+                        title: "Barcode, QR & Batch Label Legibility Audit",
+                        desc: "Confirms serial barcodes, expiration dates, and QR markings are sharp, unblemished, and fully machine-readable before shipments leave the warehouse dock.",
+                        img: "proof_images/ops_label.jpg",
+                        status: "Scan Verified",
+                        cam: "FEED: CAM-02 · SCAN TUNNEL A",
+                        tags: ["BARCODE: GS1-128", "LEGIBILITY: 100%", "WMS MATCH: TRUE"]
+                    }
+                ]
+            },
+            eff: {
+                name: "Efficiency & Flow",
+                items: [
+                    {
+                        id: "anpr",
+                        title: "Zero-Hardware ANPR Gate Automation",
+                        desc: "Reads license plates, container numbers, and driver cabs using existing boom-gate cameras. Automatically verifies truck registration against scheduled appointment slots.",
+                        img: "proof_images/eff_anpr.jpg",
+                        status: "Gate Auto-Cleared",
+                        cam: "FEED: CAM-GATE-01 · NORTH ENTRANCE",
+                        tags: ["PLATE: MH-12-RN-4821", "APPT: MATCHED", "BARRIER: OPEN", "WAIT: 12 SEC"]
+                    },
+                    {
+                        id: "congestion",
+                        title: "Dock Yard & Staging Congestion Heatmaps",
+                        desc: "Maps spatial bottlenecks, dwell times, and vehicle queues across loading aprons in real time, alerting dispatchers when turnaround times exceed agreed SLA limits.",
+                        img: "proof_images/eff_congestion.jpg",
+                        status: "Queue Threshold Reached",
+                        cam: "FEED: CAM-YARD-04 · DOCK APRON",
+                        tags: ["DWELL TIME: 42 MIN", "QUEUE: 6 VEHICLES", "DISPATCH: NOTIFIED"]
+                    },
+                    {
+                        id: "loading",
+                        title: "Automated Trailer Loading Verification",
+                        desc: "Dock cameras observe pallet loading sequences inside truck trailers, confirming carton counts and verifying secure strapping before bills of lading are signed off.",
+                        img: "proof_images/eff_loading.jpg",
+                        status: "Loading Sequence Active",
+                        cam: "FEED: CAM-DOCK-08 · BAY 14",
+                        tags: ["PALLETS: 24/24 LOADED", "SEAL ID: SL-98402", "AUDIT: COMPLETE"]
+                    }
+                ]
+            },
+            sec: {
+                name: "Security & Access",
+                items: [
+                    {
+                        id: "perimeter",
+                        title: "Perimeter Intrusion & Fence Line Monitoring",
+                        desc: "Distinguishes human intruders from wind-blown foliage and animals along site boundaries, eliminating 95% of false alarm notifications for security control rooms.",
+                        img: "proof_images/sec_perimeter.jpg",
+                        status: "Intrusion Flagged",
+                        cam: "FEED: CAM-PERIM-03 · EAST FENCE",
+                        tags: ["TARGET: HUMAN", "CLASSIFICATION: INTRUDER", "SECURITY: ALERTED"]
+                    },
+                    {
+                        id: "pathway",
+                        title: "Blocked Emergency Pathway Detection",
+                        desc: "Flags misplaced pallets, staging drums, or parked machinery obstructing fire exits and evacuation routes, ensuring uninterrupted safety compliance for inspections.",
+                        img: "proof_images/sec_pathway.jpg",
+                        status: "Obstruction Detected",
+                        cam: "FEED: CAM-INT-11 · FIRE EXIT 03",
+                        tags: ["OBSTRUCTION: PALLET STACK", "DURATION: 25 MIN", "CLEARED: PENDING"]
+                    },
+                    {
+                        id: "parking",
+                        title: "Unauthorized Parking & Restricted Bays",
+                        desc: "Flags non-compliant vehicles parked in hazardous material drop zones, fire truck lanes, or reserved executive slots, automating warning tickets with photo evidence.",
+                        img: "proof_images/sec_parking.jpg",
+                        status: "Unauthorized Vehicle",
+                        cam: "FEED: CAM-EXT-05 · HAZMAT BAY",
+                        tags: ["VIOLATION: NO-PARKING ZONE", "TIME: 14 MIN", "TICKET: ISSUED"]
+                    }
+                ]
+            }
+        };
+
+        let activeCategory = 'safety';
+        let currentItem = null;
+
+        function switchCategory(catKey, btnEl) {
+            activeCategory = catKey;
+            document.querySelectorAll('.proof-pill-btn').forEach(btn => btn.classList.remove('active'));
+            if (btnEl) btnEl.classList.add('active');
+            renderFeatureCards();
+        }
+
+        function renderFeatureCards() {
+            const cat = PROOF_DATABASE[activeCategory];
+            const container = document.getElementById('feature-cards-list');
+            container.innerHTML = '';
+
+            cat.items.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = `feature-item-card ${index === 0 ? 'active' : ''}`;
+                card.onclick = () => selectFeature(item, card);
+
+                card.innerHTML = `
+                    <div class="feature-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                    </div>
+                    <div class="feature-text-block">
+                        <h4 class="feature-item-title">${item.title}</h4>
+                        <p class="feature-item-desc">${item.desc}</p>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+
+            if (cat.items.length > 0) {
+                selectFeature(cat.items[0], container.children[0]);
+            }
+        }
+
+        function selectFeature(item, cardEl) {
+            currentItem = item;
+
+            document.querySelectorAll('.feature-item-card').forEach(c => c.classList.remove('active'));
+            if (cardEl) cardEl.classList.add('active');
+
+            const activeImg = document.getElementById('proof-active-image');
+            activeImg.classList.add('fade-out');
+
+            setTimeout(() => {
+                document.getElementById('proof-status-text').innerText = item.status;
+                document.getElementById('proof-cam-code').innerText = item.cam;
+                activeImg.src = item.img;
+                document.getElementById('proof-panel-title').innerText = item.title;
+                document.getElementById('proof-panel-desc').innerText = item.desc;
+
+                const telemetryBox = document.getElementById('proof-telemetry-strip');
+                telemetryBox.innerHTML = item.tags.map(t => `<span class="telemetry-chip">${t}</span>`).join('');
+                activeImg.classList.remove('fade-out');
+            }, 120);
+        }
+
+        function openProofZoom() {
+            if (!currentItem) return;
+            document.getElementById('proof-modal-title').innerText = currentItem.title + " · " + currentItem.status;
+            document.getElementById('proof-modal-img').src = currentItem.img;
+            document.getElementById('proof-modal').style.display = 'flex';
+        }
+
+        function closeProofZoom() {
+            document.getElementById('proof-modal').style.display = 'none';
+        }
+
+        function toggleFaq(btn) {
+            const item = btn.closest('.faq-item');
+            const isActive = item.classList.contains('active');
+            
+            document.querySelectorAll('.faq-item').forEach(f => {
+                f.classList.remove('active');
+                f.querySelector('.faq-answer-panel').style.display = 'none';
+            });
+
+            if (!isActive) {
+                item.classList.add('active');
+                item.querySelector('.faq-answer-panel').style.display = 'block';
+            }
+        }
+
+        // Live Clock for CCTV HUD
+        function updateLiveClock() {
+            const clockEl = document.getElementById('hero-live-clock');
+            if (clockEl) {
+                const now = new Date();
+                const timeStr = now.toISOString().slice(11, 19) + ' UTC';
+                clockEl.innerText = `REC · ${timeStr} · 60 FPS`;
+            }
+        }
+
+        // Scroll reveal system
+        const observerOptions = { threshold: 0.08, rootMargin: '0px 0px -40px 0px' };
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-inview');
+                }
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderFeatureCards();
+            updateLiveClock();
+            setInterval(updateLiveClock, 1000);
+
+            document.querySelectorAll('.nav-item[data-mega]').forEach(item => {
+                item.addEventListener('mouseenter', () => item.classList.add('is-open'));
+                item.addEventListener('mouseleave', () => item.classList.remove('is-open'));
+            });
+
+            const revealElements = document.querySelectorAll(
+                '.quote-card, .arch-step-card, .rollout-step-box, .case-card-item, .faq-item, .section-head-left, .section-head-center'
+            );
+            revealElements.forEach(el => {
+                el.classList.add('reveal-init');
+                revealObserver.observe(el);
+            });
+        });
+
+    </script>
+</body>
+</html>
